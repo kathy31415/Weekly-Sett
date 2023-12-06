@@ -1,0 +1,1214 @@
+```{r Load required packages}
+requiredpackages <- c("berryFunctions", "dplyr", "lubridate", "pivottabler", "purrr", "readxl", "openxlsx", "tidyr", "XML", "xml2")
+
+install_load <- function(packages) {
+     for (p in packages) {
+          if (!p %in% rownames(installed.packages())) {
+               install.packages(p)
+          }
+        library(p,character.only = TRUE)
+     }
+}
+
+suppressMessages(install_load(requiredpackages))
+suppressMessages(rm(requiredpackages, install_load))
+
+
+PTunit <- readline(prompt = "Are you doing NI settlement? (Y/N): ")
+
+if (toupper(PTunit) == "Y" | toupper(PTunit) == "YES") {
+  PTunit <- "PT_500057"
+  MMtype <- "NIE"
+  MMtype2 <- "NI"
+} else {
+  stop("USE ROI R SCRIPT")
+}
+
+```
+
+
+
+
+
+
+```{r cbind.na, rbind.na, data.frame.na functions}
+cbind.na <- function (..., deparse.level = 1)
+{
+ na <- nargs() - (!missing(deparse.level))
+ deparse.level <- as.integer(deparse.level)
+ stopifnot(0 <= deparse.level, deparse.level <= 2)
+ argl <- list(...)
+ while (na > 0 && is.null(argl[[na]])) {
+ argl <- argl[-na]
+ na <- na - 1
+ }
+ if (na == 0)
+ return(NULL)
+ if (na == 1) {
+ if (isS4(..1))
+ return(cbind2(..1))
+ else return(matrix(...)) ##.Internal(cbind(deparse.level, ...)))
+ }
+ if (deparse.level) {
+ symarg <- as.list(sys.call()[-1L])[1L:na]
+ Nms <- function(i) {
+ if (is.null(r <- names(symarg[i])) || r == "") {
+ if (is.symbol(r <- symarg[[i]]) || deparse.level ==
+ 2)
+ deparse(r)
+ }
+ else r
+ }
+ }
+ ## deactivated, otherwise no fill in with two arguments
+ if (na == 0) {
+ r <- argl[[2]]
+ fix.na <- FALSE
+ }
+ else {
+ nrs <- unname(lapply(argl, nrow))
+ iV <- sapply(nrs, is.null)
+ fix.na <- identical(nrs[(na - 1):na], list(NULL, NULL))
+ ## deactivated, otherwise data will be recycled
+ #if (fix.na) {
+ # nr <- max(if (all(iV)) sapply(argl, length) else unlist(nrs[!iV]))
+ # argl[[na]] <- cbind(rep(argl[[na]], length.out = nr),
+ # deparse.level = 0)
+ #}
+ if (deparse.level) {
+ if (fix.na)
+ fix.na <- !is.null(Nna <- Nms(na))
+ if (!is.null(nmi <- names(argl)))
+ iV <- iV & (nmi == "")
+ ii <- if (fix.na)
+ 2:(na - 1)
+ else 2:na
+ if (any(iV[ii])) {
+ for (i in ii[iV[ii]]) if (!is.null(nmi <- Nms(i)))
+ names(argl)[i] <- nmi
+ }
+ }
+
+ ## filling with NA's to maximum occuring nrows
+ nRow <- as.numeric(sapply(argl, function(x) NROW(x)))
+ maxRow <- max(nRow, na.rm = TRUE)
+ argl <- lapply(argl, function(x) if (is.null(nrow(x))) c(x, rep(NA, maxRow - length(x)))
+ else rbind.na(x, matrix(, maxRow - nrow(x), ncol(x))))
+ r <- do.call(cbind, c(argl[-1L], list(deparse.level = deparse.level)))
+ }
+ d2 <- dim(r)
+ r <- cbind2(argl[[1]], r)
+ if (deparse.level == 0)
+ return(r)
+ ism1 <- !is.null(d1 <- dim(..1)) && length(d1) == 2L
+ ism2 <- !is.null(d2) && length(d2) == 2L && !fix.na
+ if (ism1 && ism2)
+ return(r)
+ Ncol <- function(x) {
+ d <- dim(x)
+ if (length(d) == 2L)
+ d[2L]
+ else as.integer(length(x) > 0L)
+ }
+ nn1 <- !is.null(N1 <- if ((l1 <- Ncol(..1)) && !ism1) Nms(1))
+ nn2 <- !is.null(N2 <- if (na == 2 && Ncol(..2) && !ism2) Nms(2))
+ if (nn1 || nn2 || fix.na) {
+ if (is.null(colnames(r)))
+ colnames(r) <- rep.int("", ncol(r))
+ setN <- function(i, nams) colnames(r)[i] <<- if (is.null(nams))
+ ""
+ else nams
+ if (nn1)
+ setN(1, N1)
+ if (nn2)
+ setN(1 + l1, N2)
+ if (fix.na)
+ setN(ncol(r), Nna)
+ }
+ r
+}
+
+rbind.na <- function (..., deparse.level = 1)
+{
+    na <- nargs() - (!missing(deparse.level))
+    deparse.level <- as.integer(deparse.level)
+    stopifnot(0 <= deparse.level, deparse.level <= 2)
+    argl <- list(...)
+    while (na > 0 && is.null(argl[[na]])) {
+        argl <- argl[-na]
+        na <- na - 1
+    }
+    if (na == 0)
+        return(NULL)
+    if (na == 1) {
+        if (isS4(..1))
+            return(rbind2(..1))
+        else return(matrix(..., nrow = 1)) ##.Internal(rbind(deparse.level, ...)))
+    }
+    if (deparse.level) {
+        symarg <- as.list(sys.call()[-1L])[1L:na]
+        Nms <- function(i) {
+            if (is.null(r <- names(symarg[i])) || r == "") {
+                if (is.symbol(r <- symarg[[i]]) || deparse.level ==
+                  2)
+                  deparse(r)
+            }
+            else r
+        }
+    }
+
+    ## deactivated, otherwise no fill in with two arguments
+    if (na == 0) {
+        r <- argl[[2]]
+        fix.na <- FALSE
+    }
+    else {
+        nrs <- unname(lapply(argl, ncol))
+        iV <- sapply(nrs, is.null)
+        fix.na <- identical(nrs[(na - 1):na], list(NULL, NULL))
+        ## deactivated, otherwise data will be recycled
+        #if (fix.na) {
+        #    nr <- max(if (all(iV)) sapply(argl, length) else unlist(nrs[!iV]))
+        #    argl[[na]] <- rbind(rep(argl[[na]], length.out = nr),
+        #        deparse.level = 0)
+        #}
+        if (deparse.level) {
+            if (fix.na)
+                fix.na <- !is.null(Nna <- Nms(na))
+            if (!is.null(nmi <- names(argl)))
+                iV <- iV & (nmi == "")
+            ii <- if (fix.na)
+                2:(na - 1)
+            else 2:na
+            if (any(iV[ii])) {
+                for (i in ii[iV[ii]]) if (!is.null(nmi <- Nms(i)))
+                  names(argl)[i] <- nmi
+            }
+        }
+
+        ## filling with NA's to maximum occuring ncols
+        nCol <- as.numeric(sapply(argl, function(x) if (is.null(ncol(x))) length(x)
+                                                    else ncol(x)))
+        maxCol <- max(nCol, na.rm = TRUE)
+        argl <- lapply(argl, function(x)  if (is.null(ncol(x))) c(x, rep(NA, maxCol - length(x)))
+                                          else cbind(x, matrix(, nrow(x), maxCol - ncol(x))))
+
+        ## create a common name vector from the
+        ## column names of all 'argl' items
+        namesVEC <- rep(NA, maxCol)
+        for (i in 1:length(argl)) {
+          CN <- colnames(argl[[i]])
+          m <- !(CN %in% namesVEC)
+          namesVEC[m] <- CN[m]
+        }
+
+        ## make all column names from common 'namesVEC'
+        for (j in 1:length(argl)) {
+          if (!is.null(ncol(argl[[j]]))) colnames(argl[[j]]) <- namesVEC
+        }
+
+        r <- do.call(rbind, c(argl[-1L], list(deparse.level = deparse.level)))
+    }
+
+    d2 <- dim(r)
+
+    ## make all column names from common 'namesVEC'
+    colnames(r) <- colnames(argl[[1]])
+
+    r <- rbind2(argl[[1]], r)
+
+    if (deparse.level == 0)
+        return(r)
+    ism1 <- !is.null(d1 <- dim(..1)) && length(d1) == 2L
+    ism2 <- !is.null(d2) && length(d2) == 2L && !fix.na
+    if (ism1 && ism2)
+        return(r)
+    Nrow <- function(x) {
+        d <- dim(x)
+        if (length(d) == 2L)
+            d[1L]
+        else as.integer(length(x) > 0L)
+    }
+    nn1 <- !is.null(N1 <- if ((l1 <- Nrow(..1)) && !ism1) Nms(1))
+    nn2 <- !is.null(N2 <- if (na == 2 && Nrow(..2) && !ism2) Nms(2))
+    if (nn1 || nn2 || fix.na) {
+        if (is.null(rownames(r)))
+            rownames(r) <- rep.int("", nrow(r))
+        setN <- function(i, nams) rownames(r)[i] <<- if (is.null(nams))
+            ""
+        else nams
+        if (nn1)
+            setN(1, N1)
+        if (nn2)
+            setN(1 + l1, N2)
+        if (fix.na)
+            setN(nrow(r), Nna)
+    }
+    r
+}
+
+
+data.frame.na <- function (..., row.names = NULL, check.rows = FALSE, check.names = TRUE,
+    stringsAsFactors = FALSE)
+{
+    data.row.names <- if (check.rows && is.null(row.names))
+        function(current, new, i) {
+            if (is.character(current))
+                new <- as.character(new)
+            if (is.character(new))
+                current <- as.character(current)
+            if (anyDuplicated(new))
+                return(current)
+            if (is.null(current))
+                return(new)
+            if (all(current == new) || all(current == ""))
+                return(new)
+            stop(gettextf("mismatch of row names in arguments of 'data.frame', item %d",
+                i), domain = NA)
+        }
+    else function(current, new, i) {
+        if (is.null(current)) {
+            if (anyDuplicated(new)) {
+                warning("some row.names duplicated: ", paste(which(duplicated(new)),
+                  collapse = ","), " --> row.names NOT used")
+                current
+            }
+            else new
+        }
+        else current
+    }
+    object <- as.list(substitute(list(...)))[-1L]
+    mrn <- is.null(row.names)
+    x <- list(...)
+    n <- length(x)
+    if (n < 1L) {
+        if (!mrn) {
+            if (is.object(row.names) || !is.integer(row.names))
+                row.names <- as.character(row.names)
+            if (any(is.na(row.names)))
+                stop("row names contain missing values")
+            if (anyDuplicated(row.names))
+                stop("duplicate row.names: ", paste(unique(row.names[duplicated(row.names)]),
+                  collapse = ", "))
+        }
+        else row.names <- integer(0L)
+        return(structure(list(), names = character(0L), row.names = row.names,
+            class = "data.frame"))
+    }
+    vnames <- names(x)
+    if (length(vnames) != n)
+        vnames <- character(n)
+    no.vn <- !nzchar(vnames)
+    vlist <- vnames <- as.list(vnames)
+    nrows <- ncols <- integer(n)
+    for (i in seq_len(n)) {
+        xi <- if (is.character(x[[i]]) || is.list(x[[i]]))
+            as.data.frame(x[[i]], optional = TRUE, stringsAsFactors = stringsAsFactors)
+        else as.data.frame(x[[i]], optional = TRUE)
+        nrows[i] <- .row_names_info(xi)
+        ncols[i] <- length(xi)
+        namesi <- names(xi)
+        if (ncols[i] > 1L) {
+            if (length(namesi) == 0L)
+                namesi <- seq_len(ncols[i])
+            if (no.vn[i])
+                vnames[[i]] <- namesi
+            else vnames[[i]] <- paste(vnames[[i]], namesi, sep = ".")
+        }
+        else {
+            if (length(namesi))
+                vnames[[i]] <- namesi
+            else if (no.vn[[i]]) {
+                tmpname <- deparse(object[[i]])[1L]
+                if (substr(tmpname, 1L, 2L) == "I(") {
+                  ntmpn <- nchar(tmpname, "c")
+                  if (substr(tmpname, ntmpn, ntmpn) == ")")
+                    tmpname <- substr(tmpname, 3L, ntmpn - 1L)
+                }
+                vnames[[i]] <- tmpname
+            }
+        }
+        if (missing(row.names) && nrows[i] > 0L) {
+            rowsi <- attr(xi, "row.names")
+            nc <- nchar(rowsi, allowNA = FALSE)
+            nc <- nc[!is.na(nc)]
+            if (length(nc) && any(nc))
+                row.names <- data.row.names(row.names, rowsi,
+                  i)
+        }
+        nrows[i] <- abs(nrows[i])
+        vlist[[i]] <- xi
+    }
+    nr <- max(nrows)
+    for (i in seq_len(n)[nrows < nr]) {
+        xi <- vlist[[i]]
+        if (nrows[i] > 0L) {
+            xi <- unclass(xi)
+            fixed <- TRUE
+            for (j in seq_along(xi)) {
+                ### added NA fill to max length/nrow
+                xi1 <- xi[[j]]
+                if (is.vector(xi1) || is.factor(xi1))
+                  xi[[j]] <- c(xi1, rep(NA, nr - nrows[i]))
+                else if (is.character(xi1) && class(xi1) == "AsIs")
+                  xi[[j]] <- structure(c(xi1, rep(NA, nr - nrows[i])),
+                    class = class(xi1))
+                else if (inherits(xi1, "Date") || inherits(xi1,
+                  "POSIXct"))
+                  xi[[j]] <- c(xi1, rep(NA, nr - nrows[i]))
+                else {
+                  fixed <- FALSE
+                  break
+                }
+            }
+            if (fixed) {
+                vlist[[i]] <- xi
+                next
+            }
+        }
+        stop("arguments imply differing number of rows: ", paste(unique(nrows),
+            collapse = ", "))
+    }
+    value <- unlist(vlist, recursive = FALSE, use.names = FALSE)
+    vnames <- unlist(vnames[ncols > 0L])
+    noname <- !nzchar(vnames)
+    if (any(noname))
+        vnames[noname] <- paste("Var", seq_along(vnames), sep = ".")[noname]
+    if (check.names)
+        vnames <- make.names(vnames, unique = TRUE)
+    names(value) <- vnames
+    if (!mrn) {
+        if (length(row.names) == 1L && nr != 1L) {
+            if (is.character(row.names))
+                row.names <- match(row.names, vnames, 0L)
+            if (length(row.names) != 1L || row.names < 1L ||
+                row.names > length(vnames))
+                stop("row.names should specify one of the variables")
+            i <- row.names
+            row.names <- value[[i]]
+            value <- value[-i]
+        }
+        else if (!is.null(row.names) && length(row.names) !=
+            nr)
+            stop("row names supplied are of the wrong length")
+    }
+    else if (!is.null(row.names) && length(row.names) != nr) {
+        warning("row names were found from a short variable and have been discarded")
+        row.names <- NULL
+    }
+    if (is.null(row.names))
+        row.names <- .set_row_names(nr)
+    else {
+        if (is.object(row.names) || !is.integer(row.names))
+            row.names <- as.character(row.names)
+        if (any(is.na(row.names)))
+            stop("row names contain missing values")
+        if (anyDuplicated(row.names))
+            stop("duplicate row.names: ", paste(unique(row.names[duplicated(row.names)]),
+                collapse = ", "))
+    }
+    attr(value, "row.names") <- row.names
+    attr(value, "class") <- "data.frame"
+    value
+}
+```
+
+
+
+
+
+
+```{r define variables}
+
+settype <- readline(prompt = "State TYPE of settlement (D4 / M4 / M13): ")
+year <- readline(prompt = "State YEAR of settlement week: ")
+weekno <- readline(prompt = "State WEEK number of settlement week: ")
+receiveddate <- readline(prompt = "Enter the DATE the document was RECEIVED in the format YYYYMMDD: ")
+
+firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
+lineskipper <- readline(prompt = "Were files downloaded using Linqpad web scrape? (Y/N): ")
+
+quietly(if (toupper(settype) == "D4") {
+  settype <- "D+4"
+  settype2 <- "D+4 Initial"
+  settype3 <- "INIT"
+  settype4 <- "D4"
+  mm <- 20
+} else if (toupper(settype) == "M4") {
+  settype <- "M+4"
+  settype2 <- "M+4 Resettlement" 
+  settype3 <- "M4"
+  settype4 <- "M4"
+  mm <- 30
+} else if ((toupper(settype) == "M13")) {
+  settype <- "M+13"
+  settype2 <- "M+13 Resettlement"
+  settype3 <- "M13"
+  settype4 <- "M13"
+  mm <- 40
+} else {
+  settype <- "AH"
+  settype2 <- "Adhoc Resettlement"
+  settype3 <- settype
+  mm <- 50
+}
+)
+
+if (toupper(lineskipper) == "Y" | toupper(lineskipper) == "YES") {
+  lineskipper <- 0
+} else {
+  lineskipper <- 5
+}
+
+```
+
+
+
+
+
+
+```{r overall settlement file for the week}
+
+### DOCUMENT
+
+# read in XML file
+xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SD_", PTunit, "_\\d{8}_\\d{8}_BMCRM_REPT_\\d{8}T\\d{6}\\.XML$")))
+
+# Get invoice document number
+v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
+invoicenumber <- sapply(v5, function(x) ifelse("document_id" %in% names(x), x["document_id"], NA))[1]
+rm(v5)
+
+doc <- read_xml(xmlfile)
+
+nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
+df1 <- bind_rows(lapply(nodes1, xml_attrs))
+df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+df1$due_date <- as.Date(df1$due_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+
+nodes2 <- xml_find_all(doc, xpath = "//CONTACT")
+df2 <- bind_rows(lapply(nodes2, xml_attrs))
+
+nodes3 <- xml_find_all(doc, xpath = "//REPORT_SUMMARY")
+df3 <- bind_rows(lapply(nodes3, xml_attrs))
+
+nodes4 <- xml_find_all(doc, xpath="//REPORT_DETAIL/*")
+df4 <- bind_rows(lapply(nodes4, xml_attrs))
+df4 <- rename(.data = df4, 'market2' = 'market', 'interest3' = 'interest')
+df4$bp_start_date <- as.Date(df4$bp_start_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+df4$bp_end_date <- as.Date(df4$bp_end_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+
+# ============================================================== sales and purchases section ============================================================== #
+# Extract attributes from REPORT_DETAIL nodes
+nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
+
+# Access the Sales and Purchases sections in REPORT_DETAIL
+details <- xml_find_all(doc, "//REPORT_DETAIL/DETAIL")
+
+# Create an empty data frame to store the results
+result_df <- data.frame(
+  s_total4 = character(),
+  s_local5 = character(),
+  s_eu6 = character(),
+  s_neu7 = character(),
+  s_total_prev = character(),
+  s_local_prev = character(),
+  s_eu_prev = character(),
+  s_neu_prev = character(),
+  p_total8 = character(),
+  p_local9 = character(),
+  p_eu10 = character(),
+  p_neu11 = character(),
+  p_total_prev = character(),
+  p_local_prev = character(),
+  p_eu_prev = character(),
+  p_neu_prev = character(),
+  stringsAsFactors = FALSE
+)
+
+# Loop through each DETAIL section
+for (detail in details) {
+  # Access the SALES section
+  sales <- xml_find_first(detail, ".//SALES")
+  s_total4 <- xml_attr(sales, "s_total")
+  s_local5 <- xml_attr(sales, "s_local")
+  s_eu6 <- xml_attr(sales, "s_eu")
+  s_neu7 <- xml_attr(sales, "s_neu")
+  s_total_prev <- xml_attr(sales, "s_total_prev")
+  s_local_prev <- xml_attr(sales, "s_local_prev")
+  s_eu_prev <- xml_attr(sales, "s_eu_prev")
+  s_neu_prev <- xml_attr(sales, "s_neu_prev")
+  
+  # Access the PURCHASES section
+  purchases <- xml_find_first(detail, ".//PURCHASES")
+  p_total8 <- xml_attr(purchases, "p_total")
+  p_local9 <- xml_attr(purchases, "p_local")
+  p_eu10 <- xml_attr(purchases, "p_eu")
+  p_neu11 <- xml_attr(purchases, "p_neu")
+  p_total_prev <- xml_attr(purchases, "p_total_prev")
+  p_local_prev <- xml_attr(purchases, "p_local_prev")
+  p_eu_prev <- xml_attr(purchases, "p_eu_prev")
+  p_neu_prev <- xml_attr(purchases, "p_neu_prev")
+  
+  # Append the results to the data frame
+  result_df <- rbind(result_df, c(s_total4, s_local5, s_eu6, s_neu7, s_total_prev, s_local_prev, s_eu_prev, s_neu_prev, p_total8, p_local9, p_eu10, p_neu11, p_total_prev, p_local_prev, p_eu_prev, p_neu_prev))
+}
+
+# Set column names
+colnames(result_df) <- c('s_total4', 's_local5', 's_eu6', 's_neu7', 's_total_prev', 's_local_prev', 's_eu_prev', 's_neu_prev', 'p_total8', 'p_local9', 'p_eu10', 'p_neu11', 'p_total_prev', 'p_local_prev', 'p_eu_prev', 'p_neu_prev')
+# ============================================================ sales and purchases section end ============================================================ #
+
+nodes5 <- xml_find_all(doc, xpath = "//REPORT_TRACKING/*")
+df5 <- bind_rows(lapply(nodes5, xml_attrs))
+df5$statement_date <- as.Date(df5$statement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+colnames(df5) <- c("statement_date", "run_type12", "market13", "charge_name14", "charge_amount", "statement_id")
+
+# offset df5 by 56 rows
+df5 <- insertRows(df = df5, r = 1:56)
+
+nodes6 <- xml_find_all(doc, xpath = "//VAT_INFORMATION/STANDARD_INFORMATION/*")
+df6 <- bind_rows(lapply(nodes6, xml_attrs))
+
+# repeat certain lines
+max_row_count <- max(c(nrow(df1), nrow(df2), nrow(df3), nrow(df4), nrow(df5), nrow(df6)))
+df1 <- df1[rep(1:nrow(df1), each = max_row_count), ]
+df2 <- df2[rep(1:nrow(df2), each = max_row_count), ]
+df3 <- df3[rep(1:nrow(df3), each = max_row_count), ]
+
+df <- cbind.na(df1, df2, df3, df4, result_df, df5, df6)
+
+receiveddate3 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d-%m-%Y")
+
+writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/Document ", invoicenumber, " for ", PTunit, " received ", receiveddate3, ".xlsx"))
+
+
+
+### STATEMENT
+
+for (f in 1:7) {
+  
+  # read in XML file
+  xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SS_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+
+  # ensure that filter out everything not in the reqd week
+  unique_dates <- seq(from = as.Date(firstday2, format = "%Y-%m-%d"), by = 1, length.out = 7)
+  unique_dates <- format(unique_dates, "%Y%m%d")
+  unique_dates <- paste(unique_dates, collapse = "|")
+  xmlfile <- xmlfile[grepl(x = xmlfile, pattern = unique_dates)]
+  
+  xmlfile <- xmlfile[[f]]
+  doc <- read_xml(xmlfile)
+  
+  # Get statement document number
+  v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
+  statementnumber <- sapply(v5, function(x) ifelse("statement_id" %in% names(x), x["statement_id"], NA))[1]
+  rm(v5)
+  
+  nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
+  df1 <- bind_rows(lapply(nodes1, xml_attrs))
+  df1$settlement_date <- as.Date(df1$settlement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1 <- df1[rep(1:nrow(df1), each = 640), ] # each report has report_header repeated 640 times
+  
+  # ================================================================= report summary section ================================================================= #
+  # Extract attributes from REPORT_SUMMARY nodes
+  nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_SUMMARY/*")
+  df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
+  
+  # Access the Sales and Purchases sections in REPORT_SUMMARY
+  details <- xml_find_all(doc, "//REPORT_SUMMARY/*")
+  
+  # Create an empty data frame to store the results
+  result_df <- data.frame(
+    name = character(),
+    date = character(),
+    amount = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Loop through each DETAIL section
+  for (detail in details) {
+    # Access the market attribute of DETAIL
+    name <- xml_attr(detail, "name", default = NA)
+    date <- xml_attr(detail, "date", default = NA)
+    amount <- xml_attr(detail, "amount", default = NA)
+  
+    # Append the results to the data frame
+    result_df <- rbind.na(result_df, c(name, date, amount))
+  }
+  
+  # Set column names
+  colnames(result_df) <- c("name", "date", "amount")
+  
+  result_df$date <- as.Date(result_df$date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  # =============================================================== report summary section end =============================================================== #
+  
+  
+  
+  # ================================================================= report detail section ================================================================= #
+  # Extract attributes from REPORT_DETAIL nodes
+  nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+  df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
+  
+  # Access the RESOURCE sections in REPORT_DETAIL
+  resources <- xml_find_all(doc, "//REPORT_DETAIL/RESOURCE")
+  
+  # Create an empty data frame to store the results
+  result_df2 <- data.frame(
+      Resource = character(),
+      Charge = character(),
+      datetime = character(),
+      amount = character(),
+      stringsAsFactors = FALSE
+  )
+  
+  # Loop through each RESOURCE section
+  for (i in seq_along(resources)) {
+      # Get the 'name' attribute of the RESOURCE
+      resource_name <- xml_attr(resources[[i]], "name", default = NA)
+      
+      # Access the CHARGE sections within RESOURCE
+      charges <- xml_find_all(resources[[i]], ".//CHARGE")
+      
+      # Loop through each CHARGE section
+      for (j in seq_along(charges)) {
+          # Get the 'name' attribute of the CHARGE
+          charge_name <- xml_attr(charges[[j]], "name", default = NA)
+          
+          # Access the VALUE elements within CHARGE
+          values <- xml_find_all(charges[[j]], ".//VALUE")
+          
+          # Loop through each VALUE element
+          for (k in seq_along(values)) {
+              # Access the attributes of VALUE
+              datetime <- xml_attr(values[[k]], "datetime", default = NA)
+              amount <- xml_attr(values[[k]], "amount", default = NA)
+              
+              # Append the results to the data frame
+              result_df2 <- rbind.na(result_df2, c(resource_name, charge_name, datetime, amount))
+          }
+      }
+  }
+  
+  # Set column names
+  colnames(result_df2) <- c("name2", "name3", "datetime", "amount4")
+  # =============================================================== report detail section end =============================================================== #
+  
+  # Offset start of result_df2 by nrows in result_df
+  result_df2 <- insertRows(df = result_df2, r = 1:nrow(result_df))
+  
+  df <- cbind.na(df1, result_df, result_df2)
+  
+  writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads//", f, " STATEMENT ", statementnumber, " for ", PTunit, ".xlsx"))
+  
+  }
+  # combine statements
+  inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
+  inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*STATEMENT*")]
+  
+  outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Statements for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
+  
+  dfstatements <- data.frame()
+  
+  for (file in inputfiles) {
+    df <- read_excel(file)
+    dfstatements <- rbind(dfstatements, df)
+    file.remove(file)
+}
+
+writexl::write_xlsx(dfstatements, outputfile)
+
+
+
+### REPORT
+
+for (f in 1:7) {
+  
+  # read in XML file
+  xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SR_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+  
+  #ensure filter out dates not form required week
+  unique_dates <- seq(from = as.Date(firstday2, format = "%Y-%m-%d"), by = 1, length.out = 7)
+  unique_dates <- format(unique_dates, "%Y%m%d")
+  unique_dates <- paste(unique_dates, collapse = "|")
+  xmlfile <- xmlfile[grepl(x = xmlfile, pattern = unique_dates)]
+  
+  
+  xmlfile <- xmlfile[[f]]
+  doc <- read_xml(xmlfile)
+  
+  # Get report id number
+  v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
+  reportnumber <- sapply(v5, function(x) ifelse("statement_id" %in% names(x), x["statement_id"], NA))[1]
+  rm(v5)
+  
+  # Read in report header node
+  nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
+  df1 <- bind_rows(lapply(nodes1, xml_attrs))
+  df1$settlement_date <- as.Date(df1$settlement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1 <- df1[rep(1:nrow(df1), each = 2023), ] # each report has report_header repeated 2023 times
+  
+  # ========================================================== report detail - determinant section ========================================================== #
+  # Extract attributes from REPORT_DETAIL nodes
+  nodes_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+  df_report_detail <- bind_rows(lapply(nodes_detail, xml_attrs))
+  
+  # Access the DETERMINANT sections in REPORT_DETAIL
+  determinants <- xml_find_all(doc, "//REPORT_DETAIL/DETERMINANT")
+  
+  # Create an empty data frame to store the results
+  result_df <- data.frame(
+      name = character(),
+      unit = character(),
+      date = character(),
+      amount = character(),
+      datetime = character(),
+      stringsAsFactors = FALSE
+  )
+  
+  # Loop through each DETERMINANT section
+  for (i in seq_along(determinants)) {
+      # Get the 'name' attribute of the RESOURCE
+      name <- xml_attr(determinants[[i]], "name")
+      unit <- xml_attr(determinants[[i]], "unit")
+      
+      # Access the VALUE sections within DETERMINANT
+      values <- xml_find_all(determinants[[i]], ".//VALUE")
+      
+      # Loop through each VALUE section
+      for (j in seq_along(values)) {
+          # Get the attributes of the VALUE
+          datetime <- xml_attr(values[[j]], "datetime")
+          date <- xml_attr(values[[j]], 'date', default = NA)
+          amount <- xml_attr(values[[j]], "amount")
+  
+          # Append the results to the data frame
+          result_df <- rbind.na(result_df, c(name, unit, date, amount, datetime))
+          }
+  }
+  
+  result_df$date <- as.Date(result_df$date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  
+  # ======================================================== report detail - determinant section end ======================================================== #
+  
+  
+  
+  
+  # =========================================================== report detail - resource section =========================================================== #
+  # Extract attributes from REPORT_DETAIL nodes
+  nodes_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+  df_report_detail <- bind_rows(lapply(nodes_detail, xml_attrs))
+  
+  # Access the RESOURCE sections in REPORT_DETAIL
+  resources <- xml_find_all(doc, "//REPORT_DETAIL/RESOURCE")
+  
+  # Create an empty data frame to store the results
+  result_df2 <- data.frame(
+      name2 = character(),
+      name3 = character(),
+      unit4 = character(),
+      datetime5 = character(),
+      amount6 = character(),
+      accept_time = character(),
+      order = character(),
+      band = character(),
+      rank = character(),
+      stringsAsFactors = FALSE
+  )
+  
+  # Loop through each RESOURCE section
+  for (i in seq_along(resources)) {
+      # Get the 'name' attribute of the RESOURCE
+      name2 <- xml_attr(resources[[i]], "name")
+      
+      # Access the DETERMINANT sections within RESOURCE
+      determs <- xml_find_all(resources[[i]], ".//DETERMINANT")
+      
+      # Loop through each DETERMINANT section
+      for (j in seq_along(determs)) {
+          # Get the attributes of the VALUE
+          name3 <- xml_attr(determs[[j]], "name")
+          unit4 <- xml_attr(determs[[j]], "unit")
+          
+          # Access the VALUE sections within DETERMINANT
+          valus <- xml_find_all(determs[[j]], ".//VALUE")
+        
+          # Loop through each VALUE section
+          for (k in seq_along(valus)) {
+            # Get the attributes
+            datetime5 <- xml_attr(valus[[k]], "datetime")
+            amount6 <- xml_attr(valus[[k]], "amount")
+            accept_time <- xml_attr(valus[[k]], "accept_time")
+            order <- xml_attr(valus[[k]], "order")
+            band <- xml_attr(valus[[k]], "band")
+            rank <- xml_attr(valus[[k]], "rank")
+  
+            # Append the results to the data frame
+            result_df2 <- rbind.na(result_df2, c(name2, name3, unit4, datetime5, amount6, accept_time, order, band, rank))
+          }
+      }
+  }
+  # ========================================================= report detail - resource section end ========================================================= #
+  
+  
+  # Offset start of result_df2 by nrows in result_df
+  result_df2 <- insertRows(df = result_df2, r = 1:nrow(result_df))
+  
+  # Create one df
+  df <- cbind.na(df1, result_df, result_df2)
+  
+  # Create excel file
+  writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads//", f, " REPORT ", reportnumber, " for ", PTunit, ".xlsx"))
+  }
+  
+  # combine reports
+  inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
+  inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*REPORT*")]
+  outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Reports for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
+  
+  dfreports <- data.frame()
+  
+  for (file in inputfiles) {
+    df <- read_excel(file)
+    dfreports <- rbind(dfreports, df)
+    file.remove(file)
+}
+
+writexl::write_xlsx(dfreports, outputfile)
+
+
+
+### COMBINED
+
+# housekeeping
+rm(list = ls(pattern = "accept|amount|band|charge|datetime|detail|determ|df|doc|input|invoice|max|name|node|order|output|prev|p_|purchase|rank|report|resource|result|s_|sale|statementnumber|valu|xml"))
+suppressWarnings(rm(f, file, i, j, k, q, unit, unit4))
+
+inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
+inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
+outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
+
+data1 <- read_excel(inputfiles[1], sheet = 1)
+data2 <- read_excel(inputfiles[2], sheet = 1)
+data3 <- read_excel(inputfiles[3], sheet = 1)
+
+mywb <- openxlsx::write.xlsx(list(REPORT = data1, STATEMENT = data2, DOCUMENT = data3), file = outputfile)
+delete <- inputfiles
+delete <- delete[grepl(x = delete, pattern = "All|Document*")]
+
+for (file in delete) {
+  file.remove(file)
+}
+rm(delete)
+
+# mywb <- loadWorkbook(outputfile)
+# addWorksheet(mywb, sheetName = "Summary", tabColour = '#F4B084', visible = TRUE)
+# 
+# activesheet <- `activeSheet<-`(mywb, 'Summary')$ActiveSheet
+# dates <- seq(from = as.Date(firstday, format = "%Y%m%d"), by = "1 day", length.out = 7)
+# charges <- c('CCA', 'CDIFFPDA', 'CDIFFPID', 'CDIFFPIMB', 'CIMB', 'CIMP', 'CREIMDIFFP', 'CREV', 'CSHORTDIFF')
+# 
+# # Create top table in summary sheet
+# for (i in 1:7) {
+#   writeData(wb = mywb, sheet = activesheet, x = dates[i], startCol = i+1)
+# }
+# writeData(wb = mywb, sheet = activesheet, x = charges, startCol = 1, startRow = 2)
+# writeData(wb = mywb, sheet = activesheet, x = settype3, startCol = 1, startRow = 1)
+# writeData(wb = mywb, sheet = activesheet, x = "Week Total", startCol = 9, startRow = 1)
+# writeData(wb = mywb, sheet = activesheet, x = "Check", startCol = 10, startRow = 1)
+# 
+# # Insert the formulae for the top table
+# number_to_letter <- function(number) {
+#   letters[number]
+# }
+# 
+# for (COLUMN in 2:8) {
+#   for (ROW in 2:10) {
+#     writeFormula(wb = mywb, sheet = activesheet, x = paste0("=SUMIFS(INDEX(DOCUMENT!$A:$BX,0,60),INDEX(DOCUMENT!$A:$BX,0,56),Summary!", number_to_letter(COLUMN), "$1,INDEX(DOCUMENT!$A:$BX,0,59),Summary!$A", ROW, ")"), xy = c(COLUMN, ROW))
+#   }
+# }
+
+# Save
+saveWorkbook(mywb, outputfile, overwrite = TRUE)
+
+```
+
+
+
+
+
+
+```{r Master File for MMs}
+#================================================================== setup ====================================================================================
+
+# read in relevant MM csv files
+receiveddate2 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d%m%Y")
+firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+csvfile <- list.files(paste0("X:\\GeneralAccounts\\Settlement\\SEMODownloads\\", receiveddate), pattern = ".csv$|.xls$", full.names = TRUE)
+csvfile <- csvfile[grepl(x = csvfile, pattern = paste0("LCCPowerLimited_\\d{3}LA_", mm, "_\\d{8}-\\d{8}"))]
+
+if (mm == 50 & length(csvfile) < 1) {
+  stop("No Adhoc Market Messages found. Stopping...")
+}
+
+# Open the relevant Master file
+Masterfilepath <- paste0("X:/GeneralAccounts/Settlement/", MMtype, " MM/", settype2, " ", mm, " MM/", list.files(paste0("X:/GeneralAccounts/Settlement/", MMtype, " MM/", settype2, " ", mm, " MM"), pattern = "Copy.xlsx"))
+
+if (length(Masterfilepath) > 1) {
+  stop("Close file before continuing. Stopping...")
+} else if (grepl(x = Masterfilepath, pattern = ".xlsx") == FALSE) {
+  stop("No MM Master file found. Stopping...")
+}
+
+col_types <- c("date", "text", rep("numeric", 51))
+headings <- c("Date", "Month", "HH1","HH2","HH3","HH4","HH5","HH6","HH7","HH8","HH9","HH10","HH11","HH12","HH13","HH14","HH15","HH16","HH17","HH18","HH19","HH20","HH21","HH22","HH23","HH24","HH25","HH26","HH27","HH28","HH29","HH30","HH31","yHH32","HH33","HH34","HH35","HH36","HH37","HH38","HH39","HH40","HH41","HH42","HH43","HH44","HH45","HH46","HH47","HH48","HH49","HH50", "Sum")
+cols_to_remove <- c("SRI", "GeneratorUnitID")
+
+
+#===================================================================591=====================================================================================
+# Get all of the Master file up until current settlement week
+Masterfile <- read_excel(path = Masterfilepath, sheet = 1, col_types = col_types, skip = 1)
+colnames(Masterfile) <- headings
+
+# Get Market Message csv file
+MMfile <- read.csv(csvfile[grepl(x = csvfile, pattern = "591")], skip = lineskipper)
+
+for (name in cols_to_remove) {
+  if (name %in% colnames(MMfile)) {
+    MMfile[[name]] <- NULL
+  }
+}
+
+MMfile$Date <- as.POSIXct(MMfile$Date, format = "%d/%m/%Y")
+MMfile$Type <- as.Date(MMfile$Date, format = "%d/%m/%Y")
+MMfile$Type <- format(MMfile$Date, "%b-%y")
+
+# Merge data
+Masterfile2 <- left_join(Masterfile, MMfile, by = "Date", suffix = c("_master", "_mm"))
+# Replace values in the master columns with MMfile values where they exist
+for (col in grep("_master$", names(Masterfile2), value = TRUE)) {
+  mm_col <- sub("_master$", "_mm", col)
+  Masterfile2[[col]] <- ifelse(!is.na(Masterfile2[[mm_col]]), Masterfile2[[mm_col]], Masterfile2[[col]])
+}
+Masterfile2 <- Masterfile2 %>%
+  select(-ends_with("_mm"))
+colnames(Masterfile2) <- headings
+
+outputfile <- paste0("X:\\GeneralAccounts\\Settlement\\", MMtype, " MM\\", settype2, " ", mm, " MM\\", MMtype2, " 591MM Messages ", settype, " - Temporary.xlsx")
+
+writexl::write_xlsx(Masterfile2, outputfile)
+#===================================================================591=====================================================================================
+
+
+#===================================================================594=====================================================================================
+# Get all of the Master file up until current settlement week
+Masterfile <- read_excel(path = Masterfilepath, sheet = 2, col_types = col_types, skip = 1)
+colnames(Masterfile) <- headings
+  
+# Get Market Message csv file
+MMfile <- read.csv(csvfile[grepl(x = csvfile, pattern = "594")], skip = lineskipper)
+  
+for (name in cols_to_remove) {
+  if (name %in% colnames(MMfile)) {
+    MMfile[[name]] <- NULL
+  }
+}
+  
+MMfile$Date <- as.POSIXct(MMfile$Date, format = "%d/%m/%Y")
+if ("Type" %in% colnames(MMfile)) {
+  MMfile$Type <- as.Date(MMfile$Date, format = "%d/%m/%Y")
+  MMfile$Type <- format(MMfile$Date, "%b%y")
+}
+colnames(MMfile) <- headings[1:length(headings)-1]
+  
+# Merge data
+Masterfile2 <- left_join(Masterfile, MMfile, by = "Date", suffix = c("_master", "_mm"))
+# Replace values in the master columns with MMfile values where they exist
+for (col in grep("_master$", names(Masterfile2), value = TRUE)) {
+  mm_col <- sub("_master$", "_mm", col)
+  Masterfile2[[col]] <- ifelse(!is.na(Masterfile2[[mm_col]]), Masterfile2[[mm_col]], Masterfile2[[col]])
+}
+Masterfile2 <- Masterfile2 %>%
+  select(-ends_with("_mm"))
+colnames(Masterfile2) <- headings
+outputfile <- paste0("X:\\GeneralAccounts\\Settlement\\", MMtype, " MM\\", settype2, " ", mm, " MM\\", MMtype2, " 594MM Messages ", settype, " - Temporary.xlsx")
+
+writexl::write_xlsx(Masterfile2, outputfile)
+#===================================================================594=====================================================================================
+
+
+
+#===================================================================595=====================================================================================
+# Get all of the Master file up until current settlement week
+Masterfile <- read_excel(path = Masterfilepath, sheet = 3, col_types = col_types, skip = 1)
+colnames(Masterfile) <- headings
+
+# Get Market Message csv file
+MMfile <- read.csv(csvfile[grepl(x = csvfile, pattern = "595")], skip = lineskipper)
+
+for (name in cols_to_remove) {
+  if (name %in% colnames(MMfile)) {
+    MMfile[[name]] <- NULL
+  }
+}
+
+MMfile$Date <- as.POSIXct(MMfile$Date, format = "%d/%m/%Y")
+if ("Type" %in% colnames(MMfile)) {
+  MMfile$Type <- as.Date(MMfile$Date, format = "%d/%m/%Y")
+  MMfile$Type <- format(MMfile$Date, "%b%y")
+}
+
+# Merge data
+Masterfile2 <- left_join(Masterfile, MMfile, by = "Date", suffix = c("_master", "_mm"))
+# Replace values in the master columns with MMfile values where they exist
+for (col in grep("_master$", names(Masterfile2), value = TRUE)) {
+  mm_col <- sub("_master$", "_mm", col)
+  Masterfile2[[col]] <- ifelse(!is.na(Masterfile2[[mm_col]]), Masterfile2[[mm_col]], Masterfile2[[col]])
+}
+Masterfile2 <- Masterfile2 %>%
+  select(-ends_with("_mm"))
+colnames(Masterfile2) <- headings
+outputfile <- paste0("X:\\GeneralAccounts\\Settlement\\", MMtype, " MM\\", settype2, " ", mm, " MM\\", MMtype2, " 595MM Messages ", settype, " - Temporary.xlsx")
+
+writexl::write_xlsx(Masterfile2, outputfile)
+#===================================================================595=====================================================================================
+
+
+
+#===================================================================598=====================================================================================
+# Get all of the Master file up until current settlement week
+Masterfile <- read_excel(path = Masterfilepath, sheet = 5, col_types = col_types, skip = 1)
+colnames(Masterfile) <- headings
+
+# Get Market Message csv file
+MMfile <- read.csv(csvfile[grepl(x = csvfile, pattern = "598")], skip = 0)
+
+for (name in cols_to_remove) {
+  if (name %in% colnames(MMfile)) {
+    MMfile[[name]] <- NULL
+  }
+}
+if (length(colnames(MMfile)[colnames(MMfile) == "ï..Date"]) == 1) {
+  colnames(MMfile)[colnames(MMfile) == "ï..Date"] <- "Date"
+}
+
+for (i in 3:ncol(MMfile)) {
+  MMfile[[i]] <- as.numeric(MMfile[[i]])
+}
+
+colnames(MMfile) <- headings[1:length(headings)-1]
+
+# Make own version of 598MM
+unique_dates <- unique(MMfile$Date) #%>% format("%Y-%m-%d")
+my598 <- data.frame(matrix(ncol = 53, nrow = 7))
+colnames(my598) <- headings
+days598 <- seq(from = as.Date(firstday2, format = "%Y-%m-%d"), by = 1, length.out = 7)
+my598$Date <- unique_dates
+rm(days598)
+
+for (i in 1:length(unique_dates)) {
+  temp <- MMfile[MMfile$Date == unique_dates[[i]],]
+  for (j in 1:50) {
+  my598[i,j+2] <- sum(temp[j+2])
+  }
+}
+
+MMfile <- my598
+
+MMfile$Date <- as.POSIXct(MMfile$Date, format = "%d/%m/%Y")
+MMfile$Month <- as.Date(MMfile$Date, format = "%d/%m/%Y")
+MMfile$Month <- format(MMfile$Date, "%b-%y")
+MMfile$Sum <- rowSums(MMfile[, c("HH1","HH2","HH3","HH4","HH5","HH6","HH7","HH8","HH9","HH10","HH11","HH12","HH13","HH14","HH15","HH16","HH17","HH18","HH19","HH20","HH21","HH22","HH23","HH24","HH25","HH26","HH27","HH28","HH29","HH30","HH31","HH32","HH33","HH34","HH35","HH36","HH37","HH38","HH39","HH40","HH41","HH42","HH43","HH44","HH45","HH46","HH47","HH48","HH49","HH50")], na.rm = TRUE)
+
+if (NA %in% colnames(MMfile) == TRUE) {
+  MMfile$'NA' <- NULL
+}
+
+# Merge data
+Masterfile2 <- left_join(Masterfile, MMfile, by = "Date", suffix = c("_master", "_mm"))
+# Replace values in the master columns with MMfile values where they exist
+for (col in grep("_master$", names(Masterfile2), value = TRUE)) {
+  mm_col <- sub("_master$", "_mm", col)
+  Masterfile2[[col]] <- ifelse(!is.na(Masterfile2[[mm_col]]), Masterfile2[[mm_col]], Masterfile2[[col]])
+}
+Masterfile2 <- Masterfile2 %>%
+  select(-ends_with("_mm"))
+colnames(Masterfile2) <- headings
+outputfile <- paste0("X:\\GeneralAccounts\\Settlement\\", MMtype, " MM\\", settype2, " ", mm, " MM\\", MMtype2, " 598MM Messages ", settype, " - Temporary.xlsx")
+
+writexl::write_xlsx(Masterfile2, outputfile)
+#===================================================================598=====================================================================================
+
+
+
+#===================================================================596=====================================================================================
+# read in relevant MM csv files
+receiveddate2 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d%m%Y")
+firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+csvfile <- list.files(paste0("X:\\GeneralAccounts\\Settlement\\SEMODownloads\\", receiveddate), pattern = ".csv", full.names = TRUE)
+csvfile <- csvfile[grepl(x = csvfile, pattern = paste0("_", mm, "_"))]
+
+# Get all of the Master file up until current settlement week
+Masterfile <- read_excel(path = Masterfilepath, sheet = 4, col_types = col_types, skip = 1)
+colnames(Masterfile) <- headings
+
+# Get Market Message csv file
+MMfile <- read.csv(csvfile[grepl(x = csvfile, pattern = "LCCPowerLimited_596")], skip = lineskipper)
+
+for (name in cols_to_remove) {
+  if (name %in% colnames(MMfile)) {
+    MMfile[[name]] <- NULL
+  }
+}
+
+MMfile$Date <- as.POSIXct(MMfile$Date, format = "%d/%m/%Y")
+MMfile$Type <- as.Date(MMfile$Date, format = "%d/%m/%Y")
+MMfile$Type <- format(MMfile$Date, "%b-%y")
+
+# Merge data
+Masterfile2 <- left_join(Masterfile, MMfile, by = "Date", suffix = c("_master", "_mm"))
+# Replace values in the master columns with MMfile values where they exist
+for (col in grep("_master$", names(Masterfile2), value = TRUE)) {
+  mm_col <- sub("_master$", "_mm", col)
+  Masterfile2[[col]] <- ifelse(!is.na(Masterfile2[[mm_col]]), Masterfile2[[mm_col]], Masterfile2[[col]])
+}
+Masterfile2 <- Masterfile2 %>%
+  select(-ends_with("_mm"))
+colnames(Masterfile2) <- headings
+outputfile <- paste0("X:\\GeneralAccounts\\Settlement\\", MMtype, " MM\\", settype2, " ", mm, " MM\\", MMtype2, " 596MM Messages ", settype, " - Temporary.xlsx")
+
+writexl::write_xlsx(Masterfile2, outputfile)
+#===================================================================596=====================================================================================
+
+
+# Housekeeping
+suppressWarnings(rm(col, cols_to_remove, col_types, csvfile, f, file, i, j, Masterfilepath, mm_col, MMfilepath, my598, temp, unique_dates))
+
+# Combine MM into a Master file
+inputfiles <-list.files(paste0("X:\\GeneralAccounts\\Settlement\\", MMtype, " MM\\", settype2, " ", mm, " MM"), full.names = TRUE, pattern = "59.*\\.xlsx$")
+outputfile <- paste0("X:\\GeneralAccounts\\Settlement\\", MMtype, " MM\\", settype2, " ", mm, " MM\\", MMtype2, " MASTER MM Messages ", settype, " - Updated.xlsx")
+
+indexrow <- c(-1:51) %>% data.frame() %>% t()
+colnames(indexrow) <- headings
+
+data1 <- read_excel(inputfiles[1], sheet = 1)
+data2 <- read_excel(inputfiles[2], sheet = 1)
+data3 <- read_excel(inputfiles[3], sheet = 1)
+data4 <- read_excel(inputfiles[4], sheet = 1)
+data5 <- read_excel(inputfiles[5], sheet = 1)
+  
+mywb <- openxlsx::write.xlsx(list('MM591 LA' = data1, 'MM594 LA' = data2, 'MM595 LA' = data3, 'MM596' = data4, 'MM598 LA' = data5), file = outputfile)
+  
+delete <- list.files(path = paste0("X:\\GeneralAccounts\\Settlement\\", MMtype, " MM\\", settype2, " ", mm, " MM"), full.names = TRUE)
+delete <- delete[grepl(x = delete, pattern = "NI 59")]
+for (file in delete) {
+  file.remove(file)
+}
+rm(delete)
+  
+# Save
+saveWorkbook(mywb, outputfile, overwrite = TRUE)
+
+```
