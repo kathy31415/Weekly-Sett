@@ -2088,22 +2088,10 @@ for (index in 3:338) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 66)
 
 temp <- c()
-for (index in 3:48) {
+for (index in 3:338) {
   temp <- c(temp, paste0("=AO", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 68)
-
-temp <- c()
-for (index in 3:4) {
-  temp <- c(temp, paste0("=AO", index, "+1"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 49, startCol = 68)
-
-temp <- c()
-for (index in 3:290) {
-  temp <- c(temp, paste0("=AO", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 68)
 
 temp <- c()
 for (index in 3:338) {
