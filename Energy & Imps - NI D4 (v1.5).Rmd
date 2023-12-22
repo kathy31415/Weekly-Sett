@@ -13,16 +13,9 @@ install_load <- function(packages) {
 suppressMessages(install_load(requiredpackages))
 suppressMessages(rm(requiredpackages, install_load))
 
-PTunit <- readline(prompt = "Are you doing NI settlement? (Y/N): ")
-
-if (toupper(PTunit) == "Y" | toupper(PTunit) == "YES") {
-  PTunit <- "PT_500057"
-  MMtype <- "NIE"
-  MMtype2 <- "NI"
-} else {
-  stop("USE ROI R SCRIPT")
-}
-
+PTunit <- "PT_500057"
+MMtype <- "NIE"
+MMtype2 <- "NI"
 
 # Add cbind.na, rbind.na, data.frame.na functions}
 cbind.na <- function (..., deparse.level = 1)
@@ -414,8 +407,6 @@ data.frame.na <- function (..., row.names = NULL, check.rows = FALSE, check.name
 
 ```{r define variables}
 
-settype <- readline(prompt = "State TYPE of settlement (D4 / M4 / M13): ")
-
 weekno <- readline(prompt = "State WEEK number of settlement week: ")
 prevweekno <- as.numeric(weekno) - 1
 receiveddate <- readline(prompt = "Enter the DATE the document was RECEIVED in the format YYYYMMDD: ")
@@ -425,31 +416,11 @@ year <- substring(text = firstday, first = 1, last = 4)
 
 lineskipper <- readline(prompt = "Were files downloaded using Linqpad web scrape? (Y/N): ")
 
-quietly(if (toupper(settype) == "D4") {
-  settype <- "D+4"
-  settype2 <- "D+4 Initial"
-  settype3 <- "INIT"
-  settype4 <- "D4"
-  mm <- 20
-} else if (toupper(settype) == "M4") {
-  settype <- "M+4"
-  settype2 <- "M+4 Resettlement" 
-  settype3 <- "M4"
-  settype4 <- "M4"
-  mm <- 30
-} else if ((toupper(settype) == "M13")) {
-  settype <- "M+13"
-  settype2 <- "M+13 Resettlement"
-  settype3 <- "M13"
-  settype4 <- "M13"
-  mm <- 40
-} else {
-  settype <- "AH"
-  settype2 <- "Adhoc Resettlement"
-  settype3 <- settype
-  mm <- 50
-}
-)
+settype <- "D+4"
+settype2 <- "D+4 Initial"
+settype3 <- "INIT"
+settype4 <- "D4"
+mm <- 20
 
 if (toupper(lineskipper) == "Y" | toupper(lineskipper) == "YES") {
   lineskipper <- 0
@@ -884,13 +855,6 @@ data2 <- read_excel(inputfiles[2], sheet = 1)
 data3 <- read_excel(inputfiles[3], sheet = 1)
 
 mywb <- openxlsx::write.xlsx(list(REPORT = data1, STATEMENT = data2, DOCUMENT = data3), file = outputfile)
-# delete <- inputfiles
-# delete <- delete[grepl(x = delete, pattern = "All|Document*")]
-# 
-# for (file in delete) {
-#   file.remove(file)
-# }
-# rm(delete)
 
 # Save
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
@@ -993,7 +957,7 @@ posStyle <- createStyle(fontColour = "#006100", bgFill = "#C6EFCE")
 ```{r ECC Ex-Ante Report sheet}
 
 # read in xml file
-xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^Online_C")))
+xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^Online_C_LCC")))
 
 doc <- read_xml(xmlfile)
 
