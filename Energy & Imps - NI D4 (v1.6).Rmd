@@ -1,7 +1,5 @@
 ```{r Load required packages & create .na functions}
-setupfile <- function() {
-
-  requiredpackages <- c("berryFunctions", "dplyr", "lubridate", "ggsci", "pivottabler", "purrr", "readxl", "openxlsx", "tidyr", "XML", "xml2")
+requiredpackages <- c("berryFunctions", "dplyr", "lubridate", "ggsci", "pivottabler", "purrr", "readxl", "openxlsx", "tidyr", "XML", "xml2")
   
   install_load <- function(packages) {
        for (p in packages) {
@@ -400,7 +398,6 @@ setupfile <- function() {
       value
   }
 
-}
 ```
 
 
