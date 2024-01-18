@@ -843,11 +843,18 @@ writexl::write_xlsx(dfreports, outputfile)
 ### COMBINED
 
 # housekeeping
-rm(list = ls(pattern = "accept|amount|band|charge|datetime|detail|determ|df|doc|input|invoice|max|name|node|order|output|p_|purchase|rank|report|resource|result|s_|sale|statementnumber|valu|xml"))
+rm(list = ls(pattern = "accept|amount|band|charge|datetime|detail|determ|df|doc|input|max|name|node|order|output|p_|purchase|rank|report|resource|result|s_|sale|statementnumber|valu|xml"))
 suppressWarnings(rm(f, file, i, j, k, q, unit, unit4))
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
+inputfiles <- inputfiles[-grepl(pattern = "$", x = inputfiles)]
+inputfiles <- inputfiles[grepl(pattern = paste0("Week ", as.character(weekno),"|", as.character(invoicenumber)), x = inputfiles)]
+
+if (length(inputfiles) > 3 | length(inputfiles) < 3) {
+  stop("Check files in your downloads folder is as expected before rerunning script. Stopping...")
+}
+
 outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
 
 data1 <- read_excel(inputfiles[1], sheet = 1)
@@ -1817,7 +1824,7 @@ writeFormula(wb = mywb, sheet = "Summary", xy = c(13,49), x = "=L49+K49")
 writeFormula(wb = mywb, sheet = "Summary", xy = c(13,50), x = "=L50+K50")
 
 for (row in c(44:50)) {
-    addStyle(wb = mywb, sheet = activesheet, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 11:13)
+    addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 11:13)
 }
 
 
