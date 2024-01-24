@@ -2077,7 +2077,7 @@ for (index in 50:97) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 5)
 
 temp <- c()
-for (index in 3:288) {
+for (index in 3:290) {
   temp <- c(temp, paste0("=E", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 5)
