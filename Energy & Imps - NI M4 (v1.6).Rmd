@@ -971,7 +971,7 @@ posStyle <- createStyle(fontColour = "#006100", bgFill = "#C6EFCE")
 EAR <- "EX-Ante Report"
 
 prevtypefile <- list.files(path = paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/D+4 INITIAL/"), full.names = TRUE)
-prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = paste0(" ", as.character(weekno)))]
+prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = as.character(weekno))]
 prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = as.character(year))]
 
 ecc <- read_excel(path = prevtypefile, sheet = EAR)
