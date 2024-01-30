@@ -416,6 +416,11 @@ data.frame.na <- function (..., row.names = NULL, check.rows = FALSE, check.name
 # DEFINE VARIABLES
 
 weekno <- readline(prompt = "State WEEK NUMBER of D4 settlement week: ")
+
+if (length(weekno) == 1) {
+  weekno <- paste0("0", weekno)
+}
+weeknod4 <- weekno
 prevweekno <- as.numeric(weekno) - 1
 receiveddate <- readline(prompt = "Enter the DATE the document was RECEIVED in the format YYYYMMDD: ")
 firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
@@ -447,6 +452,7 @@ xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"
 v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
 invoicenumber <- sapply(v5, function(x) ifelse("document_id" %in% names(x), x["document_id"], NA))[1]
 rm(v5)
+documentidnumber <- invoicenumber
 
 doc <- read_xml(xmlfile)
 
@@ -844,7 +850,7 @@ writexl::write_xlsx(dfreports, outputfile)
 ### COMBINED
 
 # housekeeping
-rm(list = ls(pattern = "accept|amount|band|charge|datetime|detail|determ|df|doc|input|invoice|max|name|node|order|output|p_|purchase|rank|report|resource|result|s_|sale|statementnumber|valu|xml"))
+rm(list = ls(pattern = "accept|amount|band|charge|datetime|detail|determ|df|input|invoice|max|name|node|order|output|p_|purchase|rank|report|resource|result|s_|sale|statementnumber|valu|xml"))
 suppressWarnings(rm(f, file, i, j, k, q, unit, unit4))
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
@@ -854,6 +860,7 @@ outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Set
 data1 <- read_excel(inputfiles[1], sheet = 1)
 data2 <- read_excel(inputfiles[2], sheet = 1)
 data3 <- read_excel(inputfiles[3], sheet = 1)
+documentdata <- data3
 
 mywb <- openxlsx::write.xlsx(list(REPORT = data1, STATEMENT = data2, DOCUMENT = data3), file = outputfile)
 
@@ -899,17 +906,17 @@ mywb <- createWorkbook()
 # add sheets
 addWorksheet(wb = mywb, sheetName = "Summary", tabColour = '#F4B084')
 
-temp <- read_excel(path = inputfiles[1], sheet = 1)
+reportdata <- read_excel(path = inputfiles[1], sheet = 1)
 addWorksheet(mywb, sheet = "REPORT", tabColour = '#F4B084')
-writeData(mywb, sheet = "REPORT", x = temp)
+writeData(mywb, sheet = "REPORT", x = reportdata)
 
-temp <- read_excel(path = inputfiles[2], sheet = 1)
+statementdata <- read_excel(path = inputfiles[2], sheet = 1)
 addWorksheet(mywb, sheet = "STATEMENT", tabColour = '#F4B084')
-writeData(mywb, sheet = "STATEMENT", x = temp)
+writeData(mywb, sheet = "STATEMENT", x = statementdata)
 
-temp <- read_excel(path = inputfiles[3], sheet = 1)
+documentdata <- read_excel(path = inputfiles[3], sheet = 1)
 addWorksheet(mywb, sheet = "DOCUMENT", tabColour = '#F4B084')
-writeData(mywb, sheet = "DOCUMENT", x = temp)
+writeData(mywb, sheet = "DOCUMENT", x = documentdata)
 
 addWorksheet(wb = mywb, sheetName = "EX-Ante Report", tabColour = '#F4B084')
 addWorksheet(wb = mywb, sheetName = "CHECKS", tabColour = '#9BC2E6')
@@ -3472,6 +3479,11 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 
+##################################################################################################################################################################################################
+
+################################################################################ M+4 settlement section ##########################################################################################
+
+##################################################################################################################################################################################################
 
 
 
@@ -3479,6 +3491,10 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 # DEFINE VARIABLES
 
 weekno <- readline(prompt = "State WEEK NUMBER of M4 settlement week: ")
+if (length(weekno) == 1) {
+  weekno <- paste0("0",weekno)
+}
+weeknom4 <- weekno
 prevweekno <- as.numeric(weekno) - 1
 firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
 firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
@@ -3901,7 +3917,7 @@ writexl::write_xlsx(dfreports, outputfile)
 ### COMBINED
 
 # housekeeping
-rm(list = ls(pattern = "accept|amount|band|charge|datetime|detail|determ|df|doc|input|max|name|node|order|output|p_|purchase|rank|report|resource|result|s_|sale|statementnumber|valu|xml"))
+rm(list = ls(pattern = "accept|amount|band|charge|datetime|detail|determ|df|input|max|name|node|order|output|p_|purchase|rank|report|resource|result|s_|sale|statementnumber|valu|xml"))
 suppressWarnings(rm(f, file, i, j, k, q, unit, unit4))
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
@@ -6795,7 +6811,26 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 
+
+
+
+
+
+
+
+##################################################################################################################################################################################################
+
+############################################################################### M+13 settlement section ##########################################################################################
+
+##################################################################################################################################################################################################
+
+
+
 weekno <- readline(prompt = "State WEEK NUMBER of M13 settlement week: ")
+if (length(weekno) == 1) {
+  weekno <- paste0("0",weekno)
+}
+weeknom13 <- weekno
 prevweekno <- as.numeric(weekno) - 1
 firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
 firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
@@ -7217,7 +7252,7 @@ writexl::write_xlsx(dfreports, outputfile)
 ### COMBINED
 
 # housekeeping
-rm(list = ls(pattern = "accept|amount|band|charge|datetime|detail|determ|df|doc|input|max|name|node|order|output|p_|purchase|rank|report|resource|result|s_|sale|statementnumber|valu|xml"))
+rm(list = ls(pattern = "accept|amount|band|charge|datetime|detail|determ|df|input|max|name|node|order|output|p_|purchase|rank|report|resource|result|s_|sale|statementnumber|valu|xml"))
 suppressWarnings(rm(f, file, i, j, k, q, unit, unit4))
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
@@ -10094,5 +10129,41 @@ for (ROW in c(5,8,11,15,18,21,25)) {
 }
 
 
+
+saveWorkbook(mywb, outputfile, overwrite = TRUE)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##################################################################################################################################################################################################
+
+################################################################################ Invoice Backup section ##########################################################################################
+
+##################################################################################################################################################################################################
+
+# create excel file
+mywb <- createWorkbook()
+
+outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/Invoice Backups/", documentidnumber, " BACKUP - Temporary.xlsx")
+
+# add sheets
+addWorksheet(wb = mywb, sheetName = "Backup")
+addWorksheet(wb = mywb, sheetName = "DOCUMENT")
+
+writeData(wb = mywb, sheet = "DOCUMENT", x = documentdata, startRow = 1, startCol = 2)
+
+writeData(mywb, "DOCUMENT", "Helper", startRow = 1, startCol = 1)
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
