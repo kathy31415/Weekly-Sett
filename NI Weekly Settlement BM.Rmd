@@ -936,13 +936,14 @@ for (col in c(4,15,16,20,26:28,30:35,41)) {
 
 negStyle <- createStyle(fontColour = "#9C0006", bgFill = "#FFC7CE")
 posStyle <- createStyle(fontColour = "#006100", bgFill = "#C6EFCE")
+boldStyle <- createStyle(textDecoration = "bold")
 
 
 
 
 
 
-# ECC Ex-Ante Report sheet}
+# ECC Ex-Ante Report sheet
 
 # read in xml file
 xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^Online_C_LCC")))
@@ -3873,10 +3874,6 @@ for (col in c(4,15,16,20,26:28,30:35,41)) {
   addStyle(wb = mywb, sheet = "Ex-Ante Consumption", createStyle(numFmt = "NUMBER"), rows = 2:194, cols = col)
 }
 
-negStyle <- createStyle(fontColour = "#9C0006", bgFill = "#FFC7CE")
-posStyle <- createStyle(fontColour = "#006100", bgFill = "#C6EFCE")
-
-
 
 
 
@@ -6643,8 +6640,6 @@ for (ROW in c(5,8,11,15,18,21,25)) {
   }
 }
 
-
-
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
@@ -6663,13 +6658,11 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 
-##################################################################################################################################################################################################
+################################################################################################################################################################################################
+############################################################################### M+13 settlement section ########################################################################################
+################################################################################################################################################################################################
 
-############################################################################### M+13 settlement section ##########################################################################################
-
-##################################################################################################################################################################################################
-
-
+# DEFINE VARIABLES 
 
 weekno <- readline(prompt = "State WEEK NUMBER of M13 settlement week: ")
 if (nchar(weekno) == 1) {
@@ -6687,122 +6680,6 @@ settype3 <- "M+13"
 settype4 <- "M13"
 mm <- 40
 
-
-
-
-
-### DOCUMENT
-
-# read in XML file
-xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SD_", PTunit, "_\\d{8}_\\d{8}_BMCRM_REPT_\\d{8}T\\d{6}\\.XML$")))
-
-# Get invoice document number
-v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
-invoicenumber <- sapply(v5, function(x) ifelse("document_id" %in% names(x), x["document_id"], NA))[1]
-rm(v5)
-
-doc <- read_xml(xmlfile)
-
-nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
-df1 <- bind_rows(lapply(nodes1, xml_attrs))
-df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-df1$due_date <- as.Date(df1$due_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-
-nodes2 <- xml_find_all(doc, xpath = "//CONTACT")
-df2 <- bind_rows(lapply(nodes2, xml_attrs))
-
-nodes3 <- xml_find_all(doc, xpath = "//REPORT_SUMMARY")
-df3 <- bind_rows(lapply(nodes3, xml_attrs))
-
-nodes4 <- xml_find_all(doc, xpath="//REPORT_DETAIL/*")
-df4 <- bind_rows(lapply(nodes4, xml_attrs))
-df4 <- rename(.data = df4, 'market2' = 'market', 'interest3' = 'interest')
-df4$bp_start_date <- as.Date(df4$bp_start_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-df4$bp_end_date <- as.Date(df4$bp_end_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-
-# ============================================================== sales and purchases section ============================================================== #
-# Extract attributes from REPORT_DETAIL nodes
-nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
-df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
-
-# Access the Sales and Purchases sections in REPORT_DETAIL
-details <- xml_find_all(doc, "//REPORT_DETAIL/DETAIL")
-
-# Create an empty data frame to store the results
-result_df <- data.frame(
-  s_total4 = character(),
-  s_local5 = character(),
-  s_eu6 = character(),
-  s_neu7 = character(),
-  s_total_prev = character(),
-  s_local_prev = character(),
-  s_eu_prev = character(),
-  s_neu_prev = character(),
-  p_total8 = character(),
-  p_local9 = character(),
-  p_eu10 = character(),
-  p_neu11 = character(),
-  p_total_prev = character(),
-  p_local_prev = character(),
-  p_eu_prev = character(),
-  p_neu_prev = character(),
-  stringsAsFactors = FALSE
-)
-
-# Loop through each DETAIL section
-for (detail in details) {
-  # Access the SALES section
-  sales <- xml_find_first(detail, ".//SALES")
-  s_total4 <- xml_attr(sales, "s_total")
-  s_local5 <- xml_attr(sales, "s_local")
-  s_eu6 <- xml_attr(sales, "s_eu")
-  s_neu7 <- xml_attr(sales, "s_neu")
-  s_total_prev <- xml_attr(sales, "s_total_prev")
-  s_local_prev <- xml_attr(sales, "s_local_prev")
-  s_eu_prev <- xml_attr(sales, "s_eu_prev")
-  s_neu_prev <- xml_attr(sales, "s_neu_prev")
-  
-  # Access the PURCHASES section
-  purchases <- xml_find_first(detail, ".//PURCHASES")
-  p_total8 <- xml_attr(purchases, "p_total")
-  p_local9 <- xml_attr(purchases, "p_local")
-  p_eu10 <- xml_attr(purchases, "p_eu")
-  p_neu11 <- xml_attr(purchases, "p_neu")
-  p_total_prev <- xml_attr(purchases, "p_total_prev")
-  p_local_prev <- xml_attr(purchases, "p_local_prev")
-  p_eu_prev <- xml_attr(purchases, "p_eu_prev")
-  p_neu_prev <- xml_attr(purchases, "p_neu_prev")
-  
-  # Append the results to the data frame
-  result_df <- rbind(result_df, c(s_total4, s_local5, s_eu6, s_neu7, s_total_prev, s_local_prev, s_eu_prev, s_neu_prev, p_total8, p_local9, p_eu10, p_neu11, p_total_prev, p_local_prev, p_eu_prev, p_neu_prev))
-}
-
-# Set column names
-colnames(result_df) <- c('s_total4', 's_local5', 's_eu6', 's_neu7', 's_total_prev', 's_local_prev', 's_eu_prev', 's_neu_prev', 'p_total8', 'p_local9', 'p_eu10', 'p_neu11', 'p_total_prev', 'p_local_prev', 'p_eu_prev', 'p_neu_prev')
-# ============================================================ sales and purchases section end ============================================================ #
-
-nodes5 <- xml_find_all(doc, xpath = "//REPORT_TRACKING/*")
-df5 <- bind_rows(lapply(nodes5, xml_attrs))
-df5$statement_date <- as.Date(df5$statement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-colnames(df5) <- c("statement_date", "run_type12", "market13", "charge_name14", "charge_amount", "statement_id")
-
-# offset df5 by 56 rows
-df5 <- insertRows(df = df5, r = 1:56)
-
-nodes6 <- xml_find_all(doc, xpath = "//VAT_INFORMATION/STANDARD_INFORMATION/*")
-df6 <- bind_rows(lapply(nodes6, xml_attrs))
-
-# repeat certain lines
-max_row_count <- max(c(nrow(df1), nrow(df2), nrow(df3), nrow(df4), nrow(df5), nrow(df6)))
-df1 <- df1[rep(1:nrow(df1), each = max_row_count), ]
-df2 <- df2[rep(1:nrow(df2), each = max_row_count), ]
-df3 <- df3[rep(1:nrow(df3), each = max_row_count), ]
-
-df <- cbind.na(df1, df2, df3, df4, result_df, df5, df6)
-
-receiveddate3 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d-%m-%Y")
-
-writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/Document ", invoicenumber, " for ", PTunit, " received ", receiveddate3, ".xlsx"))
 
 
 
@@ -7094,31 +6971,11 @@ for (file in inputfiles) {
 
 writexl::write_xlsx(dfreports, outputfile)
 
-### COMBINED
-
 # housekeeping
-rm(list = ls(pattern = "accept|amount|band|charge|datetime|detail|determ|df|input|max|name|node|order|output|p_|purchase|rank|report|resource|result|s_|sale|statementnumber|valu|xml"))
-suppressWarnings(rm(f, file, i, j, k, q, unit, unit4))
+rm(list = ls(pattern = "accept|amount|band|[Cc]harge|datetime|delivery|detail|determ|ECC|[Ee]xchange|max|name|node|order|output|p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
+suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
 
-inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
-inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
-inputfiles <- inputfiles[grepl(pattern = paste0("Week ", as.character(weekno),"|", as.character(invoicenumber)), x = inputfiles)]
-#inputfiles <- inputfiles[-grepl(pattern = "$", x = inputfiles)]
 
-if (length(inputfiles) > 3 | length(inputfiles) < 3) {
-  stop(paste0("Check files in your downloads folder is as expected before rerunning script. R has detected ", length(inputfiles), " files instead of 3 files. Stopping..."))
-}
-
-outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
-
-data1 <- read_excel(inputfiles[1], sheet = 1)
-data2 <- read_excel(inputfiles[2], sheet = 1)
-data3 <- read_excel(inputfiles[3], sheet = 1)
-
-mywb <- openxlsx::write.xlsx(list(REPORT = data1, STATEMENT = data2, DOCUMENT = data3), file = outputfile)
-
-# Save
-saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 
@@ -7169,7 +7026,14 @@ writeData(mywb, sheet = "STATEMENT", x = temp)
 
 temp <- read_excel(path = inputfiles[3], sheet = 1)
 addWorksheet(mywb, sheet = "DOCUMENT", tabColour = '#F4B084')
-writeData(mywb, sheet = "DOCUMENT", x = temp)
+writeData(mywb, sheet = "DOCUMENT", x = documentdata)
+
+delete <- inputfiles[grepl(x = inputfiles, pattern = "All*")]
+
+for (file in delete) {
+ file.remove(file)
+}
+rm(delete)
 
 addWorksheet(wb = mywb, sheetName = "EX-Ante Report", tabColour = '#F4B084')
 addWorksheet(wb = mywb, sheetName = "CHECKS", tabColour = '#9BC2E6')
@@ -7208,8 +7072,6 @@ for (col in c(4,15,16,20,26:28,30:35,41)) {
   addStyle(wb = mywb, sheet = "Ex-Ante Consumption", createStyle(numFmt = "NUMBER"), rows = 2:194, cols = col)
 }
 
-negStyle <- createStyle(fontColour = "#9C0006", bgFill = "#FFC7CE")
-posStyle <- createStyle(fontColour = "#006100", bgFill = "#C6EFCE")
 
 
 
@@ -9992,11 +9854,9 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 
-##################################################################################################################################################################################################
-
-################################################################################ Invoice Backup section ##########################################################################################
-
-##################################################################################################################################################################################################
+###############################################################################################################################################################################################
+############################################################################### Invoice Backup section ########################################################################################
+###############################################################################################################################################################################################
 
 # create excel file
 mywb <- createWorkbook()
@@ -10007,9 +9867,48 @@ outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Set
 addWorksheet(wb = mywb, sheetName = "Backup")
 addWorksheet(wb = mywb, sheetName = "DOCUMENT")
 
+
+
+# DOCUMENT sheet
+
 writeData(wb = mywb, sheet = "DOCUMENT", x = documentdata, startRow = 1, startCol = 2)
 
-writeData(mywb, "DOCUMENT", "Helper", startRow = 1, startCol = 1)
+writeData(wb = mywb, sheet = "DOCUMENT", "Helper", startRow = 1, startCol = 1)
+
+temp <- c()
+for (index in 2:1213) {
+  temp <- c(temp, paste0("=CONCATENATE(AF", index, ",AG", index,")"))
+}
+writeFormula(mywb, "DOCUMENT", x = temp, startRow = 2, startCol = 1)
+
+
+
+
+
+# BACKUP sheet
+BU <- "Backup"
+
+temp <- c()
+temp <- c("Document ID", "Participant", "Publication Date", "Due Date")
+writeData(wb = mywb, sheet = BU, x = temp, startRow = 3, startCol = 6)
+
+duedate <- as.Date(receiveddate) + 3
+
+temp <- c()
+temp <- c(invoicenumber, PTunit, receiveddate3, duedate)
+writeData(wb = mywb, sheet = BU, x = temp, startRow = 3, startCol = 7)
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
+
+
+
+
+
+
+as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+
+
+
+
+
 ```
