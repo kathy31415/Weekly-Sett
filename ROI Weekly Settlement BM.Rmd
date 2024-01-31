@@ -17,9 +17,9 @@ install_load <- function(packages) {
 suppressMessages(install_load(requiredpackages))
 suppressMessages(rm(requiredpackages, install_load))
 
-PTunit <- "PT_500057"
-MMtype <- "NIE"
-MMtype2 <- "NI"
+PTunit <- "PT_402583"
+MMtype <- "ESB"
+MMtype2 <- "ROI"
 
 # Add cbind.na, rbind.na, data.frame.na functions}
 cbind.na <- function (..., deparse.level = 1)
@@ -442,9 +442,10 @@ if (toupper(lineskipper) == "Y" | toupper(lineskipper) == "YES") {
 } else {
   lineskipper <- 5
 }
+```
 
 
-
+```{r}
 # DOCUMENT
 
 # read in XML file
@@ -558,7 +559,6 @@ df <- cbind.na(df1, df2, df3, df4, result_df, df5, df6)
 receiveddate3 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d-%m-%Y")
 
 writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/Document ", invoicenumber, " for ", PTunit, " received ", receiveddate3, ".xlsx"))
-
 
 
 ### STATEMENT
@@ -854,13 +854,6 @@ rm(list = ls(pattern = "accept|amount|band|[Cc]harge|datetime|delivery|detail|de
 suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
 
 
-
-
-
-
-
-
-
 # CREATE EXCEL FILE - SETUP
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
@@ -947,10 +940,12 @@ whiteStyle <- createStyle(numFmt = "[$£]#,##0.00", border = "TopBottomLeftRight
 
 
 
+
+
 # ECC Ex-Ante Report sheet
 
 # read in xml file
-xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^Online_C_LCC")))
+xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^Online_C_LCP")))
 
 if (is.error(read_xml(xmlfile)) == TRUE) {
   stop("Download Ex-Ante Report from ECC website before rerunning this chunk.")
@@ -1077,14 +1072,9 @@ colnames(df) <- c("ReportName", "ReportDate", "ID", "ExchangeTradeID", "Exchange
 writeData(mywb, sheet = "EX-Ante Report", x = df)
 
 
-
-
-
-
-
 # Summary sheet
 
-activesheet <- `activeSheet<-`(mywb, 'Summary')$ActiveSheet
+activesheet <- "Summary"
 dates <- seq(from = as.Date(firstday, format = "%Y%m%d"), by = "1 day", length.out = 7) %>% format("%d/%m/%Y")
 charges <- c('CCA', 'CDIFFPDA', 'CDIFFPID', 'CDIFFPIMB', 'CIMB', 'CIMP', 'CREIMDIFFP', 'CREV', 'CSHORTDIFFP')
 
@@ -1173,82 +1163,8 @@ for (ROW in c(26,39,51,63,75,87,99)) {
 }
 
 
-# ==============================================================================================================================================================================
-# ================================================================================== FX table ==================================================================================
-# ==============================================================================================================================================================================
 
-titles <-c("TRADE DATE", "FROM CURRENCY",	"TO CURRENCY",	"EXCHANGE RATE",	"CMS TIME STAMP")
 
-writeData(wb = mywb, "Summary", x = titles[1], startRow = 1, startCol = 21)
-writeData(wb = mywb, "Summary", x = titles[2], startRow = 1, startCol = 22)
-writeData(wb = mywb, "Summary", x = titles[3], startRow = 1, startCol = 23)
-writeData(wb = mywb, "Summary", x = titles[4], startRow = 1, startCol = 24)
-writeData(wb = mywb, "Summary", x = titles[5], startRow = 1, startCol = 25)
-
-writeFormula(wb = mywb, sheet = activesheet, x = "=C1-1", startRow = 2, startCol = 21)
-writeFormula(wb = mywb, sheet = activesheet, x = "=C1", startRow = 3, startCol = 21)
-writeFormula(wb = mywb, sheet = activesheet, x = "=D1", startRow = 4, startCol = 21)
-writeFormula(wb = mywb, sheet = activesheet, x = "=E1", startRow = 5, startCol = 21)
-writeFormula(wb = mywb, sheet = activesheet, x = "=F1", startRow = 6, startCol = 21)
-writeFormula(wb = mywb, sheet = activesheet, x = "=G1", startRow = 7, startCol = 21)
-writeFormula(wb = mywb, sheet = activesheet, x = "=H1", startRow = 8, startCol = 21)
-writeFormula(wb = mywb, sheet = activesheet, x = "=U8+1", startRow = 9, startCol = 21)
-
-temp <- c("31/08/2018 16:55", "01/09/2018 16:55", "02/09/2018 16:55", "03/09/2018 16:55", "04/09/2018 16:55", "05/09/2018 16:55", "06/09/2018 16:55", "07/09/2018 16:55")
-writeData(wb = mywb, sheet ="Summary", x = temp, startRow = 2, startCol = 25)
-
-writeData(wb = mywb, sheet ="Summary", x = "Against Doc Total", startRow = 18, startCol = 19)
-writeData(wb = mywb, sheet ="Summary", x = "Against AD Day ahead Sheet", startRow = 20, startCol = 19)
-
-addStyle(wb = mywb, sheet = activesheet, createStyle(numFmt = "DATE"), rows = 2:9, cols = 21)
-
-for (ROW in 2:9) {
-  writeData(wb = mywb, "Summary", x = "E", startRow = ROW, startCol = 22)
-}
-
-for (ROW in 2:9) {
-  writeData(wb = mywb, "Summary", x = "P", startRow = ROW, startCol = 23)
-}
-
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U2,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,2))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U3,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,3))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U4,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,4))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U5,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,5))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U6,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,6))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U7,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,7))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U8,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,8))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U9,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,9))
-
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "#,##0.0000", fgFill = "#F8CBAD"), rows = 2:9, cols = 24)
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#C0C0C0", textDecoration = 'bold', fontColour = '#00008B'), rows = 1, cols = 21:25)
-
-temp <- c()
-temp <- c(temp, paste0("=SUM(B18:B24)"))
-writeFormula(wb = mywb, sheet = activesheet, x = temp, startRow = 26, startCol = 2)
-
-temp <- c()
-temp <- c(temp, paste0("=SUM(C18:C24)"))
-writeFormula(wb = mywb, sheet = activesheet, x = temp, startRow = 26, startCol = 3)
-
-temp <- c()
-temp <- c(temp, paste0("=SUM(D18:D24)"))
-writeFormula(wb = mywb, sheet = activesheet, x = temp, startRow = 26, startCol = 4)
-
-temp <- c()
-temp <- c(temp, paste0("=SUM(E18:E24)"))
-writeFormula(wb = mywb, sheet = activesheet, x = temp, startRow = 26, startCol = 5)
-
-temp <- c()
-temp <- c(temp, paste0("=SUM(F18:F24)"))
-writeFormula(wb = mywb, sheet = activesheet, x = temp, startRow = 26, startCol = 6)
-
-temp <- c()
-temp <- c(temp, paste0("=SUM(G18:G24)"))
-writeFormula(wb = mywb, sheet = activesheet, x = temp, startRow = 26, startCol = 7)
-
-temp <- c()
-temp <- c(temp, paste0("=SUM(H18:H24)"))
-writeFormula(wb = mywb, sheet = activesheet, x = temp, startRow = 26, startCol = 8)
 
 # ==============================================================================================================================================================================
 # ================================================================================= CIMB table =================================================================================
@@ -1258,30 +1174,35 @@ writeData(wb = mywb, sheet = "Summary", x = "CIMB", startCol = 1, startRow = 16)
 writeData(wb = mywb, sheet = "Summary", x = "HH", startCol = 2, startRow = 17)
 writeData(wb = mywb, sheet = "Summary", x = "NHH", startCol = 3, startRow = 17)
 writeData(wb = mywb, sheet = "Summary", x = "PPA Gen", startCol = 4, startRow = 17)
-writeData(wb = mywb, sheet = "Summary", x = "GU_503310", startCol = 5, startRow = 17)
+writeData(wb = mywb, sheet = "Summary", x = "AU_400131", startCol = 5, startRow = 17)
 writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 6, startRow = 17)
 writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 7, startRow = 17)
 writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 8, startRow = 17)
 addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#B4C6E7"), rows = 17, cols = 2:8)
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!BZ:BZ)")
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A18,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A19,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A20,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A21,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A22,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A23,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A24,'Consumption Checks'!BW:BW)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 2)
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CA:CA)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CA:CA)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CA:CA)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CA:CA)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CA:CA)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CA:CA)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CA:CA)")
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A18,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A19,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A20,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A21,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A22,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A23,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A24,'Consumption Checks'!BX:BX)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 3)
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CB:CB)")
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A18,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A19,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A20,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A21,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A22,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A23,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A24,'Consumption Checks'!BY:BY)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 4)
 
-temp <- c("=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CC:CC)")
+temp <- c("=-SUMIF('Consumption Checks'!$BM:$BM,Summary!$A18,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A19,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A20,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A21,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A22,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A23,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A24,'Consumption Checks'!BZ:BZ)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 5)
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CD:CD)")
+temp <- c("=SUM(B18:E18)", "=SUM(B19:E19)", "=SUM(B20:E20)", "=SUM(B21:E21)", "=SUM(B22:E22)", "=SUM(B23:E23)", "=SUM(B24:E24)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 6)
 
-temp <- c("=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A18,STATEMENT!J:J,\"CIMB\")", "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A19,STATEMENT!J:J,\"CIMB\")", "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A20,STATEMENT!J:J,\"CIMB\")", "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A21,STATEMENT!J:J,\"CIMB\")", "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A22,STATEMENT!J:J,\"CIMB\")", "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A23,STATEMENT!J:J,\"CIMB\")", "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A24,STATEMENT!J:J,\"CIMB\")")
-writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 7)
+temp <- c()
+for (index in 18:24) {
+  temp <- c(temp, paste0("=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A", index, ",STATEMENT!J:J,\"CIMB\")"))
+}
+writeFormula(mywb, 'Summary', x = temp, startRow = 18, startCol = 7)
 
+temp <- c()
 temp <- c("=F18+G18", "=F19+G19", "=F20+G20", "=F21+G21", "=F22+G22", "=F23+G23", "=F24+G24")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 8)
 
@@ -1292,6 +1213,8 @@ for (col in 2:8) {
 for (col in 2:8) {
   addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 26, cols = col)
 }
+
+
 
 
 # ==============================================================================================================================================================================
@@ -1308,22 +1231,17 @@ writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 7, startRow = 30
 addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#B4C6E7"), rows = 30, cols = 2:7)
 
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A31,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A32,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A33,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A34,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A35,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A36,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A37,'Consumption Checks'!CE:CE)")
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CB:CB)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 31, startCol = 2)
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A31,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A32,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A33,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A34,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A35,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A36,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A37,'Consumption Checks'!CF:CF)")
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CC:CC)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 31, startCol = 3)
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A31,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A32,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A33,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A34,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A35,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A36,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A37,'Consumption Checks'!CG:CG)")
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CD:CD)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 31, startCol = 4)
 
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B31:D31)", xy = c(5,31))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B32:D32)", xy = c(5,32))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B33:D33)", xy = c(5,33))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B34:D34)", xy = c(5,34))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B35:D35)", xy = c(5,35))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B36:D36)", xy = c(5,36))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B37:D37)", xy = c(5,37))
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CE:CE)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 31, startCol = 4)
 
 for (col in 2:7) {
   addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 31:37, cols = col)
@@ -1426,16 +1344,16 @@ for (col in 2:7) {
   addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 43:49, cols = col)
 }
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A31,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A32,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A33,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A34,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A35,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A36,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A37,'Consumption Checks'!CI:CI)")
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CI:CI)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 43, startCol = 2)
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A31,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A32,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A33,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A34,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A35,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A36,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A37,'Consumption Checks'!CJ:CJ)")
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CJ:CJ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CJ:CJ)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 43, startCol = 3)
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A31,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A32,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A33,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A34,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A35,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A36,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A37,'Consumption Checks'!CK:CK)")
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CK:CK)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CK:CK)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 43, startCol = 4)
 
-temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A31,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A32,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A33,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A34,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A35,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A36,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A37,'Consumption Checks'!CL:CL)")
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CL:CL)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CL:CL)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 43, startCol = 5)
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A43,STATEMENT!J:J,\"CREV\")", xy = c(6,43))
@@ -1885,8 +1803,6 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 
-
-
 # Shadow Settled sheet
 
 SS <- "SHADOW SETTLED"
@@ -2052,7 +1968,7 @@ for (row in c(2:5)) {
 
 CC <- "Consumption Checks"
 
-headings1 <- c(rep.int(x = "", times = 15), "No Ex-Ante Trades", rep.int(x = "", times = 11), "With Ex-Ante Trades", rep.int("", times = 16), "SU_500076", "SU_500076_&_SU_500076", rep.int(x = "", times = 8), "GU_503310", "GU_503310_&_GU_503310", rep.int("", times = 14), "Ex-ante Q Split", rep.int("", 2), "QEX-QM", rep.int("", 3), "SEMO SETTLEMENT - CIMB", rep.int("", 4), "SEMO SETTLEMENT - CIMP", rep.int("", 3), "SEMO Settlement - CREV", rep.int("", 3), "CCA", "", "SEMO Sales - CIMB", rep.int("", 3), "SEMO Purchases - CIMB", rep.int("", 3)) %>% as.data.frame() %>%  t()
+headings1 <- c(rep.int(x = "", times = 15), "No Ex-Ante Trades", rep.int(x = "", times = 11), "With Ex-Ante Trades", rep.int("", times = 16), "SU_400358", "SU_400358_&_SU_400358", rep.int(x = "", times = 8), "GU_503310", "GU_503310_&_GU_503310", rep.int("", times = 14), "Ex-ante Q Split", rep.int("", 2), "QEX-QM", rep.int("", 3), "SEMO SETTLEMENT - CIMB", rep.int("", 4), "SEMO SETTLEMENT - CIMP", rep.int("", 3), "SEMO Settlement - CREV", rep.int("", 3), "CCA", "", "SEMO Sales - CIMB", rep.int("", 3), "SEMO Purchases - CIMB", rep.int("", 3)) %>% as.data.frame() %>%  t()
 
 headings2 <- c("Settlement Date",	"Time P.E",	"Date/time",	rep.int("", times = 2),	"MM 596",	"MM 594",	"QM", "Diff",	rep.int("", times = 6), "MM595",	"MM591",	"MM598",	"MM596", rep.int("", 8), "MM595",	"MM591",	"MM598",	"QM-QEX", rep.int("", times = 4), "Settlement Date",	"Time P.E",	"Date/time",	"ETS DAM Date",	"ETS DAM Time",	"DAM Date/Time",	"ETS ID Date",	"ETS ID Time",	"ID Date/Time",	"QEX",	"ST",	"IT1",	"IT2",	"IT3",	"IT",	"Total", "Diff", "", "",	"QEX",	"ST",	"IT1",	"IT2",	"IT3",	"IT",	"Total", "Diff", "", "", "", "Trade Date",	"Settlement Date",	"DAM Date/Time",	"ID Date/Time",	"SEMO Date/Time", "HH",	"NHH",	"PPA", "HH",	"NHH",	"PPA",	"GU_503310", "HH",	"NHH",	"PPA",	"GU_503310",	"Total", "HH",	"NHH",	"PPA",	"Total",	"HH",	"NHH",	"PPA",	"Total", "Total", "", "HH",	"NHH",	"PPA", "GU_503310",	"HH",	"NHH",	"PPA", "GU_503310", "")
 
@@ -2282,7 +2198,7 @@ for (index in 3:338) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=($F", index, "-SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\",REPORT!O:O,\"SU_500076\"))"))
+  temp <- c(temp, paste0("=($F", index, "-SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\",REPORT!O:O,\"SU_400358\"))"))
 }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 31)
 
 temp <- c()
@@ -2757,7 +2673,7 @@ for (col in c(78:100)) {
 
 EAC <- "Ex-Ante Consumption"
 
-headings1 <- c(rep.int("", times = 6), "Forecasted Consumption", rep.int("", times = 3), "Ratio", rep.int("", times = 2), "Ex-Ante Q Results - SU_5000076", rep.int("", times = 4), "Ex-Ante Q Results - GU_503310", rep.int("", times = 4), "Ex-Ante Q Results - CHECK", rep.int("", times = 4), "Ex-Ante P Results - SU_500076", rep.int("", times = 3), "Ex-Ante P Results - GU_5",  rep.int("", times = 3), "Ex-Ante Settled Results - SU_5000076", rep.int("", times = 4), "Ex-Ante Settled Results - GU_5", rep.int("", times = 4), "Quantity Results Split", "", "", "Settlement Split")
+headings1 <- c(rep.int("", times = 6), "Forecasted Consumption", rep.int("", times = 3), "Ratio", rep.int("", times = 2), "Ex-Ante Q Results - SU_5000076", rep.int("", times = 4), "Ex-Ante Q Results - GU_503310", rep.int("", times = 4), "Ex-Ante Q Results - CHECK", rep.int("", times = 4), "Ex-Ante P Results - SU_400358", rep.int("", times = 3), "Ex-Ante P Results - GU_5",  rep.int("", times = 3), "Ex-Ante Settled Results - SU_5000076", rep.int("", times = 4), "Ex-Ante Settled Results - GU_5", rep.int("", times = 4), "Quantity Results Split", "", "", "Settlement Split")
 
 headings2 <- c("Lookup", "DAM Date/Time", "IDA Date/Time", "Settlement Date", "Forecast Date", "Forecast %",
                "HH", "NHH", "PPA", "Total", "HH", "NHH", "PPA",
@@ -3438,6 +3354,7 @@ for (col in c(6:10,14:17,22:25,30:33,38:41,46)) {
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
+```
 
 
 
@@ -3463,8 +3380,7 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 
-
-
+```{r}
 ##################################################################################################################################################################################################
 ################################################################################ M+4 settlement section ##########################################################################################
 ##################################################################################################################################################################################################
@@ -4926,7 +4842,7 @@ saveWorkbook(wb = mywb, file = outputfile, overwrite = TRUE)
 
 CC <- "Consumption Checks"
 
-headings1 <- c(rep.int(x = "", times = 15), "No Ex-Ante Trades", rep.int(x = "", times = 11), "With Ex-Ante Trades", rep.int("", times = 16), "SU_500076", "SU_500076_&_SU_500076", rep.int(x = "", times = 8), "GU_503310", "GU_503310_&_GU_503310", rep.int("", times = 14), "Ex-ante Q Split", rep.int("", 2), "QEX-QM Split", rep.int("", 3), "SEMO SETTLEMENT - CIMB", rep.int("", 4), "SEMO SETTLEMENT - CIMP", rep.int("", 3), "SEMO Settlement - CREV", rep.int("", 3), "CCA", "", "SEMO Sales - CIMB", rep.int("", 3), "SEMO Purchases - CIMB", rep.int("", 3)) %>% as.data.frame() %>%  t()
+headings1 <- c(rep.int(x = "", times = 15), "No Ex-Ante Trades", rep.int(x = "", times = 11), "With Ex-Ante Trades", rep.int("", times = 16), "SU_400358", "SU_400358_&_SU_400358", rep.int(x = "", times = 8), "GU_503310", "GU_503310_&_GU_503310", rep.int("", times = 14), "Ex-ante Q Split", rep.int("", 2), "QEX-QM Split", rep.int("", 3), "SEMO SETTLEMENT - CIMB", rep.int("", 4), "SEMO SETTLEMENT - CIMP", rep.int("", 3), "SEMO Settlement - CREV", rep.int("", 3), "CCA", "", "SEMO Sales - CIMB", rep.int("", 3), "SEMO Purchases - CIMB", rep.int("", 3)) %>% as.data.frame() %>%  t()
 
 headings2 <- c("Settlement Date",	"Time P.E",	"Date/time",	rep.int("", times = 2),	"MM 596",	"MM 594",	"QM", "Diff",	rep.int("", times = 6), "MM595",	"MM591",	"MM598",	"MM596", rep.int("", 8), "MM595",	"MM591",	"MM598",	"QM-QEX", rep.int("", times = 4), "Settlement Date",	"Time P.E",	"Date/time",	"ETS DAM Date",	"ETS DAM Time",	"DAM Date/Time",	"ETS ID Date",	"ETS ID Time",	"ID Date/Time",	"QEX",	"ST",	"IT1",	"IT2",	"IT3",	"IT",	"Total", "Diff", "", "",	"QEX",	"ST",	"IT1",	"IT2",	"IT3",	"IT",	"Total", "Diff", "", "", "", "Trade Date",	"Settlement Date",	"DAM Date/Time",	"ID Date/Time",	"SEMO Date/Time", "HH",	"NHH",	"PPA", "HH",	"NHH",	"PPA",	"GU_503310", "HH",	"NHH",	"PPA",	"GU_503310",	"Total", "HH",	"NHH",	"PPA",	"Total",	"HH",	"NHH",	"PPA",	"Total", "Total", "", "HH",	"NHH",	"PPA", "GU_503310",	"HH",	"NHH",	"PPA", "GU_503310", "")
 
@@ -5163,7 +5079,7 @@ for (index in 3:338) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=($F", index, "-SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\",REPORT!O:O,\"SU_500076\"))"))
+  temp <- c(temp, paste0("=($F", index, "-SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\",REPORT!O:O,\"SU_400358\"))"))
 }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 31)
 
 temp <- c()
@@ -8114,7 +8030,7 @@ saveWorkbook(wb = mywb, file = outputfile, overwrite = TRUE)
 
 CC <- "Consumption Checks"
 
-headings1 <- c(rep.int(x = "", times = 15), "No Ex-Ante Trades", rep.int(x = "", times = 11), "With Ex-Ante Trades", rep.int("", times = 16), "SU_500076", "SU_500076_&_SU_500076", rep.int(x = "", times = 8), "GU_503310", "GU_503310_&_GU_503310", rep.int("", times = 14), "Ex-ante Q Split", rep.int("", 2), "QEX-QM Split", rep.int("", 3), "SEMO SETTLEMENT - CIMB", rep.int("", 4), "SEMO SETTLEMENT - CIMP", rep.int("", 3), "SEMO Settlement - CREV", rep.int("", 3), "CCA", "", "SEMO Sales - CIMB", rep.int("", 3), "SEMO Purchases - CIMB", rep.int("", 3)) %>% as.data.frame() %>%  t()
+headings1 <- c(rep.int(x = "", times = 15), "No Ex-Ante Trades", rep.int(x = "", times = 11), "With Ex-Ante Trades", rep.int("", times = 16), "SU_400358", "SU_400358_&_SU_400358", rep.int(x = "", times = 8), "GU_503310", "GU_503310_&_GU_503310", rep.int("", times = 14), "Ex-ante Q Split", rep.int("", 2), "QEX-QM Split", rep.int("", 3), "SEMO SETTLEMENT - CIMB", rep.int("", 4), "SEMO SETTLEMENT - CIMP", rep.int("", 3), "SEMO Settlement - CREV", rep.int("", 3), "CCA", "", "SEMO Sales - CIMB", rep.int("", 3), "SEMO Purchases - CIMB", rep.int("", 3)) %>% as.data.frame() %>%  t()
 
 headings2 <- c("Settlement Date",	"Time P.E",	"Date/time",	rep.int("", times = 2),	"MM 596",	"MM 594",	"QM", "Diff",	rep.int("", times = 6), "MM595",	"MM591",	"MM598",	"MM596", rep.int("", 8), "MM595",	"MM591",	"MM598",	"QM-QEX", rep.int("", times = 4), "Settlement Date",	"Time P.E",	"Date/time",	"ETS DAM Date",	"ETS DAM Time",	"DAM Date/Time",	"ETS ID Date",	"ETS ID Time",	"ID Date/Time",	"QEX",	"ST",	"IT1",	"IT2",	"IT3",	"IT",	"Total", "Diff", "", "",	"QEX",	"ST",	"IT1",	"IT2",	"IT3",	"IT",	"Total", "Diff", "", "", "", "Trade Date",	"Settlement Date",	"DAM Date/Time",	"ID Date/Time",	"SEMO Date/Time", "HH",	"NHH",	"PPA", "HH",	"NHH",	"PPA",	"GU_503310", "HH",	"NHH",	"PPA",	"GU_503310",	"Total", "HH",	"NHH",	"PPA",	"Total",	"HH",	"NHH",	"PPA",	"Total", "Total", "", "HH",	"NHH",	"PPA", "GU_503310",	"HH",	"NHH",	"PPA", "GU_503310", "")
 
@@ -8361,7 +8277,7 @@ for (index in 3:338) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=($F", index, "-SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\",REPORT!O:O,\"SU_500076\"))"))
+  temp <- c(temp, paste0("=($F", index, "-SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\",REPORT!O:O,\"SU_400358\"))"))
 }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 31)
 
 temp <- c()
