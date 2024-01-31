@@ -10031,9 +10031,6 @@ for (index in c(12:16)) {
   writeFormula(mywb, BU, temp, startCol = index-3, startRow = 34)
 }
 
-
-
-
 temp <- c()
 for (index in c(12:16)) {
   temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[PT_500057 SEMO Wk ", weeknom4," ", yearm4, " Shadow Settlement M+4 - Temporary.xlsx]Resettlement Summary'!", letters[index-10], "21")
@@ -10045,10 +10042,6 @@ for (index in c(12:16)) {
   temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[PT_500057 SEMO Wk ", weeknom4," ", yearm4, " Shadow Settlement M+4 - Temporary.xlsx]Resettlement Summary'!", letters[index-10], "11")
   writeFormula(mywb, BU, temp, startCol = index-3, startRow = 35)
 }
-
-
-
-
 
 temp <- c()
 for (index in c(12:16)) {
@@ -10063,10 +10056,34 @@ for (index in c(12:16)) {
 }
 
 
+for (COL in c(15:16)) {
+  for (ROW in c(12:19, 23:26)) {
+    writeFormula(mywb, BU, x = paste0("=SUMIFS(DOCUMENT!AO:AO,DOCUMENT!AF:AF,Backup!B", ROW, ",DOCUMENT!AG:AG,Backup!C", ROW, ")"), startRow = ROW, startCol = 15)
+    writeFormula(mywb, BU, x = paste0("=O", ROW, "+N", ROW), startRow = ROW, startCol = 16)
+    addStyle(mywb, BU, whiteStyle, rows = ROW, cols = COL)
+    conditionalFormatting(wb = mywb, sheet = BU, cols = 16, rows = ROW, rule = paste0("=AND(",toupper(letters[16]),ROW, "<5, ", toupper(letters[16]),ROW, ">-5)"), type = 'expression', style = posStyle)
+    conditionalFormatting(wb = mywb, sheet = BU, cols = 16, rows = ROW, rule = paste0("=OR(",toupper(letters[16]),ROW, "<-5, ", toupper(letters[16]),ROW, ">5)"), type = 'expression', style = negStyle)
+
+  }
+  for (ROW in c(34:41, 45:47)) {
+    writeFormula(mywb, BU, x = paste0("=SUMIFS(DOCUMENT!AW:AW,DOCUMENT!AF:AF,Backup!B", ROW, ",DOCUMENT!AG:AG,Backup!C", ROW, ")"), startRow = ROW, startCol = 15)
+    writeFormula(mywb, BU, x = paste0("=O", ROW, "+N", ROW), startRow = ROW, startCol = 16)
+    addStyle(mywb, BU, whiteStyle, rows = ROW, cols = COL)
+    conditionalFormatting(wb = mywb, sheet = BU, cols = 16, rows = ROW, rule = paste0("=AND(",toupper(letters[16]),ROW, "<5, ", toupper(letters[16]),ROW, ">-5)"), type = 'expression', style = posStyle)
+    conditionalFormatting(wb = mywb, sheet = BU, cols = 16, rows = ROW, rule = paste0("=OR(",toupper(letters[16]),ROW, "<-5, ", toupper(letters[16]),ROW, ">5)"), type = 'expression', style = negStyle)
+  }
+}
 
 
+temp <- c()
+for (index in c(1:7)) {
+  temp <- paste0("=SUM(", letters[index+8], "12:", letters[index+8], "19)")
+  writeFormula(wb = mywb, sheet = BU, x = temp, startCol = index+8, startRow = 20)
+  addStyle(wb = mywb, sheet = BU, style = createStyle(textDecoration = 'bold', numFmt = '[$£]#,##0.00'), rows = 20, cols = index+8)
+}
 
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
+
 
 ```
