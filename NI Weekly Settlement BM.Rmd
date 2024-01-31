@@ -427,6 +427,7 @@ firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling 
 firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
 
 year <- substring(text = firstday, first = 1, last = 4)
+yeard4 <- year
 
 lineskipper <- readline(prompt = "Were files downloaded using Linqpad web scrape? (Y/N): ")
 
@@ -934,11 +935,13 @@ for (col in c(4,15,16,20,26:28,30:35,41)) {
   addStyle(wb = mywb, sheet = "Ex-Ante Consumption", createStyle(numFmt = "NUMBER"), rows = 2:194, cols = col)
 }
 
+# *Styles*
 negStyle <- createStyle(fontColour = "#9C0006", bgFill = "#FFC7CE")
 posStyle <- createStyle(fontColour = "#006100", bgFill = "#C6EFCE")
 boldStyle <- createStyle(textDecoration = "bold")
-
-
+yellowStyle <- createStyle(fontColour = 'red', textDecoration = 'bold', fgFill = 'yellow', border = "TopBottomLeftRight")
+orangeStyle <- createStyle(numFmt = "[$£]#,##0.00", fgFill = '#FFCC99', border = "TopBottomLeftRight")
+whiteStyle <- createStyle(numFmt = "[$£]#,##0.00", border = "TopBottomLeftRight")
 
 
 
@@ -3477,6 +3480,7 @@ prevweekno <- as.numeric(weekno) - 1
 firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
 firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
 year <- substring(text = firstday, first = 1, last = 4)
+yearm4 <- year
 
 settype <- "M+4"
 settype2 <- "M+4 Resettlement"
@@ -6673,6 +6677,7 @@ prevweekno <- as.numeric(weekno) - 1
 firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
 firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
 year <- substring(text = firstday, first = 1, last = 4)
+yearm13 <- year
 
 settype <- "M+13"
 settype2 <- "M+13 Resettlement"
@@ -9838,22 +9843,10 @@ for (ROW in c(5,8,11,15,18,21,25)) {
 
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r}
 ###############################################################################################################################################################################################
 ############################################################################### Invoice Backup section ########################################################################################
 ###############################################################################################################################################################################################
@@ -9868,6 +9861,7 @@ outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Set
 # add sheets
 addWorksheet(wb = mywb, sheetName = "Backup")
 addWorksheet(wb = mywb, sheetName = "DOCUMENT")
+
 
 
 
@@ -9895,16 +9889,184 @@ temp <- c("Document ID", "Participant", "Publication Date", "Due Date")
 writeData(wb = mywb, sheet = BU, x = temp, startRow = 3, startCol = 6)
 
 temp <- c()
-temp <- c(invoicenumber, PTunit, receiveddate3)
+temp <- c(invoicenumber, PTunit)
 writeData(wb = mywb, sheet = BU, x = temp, startRow = 3, startCol = 7)
 
+writeFormula(wb = mywb, sheet = BU, x = "=DOCUMENT!F2", startRow = 5, startCol = 7)
 writeFormula(wb = mywb, sheet = BU, x = "=DOCUMENT!H2", startRow = 6, startCol = 7)
-addStyle(mywb, BU, style = createStyle(numFmt = "DATE"), rows = 6, cols = 7)
+addStyle(mywb, BU, style = createStyle(numFmt = "DATE"), rows = 5:6, cols = 7)
+
+for (ROW in c(12,34)) {
+  writeData(mywb, BU, rep.int("BALIMB",4), startRow = ROW, startCol = 2)
+}
+
+for (ROW in c(23,45)) {
+  writeData(mywb, BU, rep.int("CRM",4), startRow = ROW, startCol = 2)
+}
+
+for (ROW in c(12,23,34,45)) {
+  writeData(mywb, BU, x = c("INIT", "M4", "M13", "AH"), startRow = ROW, startCol = 3)
+}
+
+writeData(mywb, BU, "SEMO SALES", xy = c(6,9))
+addStyle(mywb, BU, rows = 9, cols = 6, style = boldStyle)
+
+writeData(mywb, BU, "SEMO PURCHASES", startRow = 31, startCol = 6)
+addStyle(mywb, BU, rows = 31, cols = 6, style = boldStyle)
+
+
+for (ROW in c(11,22,33,44)) {
+  writeData(mywb, BU, "NOMINAL CODE", startRow = ROW, startCol = 6)
+  addStyle(mywb, BU, rows = ROW, cols = 6, style = boldStyle)
+}
+
+for (ROW in c(9,31)) {
+  writeData(mywb, BU, "Date Start", startRow = ROW, startCol = 7)
+  writeData(mywb, BU, "Date End", startRow = ROW, startCol = 8)
+  addStyle(mywb, BU, rows = ROW, cols = 7:8, style = boldStyle)
+}
+
+
+for (ROW in c(12,34)) {
+  writeData(mywb, BU, x=c("D+4 Energy", "M+4 Energy", "M+13 Energy", "AH Energy"), startRow = ROW, startCol = 6)
+}
+
+for (ROW in c(23,45)) {
+  writeData(mywb, BU, x=c("CRM D+4", "CRM M+4", "CRM M+13", "CRM AH"), startRow = ROW, startCol = 6)
+}
+
+for (ROW in c(20, 28, 42, 50)) {
+  writeData(mywb, BU, "POST THESE TOTAL", startRow = ROW, startCol = 6)
+  addStyle(mywb, BU, style = createStyle(fontColour = 'red', textDecoration = 'bold'), rows = ROW, cols = 6)
+}
+
+writeData(mywb, BU, c("POSITIVE VALUE = PURCHASE INVOICE", "NEGATIVE VALUE = SALES INVOICE"), startRow = 52, startCol = 6)
+addStyle(mywb, BU, style = createStyle(fontColour = 'red', textDecoration = 'bold'), rows = 52:53, cols = 6)
+
+temp <- c()
+temp <- c("100004", "100005", "100007", "100006")
+
+for (index in c(1:length(temp))) {
+  writeData(mywb, BU, temp[index], startRow = 11, startCol = index+8)
+}
+
+temp <- c()
+temp <- c("200005.2", "200005.3", "200005.4")
+
+for (ROW in c(22,44)) {
+  for (index in c(1:length(temp))) {
+    writeData(mywb, BU, temp[index], startRow = ROW, startCol = index+8)
+  }
+}
+
+temp <- c()
+temp <- c("200001.2", "200001.3", "200001.4", "200001", "200001.6")
+
+for (index in c(1:length(temp))) {
+  writeData(mywb, BU, temp[index], startRow = 33, startCol = index+8)
+}
+
+
+for (COL in c(6:16)) {
+  for (ROW in c(11,22,33,44)) {
+    addStyle(mywb, BU, style = yellowStyle, rows = ROW, cols = COL)
+  }
+}
+
+temp <- c()
+temp <- c("HH", "NHH", "PPA Gen", "GU_503310", "CCA", "Total", "Doc Total", "Adjustment")
+
+for (ROW in c(10,32)) {
+  for (index in c(1:length(temp))) {
+    writeData(mywb, BU, temp[index], startRow = ROW, startCol = index+8)
+    addStyle(mywb, BU, createStyle(fgFill = '#B4C6E7', textDecoration = 'bold', halign = 'center', border = "TopBottomLeftRight"), rows = ROW, cols = index+8)
+  }
+}
+
+for (ROW in c(20,42)) {
+  writeData(mywb, BU, "Total Energy", startRow = ROW, startCol = 8)
+  addStyle(mywb, BU, style = boldStyle, rows = ROW, cols = 8)
+}
+
+for (ROW in c(28,50)) {
+  writeData(mywb, BU, "Total CRM", startRow = ROW, startCol = 8)
+  addStyle(mywb, BU, style = boldStyle, rows = ROW, cols = 8)
+}
+
+
+for (COL in c(9:13)) {
+  for (ROW in c(12:19, 23:26, 34:41, 45:48)) {
+    addStyle(mywb, BU, orangeStyle, rows = ROW, cols = COL)
+  }
+}
+
+
+# FORMULAS
+
+for (ROW in c(12:15, 23:25, 34:37, 45:47)) {
+  writeFormula(mywb, BU, paste0("=SUM(I", ROW, ":M", ROW, ")"), startCol = 14, startRow = ROW)
+  addStyle(mywb, BU, whiteStyle, rows = ROW, cols = 14)
+}
+
+temp <- c()
+temp <- c("start", "end")
+
+for (COL in c(7,8)) {
+  for (ROW in c(12:15, 23:25, 34:37, 45:47)) {
+    writeFormula(mywb, BU, x = paste0("=IFERROR(VLOOKUP(B", ROW, "&C", ROW, ",DOCUMENT!$A:$BM,MATCH(\"bp_", temp[COL-6], "_date\", DOCUMENT!$A$1:$BM$1,0),0),\"\")"), startCol = COL, startRow = ROW)
+    addStyle(mywb, BU, style = createStyle(numFmt = "DATE"), cols = COL, rows = ROW)
+  }
+}
+
+
+temp <- c()
+for (index in c(12:16)) {
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/D+4 Initial/[PT_500057 SEMO Wk ", weeknod4," ", yeard4, " Shadow Settlement D+4 - Temporary.xlsx]Summary'!", letters[index], "19")
+  writeFormula(mywb, BU, temp, startCol = index-3, startRow = 12)
+}
+
+temp <- c()
+for (index in c(12:16)) {
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/D+4 Initial/[PT_500057 SEMO Wk ", weeknod4," ", yeard4, " Shadow Settlement D+4 - Temporary.xlsx]Summary'!", letters[index], "18")
+  writeFormula(mywb, BU, temp, startCol = index-3, startRow = 34)
+}
+
+
+
+
+temp <- c()
+for (index in c(12:16)) {
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[PT_500057 SEMO Wk ", weeknom4," ", yearm4, " Shadow Settlement M+4 - Temporary.xlsx]Resettlement Summary'!", letters[index-10], "21")
+  writeFormula(mywb, BU, temp, startCol = index-3, startRow = 13)
+}
+
+temp <- c()
+for (index in c(12:16)) {
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[PT_500057 SEMO Wk ", weeknom4," ", yearm4, " Shadow Settlement M+4 - Temporary.xlsx]Resettlement Summary'!", letters[index-10], "11")
+  writeFormula(mywb, BU, temp, startCol = index-3, startRow = 35)
+}
+
+
+
+
+
+temp <- c()
+for (index in c(12:16)) {
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[PT_500057 SEMO Wk ", weeknom13," ", yearm13, " Shadow Settlement M+13 - Temporary.xlsx]Resettlement Summary'!", letters[index-10], "21")
+  writeFormula(mywb, BU, temp, startCol = index-3, startRow = 14)
+}
+
+temp <- c()
+for (index in c(12:16)) {
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[PT_500057 SEMO Wk ", weeknom13," ", yearm13, " Shadow Settlement M+13 - Temporary.xlsx]Resettlement Summary'!", letters[index-10], "11")
+  writeFormula(mywb, BU, temp, startCol = index-3, startRow = 36)
+}
+
+
+
+
+
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
-
-
-
 ```
-
