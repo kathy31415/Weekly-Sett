@@ -9859,6 +9859,8 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 ###############################################################################################################################################################################################
 
 # create excel file
+options(openxlsx.dateFormat = "dd/mm/yyyy")
+
 mywb <- createWorkbook()
 
 outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/Invoice Backups/", documentidnumber, " BACKUP - Temporary.xlsx")
@@ -9892,23 +9894,17 @@ temp <- c()
 temp <- c("Document ID", "Participant", "Publication Date", "Due Date")
 writeData(wb = mywb, sheet = BU, x = temp, startRow = 3, startCol = 6)
 
-duedate <- as.Date(receiveddate) + 3
-
 temp <- c()
-temp <- c(invoicenumber, PTunit, receiveddate3, duedate)
+temp <- c(invoicenumber, PTunit, receiveddate3)
 writeData(wb = mywb, sheet = BU, x = temp, startRow = 3, startCol = 7)
+
+writeFormula(wb = mywb, sheet = BU, x = "=DOCUMENT!H2", startRow = 6, startCol = 7)
+addStyle(mywb, BU, style = createStyle(numFmt = "DATE"), rows = 6, cols = 7)
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 
 
-
-
-as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
-
-
-
-
-
 ```
+
