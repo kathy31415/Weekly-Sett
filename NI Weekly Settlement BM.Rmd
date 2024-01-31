@@ -9840,13 +9840,14 @@ for (ROW in c(5,8,11,15,18,21,25)) {
   }
 }
 
-
-
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
-```
 
 
-```{r}
+
+
+
+
+
 ###############################################################################################################################################################################################
 ############################################################################### Invoice Backup section ########################################################################################
 ###############################################################################################################################################################################################
@@ -9863,8 +9864,6 @@ addWorksheet(wb = mywb, sheetName = "Backup")
 addWorksheet(wb = mywb, sheetName = "DOCUMENT")
 
 
-
-
 # DOCUMENT sheet
 
 writeData(wb = mywb, sheet = "DOCUMENT", x = documentdata, startRow = 1, startCol = 2)
@@ -9876,9 +9875,6 @@ for (index in 2:1213) {
   temp <- c(temp, paste0("=CONCATENATE(AF", index, ",AG", index,")"))
 }
 writeFormula(mywb, "DOCUMENT", x = temp, startRow = 2, startCol = 1)
-
-
-
 
 
 # BACKUP sheet
@@ -9966,7 +9962,6 @@ for (index in c(1:length(temp))) {
   writeData(mywb, BU, temp[index], startRow = 33, startCol = index+8)
 }
 
-
 for (COL in c(6:16)) {
   for (ROW in c(11,22,33,44)) {
     addStyle(mywb, BU, style = yellowStyle, rows = ROW, cols = COL)
@@ -9993,13 +9988,11 @@ for (ROW in c(28,50)) {
   addStyle(mywb, BU, style = boldStyle, rows = ROW, cols = 8)
 }
 
-
 for (COL in c(9:13)) {
   for (ROW in c(12:19, 23:26, 34:41, 45:48)) {
     addStyle(mywb, BU, orangeStyle, rows = ROW, cols = COL)
   }
 }
-
 
 # FORMULAS
 
@@ -10017,7 +10010,6 @@ for (COL in c(7,8)) {
     addStyle(mywb, BU, style = createStyle(numFmt = "DATE"), cols = COL, rows = ROW)
   }
 }
-
 
 temp <- c()
 for (index in c(12:16)) {
@@ -10055,9 +10047,8 @@ for (index in c(12:16)) {
   writeFormula(mywb, BU, temp, startCol = index-3, startRow = 36)
 }
 
-
 for (COL in c(15:16)) {
-  for (ROW in c(12:19, 23:26)) {
+  for (ROW in c(12:20, 23:26, 28)) {
     writeFormula(mywb, BU, x = paste0("=SUMIFS(DOCUMENT!AO:AO,DOCUMENT!AF:AF,Backup!B", ROW, ",DOCUMENT!AG:AG,Backup!C", ROW, ")"), startRow = ROW, startCol = 15)
     writeFormula(mywb, BU, x = paste0("=O", ROW, "+N", ROW), startRow = ROW, startCol = 16)
     addStyle(mywb, BU, whiteStyle, rows = ROW, cols = COL)
@@ -10065,7 +10056,7 @@ for (COL in c(15:16)) {
     conditionalFormatting(wb = mywb, sheet = BU, cols = 16, rows = ROW, rule = paste0("=OR(",toupper(letters[16]),ROW, "<-5, ", toupper(letters[16]),ROW, ">5)"), type = 'expression', style = negStyle)
 
   }
-  for (ROW in c(34:41, 45:47)) {
+  for (ROW in c(34:42, 45:48, 50)) {
     writeFormula(mywb, BU, x = paste0("=SUMIFS(DOCUMENT!AW:AW,DOCUMENT!AF:AF,Backup!B", ROW, ",DOCUMENT!AG:AG,Backup!C", ROW, ")"), startRow = ROW, startCol = 15)
     writeFormula(mywb, BU, x = paste0("=O", ROW, "+N", ROW), startRow = ROW, startCol = 16)
     addStyle(mywb, BU, whiteStyle, rows = ROW, cols = COL)
@@ -10074,12 +10065,32 @@ for (COL in c(15:16)) {
   }
 }
 
-
 temp <- c()
 for (index in c(1:7)) {
   temp <- paste0("=SUM(", letters[index+8], "12:", letters[index+8], "19)")
   writeFormula(wb = mywb, sheet = BU, x = temp, startCol = index+8, startRow = 20)
-  addStyle(wb = mywb, sheet = BU, style = createStyle(textDecoration = 'bold', numFmt = '[$£]#,##0.00'), rows = 20, cols = index+8)
+  addStyle(wb = mywb, sheet = BU, style = createStyle(textDecoration = 'bold', numFmt = '[$£]#,##0.00', border = "TopBottom"), rows = 20, cols = index+8)
+}
+
+temp <- c()
+for (index in c(1:7)) {
+  temp <- paste0("=SUM(", letters[index+8], "34:", letters[index+8], "41)")
+  writeFormula(wb = mywb, sheet = BU, x = temp, startCol = index+8, startRow = 42)
+  addStyle(wb = mywb, sheet = BU, style = createStyle(textDecoration = 'bold', numFmt = '[$£]#,##0.00', border = "TopBottom"), rows = 42, cols = index+8)
+}
+
+temp <- c()
+for (index in c(1:7)) {
+  temp <- paste0("=SUM(", letters[index+8], "23:", letters[index+8], "27)")
+  writeFormula(wb = mywb, sheet = BU, x = temp, startCol = index+8, startRow = 28)
+  addStyle(wb = mywb, sheet = BU, style = createStyle(textDecoration = 'bold', numFmt = '[$£]#,##0.00', border = "TopBottom"), rows = 28, cols = index+8)
+}
+
+temp <- c()
+for (index in c(1:7)) {
+  temp <- paste0("=SUM(", letters[index+8], "45:", letters[index+8], "49)")
+  writeFormula(wb = mywb, sheet = BU, x = temp, startCol = index+8, startRow = 50)
+  addStyle(wb = mywb, sheet = BU, style = createStyle(textDecoration = 'bold', numFmt = '[$£]#,##0.00', border = "TopBottom"), rows = 50, cols = index+8)
 }
 
 
