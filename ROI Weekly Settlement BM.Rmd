@@ -3528,188 +3528,135 @@ writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 18)
 writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 26)
 writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 42)
 
-
-
-
-
-
-
-
-
-
-
-
 temp <- c()
 for (index in 4:339) {
   temp <- c(temp, paste0("=D", index))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 12)
 
 temp <- c()
-for (index in 4:339) {
-  temp <- c(temp, paste0("=E", index))
+for (index in 3:338) {
+  temp <- c(temp, paste0("='Consumption Checks'!O", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!B", index+1, "REPORT!$J:$J,\"PIMP\")"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 13)
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 21)
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 29)
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 45)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("='Consumption Checks'!P", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!C", index+1, ",REPORT!$J:$J,\"PIMP\")*VLOOKUP(B", index+1, ",Summary!$U$2:$Y$9,4,0)"))
+  temp <- c(temp, paste0("='Consumption Checks'!P", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!B", index+1, "REPORT!$J:$J,\"PIMP\")"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 14)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("='Consumption Checks'!Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!C", index+1, ",REPORT!$J:$J,\"PIMP\")*VLOOKUP(B", index+1, ",Summary!$U$2:$Y$9,4,0)"))
+  temp <- c(temp, paste0("='Consumption Checks'!Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!B", index=1, ",REPORT!$J:$J,\"PIMP\")"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 15)
 
 temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("='Consumption Checks'!R", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!C", index+1, ",REPORT!$J:$J,\"PIMP\")*VLOOKUP(B", index+1, ",Summary!$U$2:$Y$9,4,0)"))
+for (index in 4:339) {
+  temp <- c(temp, paste0("=M", index, "+N", index, "-O", index))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 16)
 
 temp <- c()
-for (index in 4:339) {
-  temp <- c(temp, paste0("=N", index, "+O", index, "-P", index))
-}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 17)
+for (index in 3:338) {
+  temp <- c(temp, paste0("=('Consumption Checks'!O", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'En & Imp Split'!A", index+1, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!B", index+1, ",REPORT!$P:$P,\"FNIEP\"))"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 21)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=('Consumption Checks'!P", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'En & Imp Split'!A", index+1, ",REPORT!$J:$J,\"PREV\")*VLOOKUP(B", index+1, ",Summary!$U$2:$Y$9,4,0)*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!C", index+1, ",REPORT!$P:$P,\"FNIEP\"))"))
+  temp <- c(temp, paste0("=('Consumption Checks'!P", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'En & Imp Split'!A", index+1, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!B", index+1, ",REPORT!$P:$P,\"FNIEP\"))"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 22)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=('Consumption Checks'!Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'En & Imp Split'!A", index+1, ",REPORT!$J:$J,\"PREV\")*VLOOKUP(B", index+1, ",Summary!$U$2:$Y$9,4,0)*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!C", index+1, ",REPORT!$P:$P,\"FNIEP\"))"))
+  temp <- c(temp, paste0("=('Consumption Checks'!Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'En & Imp Split'!A", index+1, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!B", index+1, ",REPORT!$P:$P,\"FNIEP\"))"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 23)
 
 temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=('Consumption Checks'!R", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'En & Imp Split'!A", index+1, ",REPORT!$J:$J,\"PREV\")*VLOOKUP(B", index+1, ",Summary!$U$2:$Y$9,4,0)*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!C", index+1, ",REPORT!$P:$P,\"FNIEP\"))"))
+for (index in 4:339) {
+  temp <- c(temp, paste0("=U", index, "+V", index, "-W", index))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 24)
 
 temp <- c()
 for (index in 4:339) {
-  temp <- c(temp, paste0("=V", index, "+W", index, "-X", index))
-}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 25)
+  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$Z", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AA", index, "),0)*MIN(0,('SHADOW SETTLED'!$U$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$B", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!O", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 29)
 
 temp <- c()
 for (index in 4:339) {
-  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AE:$AE,'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Z:$Z,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$", toupper(letters[which_column]), "$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!P", index-1, "/'Consumption Checks'!$S", index-1, "))*VLOOKUP('En & Imp Split'!$B", index, ",Summary!$U$2:$Y$9,4,0),0)"))
+  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$Z", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AA", index, "),0)*MIN(0,('SHADOW SETTLED'!$U$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$B", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!P", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 30)
 
 temp <- c()
 for (index in 4:339) {
-  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AE:$AE,'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Z:$Z,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$", toupper(letters[which_column]), "$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!P", index-1, "/'Consumption Checks'!$S", index-1, "))*VLOOKUP('En & Imp Split'!$B", index, ",Summary!$U$2:$Y$9,4,0),0)"))
+  temp <- c(temp, paste0("=-IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$Z", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AA", index, "),0)*MIN(0,('SHADOW SETTLED'!$U$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$B", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!Q", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 31)
 
 temp <- c()
 for (index in 4:339) {
-  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AE:$AE,'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Z:$Z,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$", toupper(letters[which_column]), "$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!Q", index-1, "/'Consumption Checks'!$S", index-1, "))*VLOOKUP('En & Imp Split'!$B", index, ",Summary!$U$2:$Y$9,4,0),0)"))
+  temp <- c(temp, paste0("=AC", index, "+AD", index, "+AE", index))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 32)
 
-temp <- c()
-for (index in 4:339) {
-  temp <- c(temp, paste0("=IFERROR(-((MIN(SUMIFS('Consumption Checks'!$AE:$AE,'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Z:$Z,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$", toupper(letters[which_column]), "$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!R", index-1, "/'Consumption Checks'!$S", index-1, "))*VLOOKUP('En & Imp Split'!$B", index, ",Summary!$U$2:$Y$9,4,0),0)"))
-}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 33)
-
-writeFormula(wb = mywb, sheet = EIS, x = "=AA4", startRow = 4, startCol = 35)
-
-temp <- c()
-for (index in 4:9) {
-  temp <- c(temp, paste0("=AI", index, "+1"))
-}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 5, startCol = 35)
-
-writeData(wb = mywb, sheet = EIS, x = "CREIMDIFFP", startRow = 14, startCol = 35)
-
-temp <- c()
-for (index in 4:10) {
-  temp <- c(temp, paste0("=AI", index))
-}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 17, startCol = 35)
-
-writeFormula(wb = mywb, sheet = EIS, x = "=AL3", startRow = 16, startCol = 38)
-
-writeFormula(wb = mywb, sheet = EIS, x = "=AM3", startRow = 16, startCol = 39)
-
-writeFormula(wb = mywb, sheet = EIS, x = "=AN3", startRow = 16, startCol = 40)
-
-writeFormula(wb = mywb, sheet = EIS, x = "=AO3", startRow = 16, startCol = 41)
-
-for (index in 3:9) {
-  writeData(wb = mywb, sheet = EIS, x = index, startRow = index+1, startCol = 36)
-  writeData(wb = mywb, sheet = EIS, x = index, startRow = index+14, startCol = 36)
+for (ROW in c(4,17)) {
+  writeData(mywb, EIS, x = dates, startRow = ROW, startCol = 34)
 }
 
-writeData(wb= mywb, sheet = EIS, x = "00:00", startRow = 4, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "00:30", startRow = 5, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "01:00", startRow = 6, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "00:30", startRow = 7, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "02:00", startRow = 8, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "00:30", startRow = 9, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "03:00", startRow = 10, startCol = 37)
+writeData(mywb, EIS, c(2:8), startRow = 4, startCol = 35)
+writeData(mywb, EIS, c(2:8), startRow = 17, startCol = 35)
 
-writeData(wb= mywb, sheet = EIS, x = "00:00", startRow = 17, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "00:30", startRow = 18, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "01:00", startRow = 19, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "00:30", startRow = 20, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "02:00", startRow = 21, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "00:30", startRow = 22, startCol = 37)
-writeData(wb= mywb, sheet = EIS, x = "03:00", startRow = 23, startCol = 37)
+temp <- c()
+for (index in c(4:10) {
+  temp <- c(temp, paste0("=AB", index))
+}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 36)
+writeFormula(mywb, EIS, temp, startRow = 17, startCol = 36)
 
+temp <- c()
+for (index in c(3:9)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AH", index+1, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!O", index, "Consumption Checks'!$R", index, ")"))
+}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 37)
 
-for (row in c(4:10,17:22)) {
-  addStyle(mywb, EIS, createStyle(numFmt = "hh:mm"), rows = row, cols = 37)
+temp <- c()
+for (index in c(3:9)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AH", index+1, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!P", index, "Consumption Checks'!$R", index, ")"))
+}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 38)
+
+temp <- c()
+for (index in c(3:9)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AH", index+1, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!Q", index, "Consumption Checks'!$R", index, ")"))
+}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 39)
+
+temp <- c()
+for (index in c(4:10)) {
+  temp <- c(temp, paste0("=AK", index, "+AL", index, "-AM", index))
+}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 40)
+
+temp <- c()
+for (index in c(16:22)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AH", index+1, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!O", index, "Consumption Checks'!$R", index, ")"))
+}; writeFormula(mywb, EIS, temp, startRow = 17, startCol = 37)
+
+temp <- c()
+for (index in c(16:22)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AH", index+1, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!P", index, "Consumption Checks'!$R", index, ")"))
+}; writeFormula(mywb, EIS, temp, startRow = 17, startCol = 38)
+
+temp <- c()
+for (index in c(16:22)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AH", index+1, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!Q", index, "Consumption Checks'!$R", index, ")"))
+}; writeFormula(mywb, EIS, temp, startRow = 17, startCol = 39)
+
+temp <- c()
+for (index in c(17:23)) {
+  temp <- c(temp, paste0("=AK", index, "+AL", index, "-AM", index))
+}; writeFormula(mywb, EIS, temp, startRow = 17, startCol = 40)
+
 }
 
 temp <- c()
-for (row in 4:10) {
-  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", row, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!P", row-1, "/'Consumption Checks'!$S", row-1, ")*VLOOKUP('En & Imp Split'!$AI", row, ",Summary!$U$2:$Y$9,4,0)"))
+for (row in 2:337) {
+  temp <- c(temp, paste0("='SHADOW SETTLED'!E", index))
 }
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 38)
-
-temp <- c()
-for (row in 4:10) {
-  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", row, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!Q", row-1, "/'Consumption Checks'!$S", row-1, ")*VLOOKUP('En & Imp Split'!$AI", row, ",Summary!$U$2:$Y$9,4,0)"))
-}
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 39)
-
-temp <- c()
-for (row in 4:10) {
-  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", row, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!R", row-1, "/'Consumption Checks'!$S", row-1, ")*VLOOKUP('En & Imp Split'!$AI", row, ",Summary!$U$2:$Y$9,4,0)"))
-}
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 40)
-
-temp <- c()
-for (row in 4:10) {
-  temp <- c(temp, paste0("=AL", row, "+AM", row, "-AN", row))
-}
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 41)
+writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 45)
 
 
-temp <- c()
-for (row in 17:23) {
-  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", row, ",'SHADOW SETTLED'!$K:$K)*('Consumption Checks'!P", row-1, "/'Consumption Checks'!$S", row-1, ")*VLOOKUP('En & Imp Split'!$AI", row, ",Summary!$U$2:$Y$9,4,0)"))
-}
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 17, startCol = 38)
 
-temp <- c()
-for (row in 17:23) {
-  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", row, ",'SHADOW SETTLED'!$K:$K)*('Consumption Checks'!Q", row-1, "/'Consumption Checks'!$S", row-1, ")*VLOOKUP('En & Imp Split'!$AI", row, ",Summary!$U$2:$Y$9,4,0)"))
-}
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 17, startCol = 39)
-
-temp <- c()
-for (row in 17:23) {
-  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", row, ",'SHADOW SETTLED'!$K:$K)*('Consumption Checks'!R", row-1, "/'Consumption Checks'!$S", row-1, ")*VLOOKUP('En & Imp Split'!$AI", row, ",Summary!$U$2:$Y$9,4,0)"))
-}
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 17, startCol = 40)
-
-temp <- c()
-for (row in 17:23) {
-  temp <- c(temp, paste0("=AL", row, "+AM", row, "-AN", row))
-}
-writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 17, startCol = 41)
-
-
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 for (col in c(38:41)) {
   for (row in c(4:10, 17:23)) {
