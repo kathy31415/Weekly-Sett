@@ -1973,10 +1973,17 @@ for (index in 3:338) {
   temp <- c(temp, paste0("=A", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 12)
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 35)
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 65)
 
-writeFormula(wb = mywb, sheet = CC, x = "=AL3", startRow = 3, startCol = 41)
+
+for (index in 3:48) {
+  writeFormula(wb = mywb, sheet = CC, x = paste0("=AL", index), startRow = 3, startCol = 41)
+}
+writeFormula(mywb, CC, x = "=AO47", startRow = 49, startCol = 41)
+writeFormula(mywb, CC, x = "=AO47", startRow = 50, startCol = 41)
+for (index in 3:288) {
+  writeFormula(wb = mywb, sheet = CC, x = paste0("=AO", index), startRow = 51, startCol = 41)
+}
 
 temp <- c()
 for (index in 3:94) {
@@ -1993,21 +2000,81 @@ for (index in 48:290) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 96, startCol = 41)
 
 
+
+
 temp <- c()
 for (index in 3:46) {
   temp <- c(temp, paste0("=AI", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 38)
 temp <- c()
-for (index in 47:50) {
+for (index in 47:52) {
   temp <- c(temp, paste0("=AI", index, "+1"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 47, startCol = 38)
 temp <- c()
-for (index in 3:290) {
-  temp <- c(temp, paste0("=AL", index, "+1"))
+for (index in 53:94) {
+  temp <- c(temp, paste0("=AI", index))
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 38)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 38)
+temp <- c()
+for (index in 95:100) {
+  temp <- c(temp, paste0("=AI", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 95, startCol = 38)
+temp <- c()
+for (index in 101:142) {
+  temp <- c(temp, paste0("=AI", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 101, startCol = 38)
+temp <- c()
+for (index in 143:148) {
+  temp <- c(temp, paste0("=AI", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 143, startCol = 38)
+temp <- c()
+for (index in 149:190) {
+  temp <- c(temp, paste0("=AI", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 149, startCol = 38)
+temp <- c()
+for (index in 191:196) {
+  temp <- c(temp, paste0("=AI", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 191, startCol = 38)
+temp <- c()
+for (index in 197:238) {
+  temp <- c(temp, paste0("=AI", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 197, startCol = 38)
+temp <- c()
+for (index in 239:244) {
+  temp <- c(temp, paste0("=AI", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 239, startCol = 38)
+temp <- c()
+for (index in 245:286) {
+  temp <- c(temp, paste0("=AI", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 245, startCol = 38)
+temp <- c()
+for (index in 287:292) {
+  temp <- c(temp, paste0("=AI", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 287, startCol = 38)
+for (index in 293:334) {
+  temp <- c(temp, paste0("=AI", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 293, startCol = 38)
+temp <- c()
+for (index in 335:338) {
+  temp <- c(temp, paste0("=AI", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 335, startCol = 38)
+
+
+
+
 
 
 temp <- c()
@@ -2098,6 +2165,18 @@ temp <- c()
 for (index in 3:338) {
   temp <- c(temp, paste0("=(AB", index, "+AA", index, ")-AC", index, "+AD",index))
 }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 31)
+
+temp <- c()
+for (index in 3:6) {
+  temp <- c(temp, paste0("=A",index))
+};
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 35)
+
+temp <- c()
+for (index in 5:336) {
+  temp <- c(temp, paste0("=A",index))
+};
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 7, startCol = 35)
 
 
 temp <- c()
@@ -2282,7 +2361,7 @@ summer <- c("=AJ3+TIME(2,30,0)", "=AJ4+TIME(2,0,0)", "=AJ5+TIME(2,30,0)", "=AJ6+
 
 season <- c()
 
-if (firstday2 > as.Date(paste0(year,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year)-1,"-4-01"), format = "%Y-%m-%d")) {
+if ((firstday2 > as.Date(paste0(year,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year)-1,"-4-01"), format = "%Y-%m-%d")) == FALSE) {
   temp <- winter
   season <- "winter"
 } else {
@@ -2327,7 +2406,6 @@ if (season == "winter") {
   }
   temp <- c()
 }
-
 
 temp <- c()
 for (index in 3:338) {
@@ -2402,7 +2480,7 @@ for (index in 3:338) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AN", index, "&'Consumption Checks'!$BC$1&$BC$2,'EX-Ante Report'!S:S&'EX-Ante Report'!AK:AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!$AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1),SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1))/2,0)"))
+  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AN", index, "&'Consumption Checks'!$BC$1&$BC$2,'EX-Ante Report'!S:S&'EX-Ante Report'!AK:AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1),SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1))/2,0))"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 55)
 
