@@ -1273,7 +1273,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 3
 temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CB:CB)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 4)
 
-temp <- c("=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CC:CC)")
+temp <- c("=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CC:CC)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 5)
 
 temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CD:CD)")
@@ -4236,7 +4236,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 3
 temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CB:CB)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 4)
 
-temp <- c("=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CC:CC)")
+temp <- c("=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CC:CC)", "=-SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CC:CC)")
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 5)
 
 temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A18,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A19,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A20,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A21,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A22,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A23,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A24,'Consumption Checks'!CD:CD)")
@@ -6646,6 +6646,10 @@ for (ROW in c(5,8,11,15,18,21,25)) {
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
+
+
+
+
 
 
 
@@ -9842,6 +9846,7 @@ for (ROW in c(5,8,11,15,18,21,25)) {
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
+```
 
 
 
@@ -9849,6 +9854,14 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 
+
+
+
+
+
+
+
+```{r}
 ###############################################################################################################################################################################################
 ############################################################################### Invoice Backup section ########################################################################################
 ###############################################################################################################################################################################################
@@ -10068,7 +10081,7 @@ for (COL in c(15:16)) {
 
 temp <- c()
 for (index in c(1:7)) {
-  temp <- paste0("=SUM(", letters[index+8], "12:", letters[index+8], "19)")
+  temp <- paste0("=-SUM(", letters[index+8], "12:", letters[index+8], "19)")
   writeFormula(wb = mywb, sheet = BU, x = temp, startCol = index+8, startRow = 20)
   addStyle(wb = mywb, sheet = BU, style = createStyle(textDecoration = 'bold', numFmt = '[$£]#,##0.00', border = "TopBottom"), rows = 20, cols = index+8)
 }
@@ -10082,7 +10095,7 @@ for (index in c(1:7)) {
 
 temp <- c()
 for (index in c(1:7)) {
-  temp <- paste0("=SUM(", letters[index+8], "23:", letters[index+8], "27)")
+  temp <- paste0("=-SUM(", letters[index+8], "23:", letters[index+8], "27)")
   writeFormula(wb = mywb, sheet = BU, x = temp, startCol = index+8, startRow = 28)
   addStyle(wb = mywb, sheet = BU, style = createStyle(textDecoration = 'bold', numFmt = '[$£]#,##0.00', border = "TopBottom"), rows = 28, cols = index+8)
 }
