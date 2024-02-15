@@ -404,11 +404,11 @@ data.frame.na <- function (..., row.names = NULL, check.rows = FALSE, check.name
 ```
 
 
+
 ```{r input variables}
 ################################################################################################################################################################################################
 ############################################################################## D+4 settlement section ##########################################################################################
 ################################################################################################################################################################################################
-
 
 
 # DEFINE VARIABLES
@@ -1847,10 +1847,9 @@ writeData(wb = mywb, sheet = SS, x = "PSTR", startRow = 5, startCol = 15)
 for (row in c(2:5)) {
   addStyle(wb = mywb, sheet = activesheet, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 16:21)
 }
+
+# end of section
 ```
-
-
-
 
 
 ```{r CC}
@@ -1858,7 +1857,7 @@ for (row in c(2:5)) {
 
 CC <- "Consumption Checks"
 
-headings1 <- c(rep.int(x = "", times = 15), "No Ex-Ante Trades", rep.int(x = "", times = 10), "With Ex-Ante Trades", rep.int("", times = 16), "SU_400358", "SU_400358_&_SU_400358", rep.int(x = "", times = 8), "AU_400131", "AU_400131_&_AU_400131", "AU_400131_&_P", rep.int("", times = 12), "Ex-ante Q Split", rep.int("", 2), "QEX-QM Split", rep.int("", 2), "SEMO SETTLEMENT - CIMB", rep.int("", 4), "SEMO SETTLEMENT - CIMP", rep.int("", 3), "SEMO Settlement - CREV", rep.int("", 3), "CCA", "", "SEMO Sales - CIMB", rep.int("", 3), "SEMO Purchases - CIMB", rep.int("", 3)) %>% as.data.frame() %>%  t()
+headings1 <- c(rep.int(x = "", times = 14), "No Ex-Ante Trades", rep.int(x = "", times = 11), "With Ex-Ante Trades", rep.int("", times = 16), "SU_400358", "SU_400358_&_SU_400358", rep.int(x = "", times = 8), "AU_400131", "AU_400131_&_AU_400131", "AU_400131_&_P", rep.int("", times = 12), "Ex-ante Q Split", rep.int("", 2), "QEX-QM Split", rep.int("", 2), "SEMO SETTLEMENT - CIMB", rep.int("", 4), "SEMO SETTLEMENT - CIMP", rep.int("", 3), "SEMO Settlement - CREV", rep.int("", 3), "CCA", "", "SEMO Sales - CIMB", rep.int("", 3), "SEMO Purchases - CIMB", rep.int("", 3)) %>% as.data.frame() %>%  t()
 
 headings2 <- c("Settlement Date",	"Time P.E",	"Date/time",	rep.int("", times = 2),	"MM 596",	"QM", "Diff",	rep.int("", times = 6), "MM595",	"MM591",	"MM598",	"MM596", rep.int("", 8), "MM595",	"MM591",	"MM598",	"QM-QEX", rep.int("", times = 4), "Settlement Date",	"Time P.E",	"Date/time",	"ETS DAM Date",	"ETS DAM Time",	"DAM Date/Time",	"ETS ID Date",	"ETS ID Time",	"ID Date/Time",	"QEX",	"ST",	"IT1",	"IT2",	"IT3",	"IT",	"Total", "Diff", "", "",	"QEX",	"ST",	"IT1",	"IT2",	"IT3",	"IT",	"Total", "Diff", "", "", "", "Settlement Date",	"DAM Date/Time",	"ID Date/Time",	"SEMO Date/Time", "HH",	"NHH",	"PPA", "HH",	"NHH",	"PPA", "HH",	"NHH",	"PPA",	"AU_400117",	"Total", "HH",	"NHH",	"PPA",	"Total",	"HH",	"NHH",	"PPA",	"Total", "Total", "", "HH",	"NHH",	"PPA", "AU",	"HH",	"NHH",	"PPA", "AU")
 
@@ -1888,9 +1887,7 @@ for (col in c(1,12,24,35,38,41,65)) {
 temp <- c()
 for (index in 2:337) {
   temp <- c(temp, paste0("='SHADOW SETTLED'!B", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 2)
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 36)
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 2)
 
 for (col in c(2,5,14,26,36,39,42)) {
   addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "hh:mm:ss"), rows = 3:338, cols = col)
@@ -1920,12 +1917,6 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 5)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=E", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 14)
-
-temp <- c()
-for (index in 3:338) {
   temp <- c(temp, paste0("=VLOOKUP(A", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM596'!$A:$AY,D", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 6)
@@ -1951,22 +1942,10 @@ temp <- c()
 for (total in totals) {
   temp <- c(temp, paste0("=SUM(H", total-47, ":H", total, ")"))
 }
-
 for (i in 1:7) {
   writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 9)
   writeData(wb = mywb, sheet = CC, x = "", startRow = ROW, startCol = 9)
 }
-
-temp <- c()
-for (total in totals) {
-  temp <- c(temp, paste0("=SUM(S", total-47, ":S", total, ")"))
-}
-
-for (i in 1:7) {
-  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 20)
-  writeData(wb = mywb, sheet = CC, x = "", startRow = ROW, startCol = 20)
-}
-
 
 temp <- c()
 for (index in 3:338) {
@@ -1975,30 +1954,121 @@ for (index in 3:338) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 12)
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 65)
 
-
-for (index in 3:48) {
-  writeFormula(wb = mywb, sheet = CC, x = paste0("=AL", index), startRow = 3, startCol = 41)
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=E", index))
 }
-writeFormula(mywb, CC, x = "=AO47", startRow = 49, startCol = 41)
-writeFormula(mywb, CC, x = "=AO47", startRow = 50, startCol = 41)
-for (index in 3:288) {
-  writeFormula(wb = mywb, sheet = CC, x = paste0("=AO", index), startRow = 51, startCol = 41)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 14)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=VLOOKUP($L", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$A:$AY,$M", index, ",0)/1000"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 15)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=VLOOKUP($L", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$A:$AY,$M", index, ",0)/1000"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 16)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=VLOOKUP($L", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$A:$AY,$M", index, ",0)/1000"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 17)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=F", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 18)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("(P", index, "+O", index, ")-Q", index, "+R", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 19)
+
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=SUM(S", total-47, ":S", total, ")"))
+}
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 20)
+  writeData(wb = mywb, sheet = CC, x = "", startRow = ROW, startCol = 20)
 }
 
 temp <- c()
-for (index in 3:94) {
-  temp <- c(temp, paste0("=AP", index))
+for (total in totals) {
+  temp <- c(temp, paste0("=IF(AND(SUM(S", total-47, ":S", total, ")<0.01,SUM(S", total-47, ":S", total, ")>-0.01),\"TRUE\",\"FALSE\")"))
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 4, startCol = 41)
-writeFormula(wb = mywb, sheet = CC, x = "=AP3+1", startRow = 48, startCol = 41)
-
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 21)
+}
 
 temp <- c()
-for (index in 48:290) {
-  temp <- c(temp, paste0("=AP", index, "+1"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 96, startCol = 41)
+for (index in 3:338) {
+  temp <- c(temp, paste0("=L", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 24)
 
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=M", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 25)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=N", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 26)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=($O", index, "+SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\"))"))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 27)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=P", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 28)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=Q", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 29)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=($G", index, "-SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\"))"))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 30)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=(AB", index, "+AA", index, ")-AC", index, "+AD",index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 31)
+
+temp <- c()
+for (index in 3:6) {
+  temp <- c(temp, paste0("=A",index))
+};
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 35)
+
+temp <- c()
+for (index in 5:336) {
+  temp <- c(temp, paste0("=A",index))
+};
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 7, startCol = 35)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=B", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 36)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=C", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 37)
 
 
 
@@ -2074,116 +2144,6 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 335, startCol = 38)
 
 
 
-
-
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=AN", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 66)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=AQ", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 67)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=C", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 68)
-
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($L", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$A:$AY,$M", index, ",0)/1000"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 15)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($L", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$A:$AY,$M", index, ",0)/1000"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 16)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($L", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$A:$AY,$M", index, ",0)/1000"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 17)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=F", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 18)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("(P", index, "+O", index, ")-Q", index, "+R", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 19)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=L", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 24)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=M", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 25)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=N", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 26)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=($O", index, "+SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\"))"))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 27)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=P", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 28)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=Q", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 29)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=($G", index, "-SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\"))"))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 30)
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=(AB", index, "+AA", index, ")-AC", index, "+AD",index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 31)
-
-temp <- c()
-for (index in 3:6) {
-  temp <- c(temp, paste0("=A",index))
-};
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 35)
-
-temp <- c()
-for (index in 5:336) {
-  temp <- c(temp, paste0("=A",index))
-};
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 7, startCol = 35)
-
-
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=C", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 37)
 
 temp <- c()
 
@@ -2369,7 +2329,87 @@ if ((firstday2 > as.Date(paste0(year,"-10-01"), format = "%Y-%m-%d") & firstday2
   season <- "summer"
 }
 
-writeFormula(wb = mywb, sheet = CC, x = temp, startCol = 39, startRow = 3)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 39)
+
+
+
+temp <- c()
+for (index in 3:50) {
+  temp <- c(temp, paste0("=AL", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AI51+1", startRow = 51, startCol = 41)
+writeFormula(mywb, CC, x = "=AI52+1", startRow = 52, startCol = 41)
+
+temp <- c()
+for (index in 53:95) {
+  temp <- c(temp, paste0("=AL", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 41)
+
+
+writeFormula(mywb, CC, x = "=AL96", startRow = 96, startCol = 41)
+writeFormula(mywb, CC, x = "=AL97", startRow = 97, startCol = 41)
+writeFormula(mywb, CC, x = "=AL98", startRow = 98, startCol = 41)
+writeFormula(mywb, CC, x = "=AI99+1", startRow = 99, startCol = 41)
+writeFormula(mywb, CC, x = "=AI100+1", startRow = 100, startCol = 41)
+
+temp <- c()
+for (index in 101:143) {
+  temp <- c(temp, paste0("=AI", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 101, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL144", startRow = 144, startCol = 41)
+writeFormula(mywb, CC, x = "=AL145", startRow = 145, startCol = 41)
+writeFormula(mywb, CC, x = "=AL146", startRow = 146, startCol = 41)
+writeFormula(mywb, CC, x = "=AI147+1", startRow = 147, startCol = 41)
+writeFormula(mywb, CC, x = "=AI148+1", startRow = 148, startCol = 41)
+
+temp <- c()
+for (index in 149:191) {
+  temp <- c(temp, paste0("=AI", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 149, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL192", startRow = 192, startCol = 41)
+writeFormula(mywb, CC, x = "=AL193", startRow = 193, startCol = 41)
+writeFormula(mywb, CC, x = "=AL194", startRow = 194, startCol = 41)
+writeFormula(mywb, CC, x = "=AI195+1", startRow = 195, startCol = 41)
+writeFormula(mywb, CC, x = "=AI196+1", startRow = 196, startCol = 41)
+
+temp <- c()
+for (index in 197:239) {
+  temp <- c(temp, paste0("=AI", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 197, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL240", startRow = 240, startCol = 41)
+writeFormula(mywb, CC, x = "=AL241", startRow = 241, startCol = 41)
+writeFormula(mywb, CC, x = "=AL242", startRow = 242, startCol = 41)
+writeFormula(mywb, CC, x = "=AI243+1", startRow = 243, startCol = 41)
+writeFormula(mywb, CC, x = "=AI244+1", startRow = 244, startCol = 41)
+
+temp <- c()
+for (index in 245:287) {
+  temp <- c(temp, paste0("=AI", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 245, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL288", startRow = 288, startCol = 41)
+writeFormula(mywb, CC, x = "=AL289", startRow = 289, startCol = 41)
+writeFormula(mywb, CC, x = "=AL290", startRow = 290, startCol = 41)
+writeFormula(mywb, CC, x = "=AI291+1", startRow = 291, startCol = 41)
+writeFormula(mywb, CC, x = "=AI292+1", startRow = 292, startCol = 41)
+
+temp <- c()
+for (index in 293:335) {
+  temp <- c(temp, paste0("=AI", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 293, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL336", startRow = 336, startCol = 41)
+writeFormula(mywb, CC, x = "=AL337", startRow = 337, startCol = 41)
+writeFormula(mywb, CC, x = "=AL338", startRow = 338, startCol = 41)
+
+
 
 temp <- c()
 
@@ -2480,7 +2520,7 @@ for (index in 3:338) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AN", index, "&'Consumption Checks'!$BC$1&$BC$2,'EX-Ante Report'!S:S&'EX-Ante Report'!AK:AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1),SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1))/2,0))"))
+  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AN", index, "&'Consumption Checks'!$BC$1&$BC$2,'EX-Ante Report'!S:S&'EX-Ante Report'!AK:AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!$AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1),SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1))/2,0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 55)
 
@@ -2534,14 +2574,6 @@ for (i in 1:7) {
 
 temp <- c()
 for (total in totals) {
-  temp <- c(temp, paste0("=IF(AND(SUM(S", total-47, ":S", total, ")<0.01,SUM(S", total-47, ":S", total, ")>-0.01),\"TRUE\",\"FALSE\")"))
-}
-for (i in 1:7) {
-  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 21)
-}
-
-temp <- c()
-for (total in totals) {
   temp <- c(temp, paste0("=SUM(BI", total-47, ":BI", total, ")"))
 }
 for (i in 1:7) {
@@ -2557,9 +2589,23 @@ for (i in 1:7) {
 
 temp <- c()
 for (index in 3:338) {
+  temp <- c(temp, paste0("=AN", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 66)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=AQ", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 67)
+
+temp <- c()
+for (index in 3:338) {
   temp <- c(temp, paste0("=C", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 68)
+
+
 
 # Ex-ante Q Split
 temp <- c()
@@ -2741,26 +2787,39 @@ for (col in c(69:88, 90:97)) {
 ```
 
 
-
-
-
 ```{r EAC}
 # Ex-Ante Consumption sheet
 
 EAC <- "Ex-Ante Consumption"
 
-headings1 <- c(rep.int("", times = 6), "Forecasted Consumption", rep.int("", times = 3), "Ratio", rep.int("", times = 2), "Ex-Ante Q Results - SU_400173", rep.int("", times = 5), "Ex-Ante Q Results - AU_400117", rep.int("", times = 5), "Ex-Ante Q Results - AU_400117", rep.int("", times = 5), "Ex-Ante P Results", rep.int("", times = 4), "Ex-Ante Settled Results - SU_400173", rep.int("", times = 5), "Ex-Ante Settled Results - AU_400117", rep.int("", times = 5), "Results Split", "", "", "Settlement Split", rep.int("", times = 12), "Sale at positive price SU (Quantity)", rep.int("", times = 4), "Sale at negative price SU (Quantity)", rep.int("", times = 4), "Sale as positive price SU (Commodity)", rep.int("", times = 4), "Sale at negative price SU (Commodity)", rep.int("", times = 4), "Sale at positive price AU (Quantity)", rep.int("", times = 4), "Sale at negative price AU (Quantity)", rep.int("", times = 4), "Sale as positive price AU (Commodity)", rep.int("", times = 4), "Sale at negative price AU (Commodity)", rep.int("", times = 5), "Purchase at positive price SU (Quantity)", rep.int("", times = 4), "Purchase at negative price SU (Quantity)", rep.int("", times = 4), "Purchase as positive price SU (Commodity)", rep.int("", times = 4), "Purchase at negative price SU (Commodity)", rep.int("", times = 4), "Purchase at positive price AU (Quantity)", rep.int("", times = 4), "Purchase at negative price AU (Quantity)", rep.int("", times = 4), "Purchase as positive price AU (Commodity)", rep.int("", times = 4), "Purchase at negative price AU (Commodity)")
+headings1 <- c(rep.int("", times = 6),
+               "Forecasted Consumption", rep.int("", times = 3),
+               "Ratio", rep.int("", times = 2),
+               "Ex-Ante Q Results - SU_400173", rep.int("", times = 5),
+               "Ex-Ante Q Results - AU_400117", rep.int("", times = 5),
+               "Ex-Ante P Results", rep.int("", times = 4),
+               "Ex-Ante Settled Results - SU_400173", rep.int("", times = 5),
+               "Ex-Ante Settled Results - AU_400117", rep.int("", times = 5),
+               "Results Split", rep.int("", times = 2),
+               "Settlement Split", rep.int("", times = 12),
+               "Sale at positive price SU (Quantity)", rep.int("", times = 4), "Sale at negative price SU (Quantity)", rep.int("", times = 4),
+               "Sale as positive price SU (Commodity)", rep.int("", times = 4), "Sale at negative price SU (Commodity)", rep.int("", times = 4),
+               "Sale at positive price AU (Quantity)", rep.int("", times = 4), "Sale at negative price AU (Quantity)", rep.int("", times = 4),
+               "Sale as positive price AU (Commodity)", rep.int("", times = 4), "Sale at negative price AU (Commodity)", rep.int("", times = 5),
+               "Purchase at positive price SU (Quantity)", rep.int("", times = 4), "Purchase at negative price SU (Quantity)", rep.int("", times = 4),
+               "Purchase as positive price SU (Commodity)", rep.int("", times = 4), "Purchase at negative price SU (Commodity)", rep.int("", times = 4),
+               "Purchase at positive price AU (Quantity)", rep.int("", times = 4), "Purchase at negative price AU (Quantity)", rep.int("", times = 4),
+               "Purchase as positive price AU (Commodity)", rep.int("", times = 4), "Purchase at negative price AU (Commodity)")
 
 headings2 <- c("Lookup", "DAM Date/Time", "IDA Date/Time", "Settlement Date", "Forecast Date", "Forecast %",
-               "HH", "NHH", "PPA", "Total", "HH", "NHH", "PPA",
-               "Bought DAM", "Bought IDA1", "Bought IDA2", "Bought IDA3", "Bought IDC", "QEX",
-               "Bought DAM", "Bought IDA1", "Bought IDA2", "Bought IDA3", "Bought IDC", "QEX",
+               "HH", "NHH", "PPA", "Total", "HH", "NHH", "PPA", 
+               rep.int(c("Bought DAM", "Bought IDA1", "Bought IDA2", "Bought IDA3", "Bought IDC", "QEX"), times = 2),
                "Price DAM", "Price IDA1", "Price IDA2", "Price IDA3", "Price IDC",
-               "DAM", "IDA1", "IDA2", "IDA3", "IDC", "Total",
-               "DAM", "IDA1", "IDA2", "IDA3", "IDC", "Total",
-               "HH", "NHH", "PPA", "HH", "NHH", "PPA", "GU_5", "", "",
-               "Summary", "HH", "NHH", "PPA", "AU_400117", "Total", "", "", 
-               rep.int(c("DAM", "IDA1", "IDA2", "IDA3", "IDC"), times = 8), "", rep.int(c("DAM", "IDA1", "IDA2", "IDA3", "IDC"), times = 8))
+               rep.int(c("DAM", "IDA1", "IDA2", "IDA3", "IDC", "Total"), times = 2),
+               rep.int(c("HH", "NHH", "PPA"), times = 2), rep.int("", times = 2),
+               "Summary", "HH", "NHH", "PPA", "AU_400117", "Total", rep.int("", times = 2),
+               rep.int(c("DAM", "IDA1", "IDA2", "IDA3", "IDC"), times = 8), "",
+               rep.int(c("DAM", "IDA1", "IDA2", "IDA3", "IDC"), times = 8))
 
 for (COL in 1:length(headings1)) {
   writeData(wb = mywb, sheet = EAC, x = headings1[COL], startRow = 1, startCol = COL)
@@ -2805,19 +2864,19 @@ for (col in c(6,11:13)) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=((INDEX('X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$B$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$B$1:$AZ$1,0)))/1000)*F", index))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 7)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$C$1:$AX$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$B$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$B$1:$AX$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 8)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(-INDEX('X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$C$1:$AZ$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(-INDEX('X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$B$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$B$1:$AZ$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 9)
 
@@ -3059,9 +3118,10 @@ for (index in 3:338) {
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 48)
 
-
-
-writeData(wb = mywb, sheet = EAC, x = dates, startRow = 3, startCol = 51)
+temp <- c()
+for (index in 18:24) {
+  temp <- c(temp, paste0("=Summary!A", index))
+}; writeFormula(mywb, EAC, temp, startRow = 3, startCol = 51)
 
 temp <- c()
 for (index in 3:9) {
@@ -3093,10 +3153,10 @@ for (index in 3:9) {
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 56)
 
-writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(BE3:BE9)"), startRow = 11, startCol = 52)
-writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(BF3:BF9)"), startRow = 11, startCol = 53)
-writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(BG3:BG9)"), startRow = 11, startCol = 54)
-writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(BH3:BH9)"), startRow = 11, startCol = 55)
+writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(AZ3:AZ9)"), startRow = 11, startCol = 52)
+writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(BA3:BA9)"), startRow = 11, startCol = 53)
+writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(BB3:BB9)"), startRow = 11, startCol = 54)
+writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(BC3:BC9)"), startRow = 11, startCol = 55)
 
 # FORMATTING
 for (col in c(7:13,20:30,37:48)) {
@@ -3524,9 +3584,6 @@ for (index in 3:338) {
 ```
 
 
-
-
-
 ```{r EIS}
 # En & Imp Split sheet
 
@@ -3728,9 +3785,6 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 ```
 
 
-
-
-
 ```{r EMS}
 EMS <- "ECC Monthly Settlement"
 
@@ -3829,3 +3883,4 @@ for (index in c(4:10)) {
 saveWorkbook(mywb, outputfile, TRUE)
 
 ```
+
