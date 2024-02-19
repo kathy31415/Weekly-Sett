@@ -404,7 +404,7 @@ data.frame.na <- function (..., row.names = NULL, check.rows = FALSE, check.name
 ```
 
 
-```{r}
+```{r D+4}
 ################################################################################################################################################################################################
 ############################################################################## D+4 settlement section ##########################################################################################
 ################################################################################################################################################################################################
@@ -2105,7 +2105,7 @@ for (index in 50:97) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 5)
 
 temp <- c()
-for (index in 3:288) {
+for (index in 3:290) {
   temp <- c(temp, paste0("=E", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 5)
@@ -2202,10 +2202,20 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 39)
 
 
 temp <- c()
-for (index in 3:338) {
+for (index in 3:48) {
   temp <- c(temp, paste0("=BO", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 66)
+
+writeFormula(wb = mywb, sheet = CC, x = "=BN48+1", startRow = 51, startCol = 66)
+writeFormula(wb = mywb, sheet = CC, x = "=BN48+1", startRow = 52, startCol = 66)
+
+temp <- c()
+for (index in 3:290) {
+  temp <- c(temp, paste0("=BN+1", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 66)
+
 
 temp <- c()
 for (index in 3:338) {
@@ -2298,110 +2308,227 @@ for (index in 3:338) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 38)
 
 temp <- c()
-temp <- c("=AK3+TIME(1,30,0)", "=AK4+TIME(1,0,0)", "=AK5+TIME(1,30,0)", "=AK6+TIME(1,0,0)",
-          "=AK7+TIME(1,30,0)", "=AK8+TIME(1,0,0)", "=AK9+TIME(1,30,0)", "=AK10+TIME(1,0,0)",
-          "=AK11+TIME(1,30,0)", "=AK12+TIME(1,0,0)", "=AK13+TIME(1,30,0)", "=AK14+TIME(1,0,0)",
-          "=AK15+TIME(1,30,0)", "=AK16+TIME(1,0,0)", "=AK17+TIME(1,30,0)", "=AK18+TIME(1,0,0)",
-          "=AK19+TIME(1,30,0)", "=AK20+TIME(1,0,0)", "=AK21+TIME(1,30,0)", "=AK22+TIME(1,0,0)",
-          "=AK23+TIME(1,30,0)", "=AK24+TIME(1,0,0)", "=AK25+TIME(1,30,0)", "=AK26+TIME(1,0,0)",
-          "=AK27+TIME(1,30,0)", "=AK28+TIME(1,0,0)", "=AK29+TIME(1,30,0)", "=AK30+TIME(1,0,0)",
-          "=AK31+TIME(1,30,0)", "=AK32+TIME(1,0,0)", "=AK33+TIME(1,30,0)", "=AK34+TIME(1,0,0)",
-          "=AK35+TIME(1,30,0)", "=AK36+TIME(1,0,0)", "=AK37+TIME(1,30,0)", "=AK38+TIME(1,0,0)",
-          "=AK39+TIME(1,30,0)", "=AK40+TIME(1,0,0)", "=AK41+TIME(1,30,0)", "=AK42+TIME(1,0,0)",
-          "=AK43+TIME(1,30,0)", "=AK44+TIME(1,0,0)", "=AK45+TIME(1,30,0)", "=AK46+TIME(1,0,0)",
-          "=AK47+TIME(1,30,0)", "=AK48+TIME(1,0,0)", "=AK49+TIME(1,30,0)", "=AK50+TIME(1,0,0)",
-          "=AK51+TIME(1,30,0)", "=AK52+TIME(1,0,0)", "=AK53+TIME(1,30,0)", "=AK54+TIME(1,0,0)",
-          "=AK55+TIME(1,30,0)", "=AK56+TIME(1,0,0)", "=AK57+TIME(1,30,0)", "=AK58+TIME(1,0,0)",
-          "=AK59+TIME(1,30,0)", "=AK60+TIME(1,0,0)", "=AK61+TIME(1,30,0)", "=AK62+TIME(1,0,0)",
-          "=AK63+TIME(1,30,0)", "=AK64+TIME(1,0,0)", "=AK65+TIME(1,30,0)", "=AK66+TIME(1,0,0)",
-          "=AK67+TIME(1,30,0)", "=AK68+TIME(1,0,0)", "=AK69+TIME(1,30,0)", "=AK70+TIME(1,0,0)",
-          "=AK71+TIME(1,30,0)", "=AK72+TIME(1,0,0)", "=AK73+TIME(1,30,0)", "=AK74+TIME(1,0,0)",
-          "=AK75+TIME(1,30,0)", "=AK76+TIME(1,0,0)", "=AK77+TIME(1,30,0)", "=AK78+TIME(1,0,0)",
-          "=AK79+TIME(1,30,0)", "=AK80+TIME(1,0,0)", "=AK81+TIME(1,30,0)", "=AK82+TIME(1,0,0)",
-          "=AK83+TIME(1,30,0)", "=AK84+TIME(1,0,0)", "=AK85+TIME(1,30,0)", "=AK86+TIME(1,0,0)",
-          "=AK87+TIME(1,30,0)", "=AK88+TIME(1,0,0)", "=AK89+TIME(1,30,0)", "=AK90+TIME(1,0,0)",
-          "=AK91+TIME(1,30,0)", "=AK92+TIME(1,0,0)", "=AK93+TIME(1,30,0)", "=AK94+TIME(1,0,0)",
-          "=AK95+TIME(1,30,0)", "=AK96+TIME(1,0,0)", "=AK97+TIME(1,30,0)", "=AK98+TIME(1,0,0)",
-          "=AK99+TIME(1,30,0)", "=AK100+TIME(1,0,0)", "=AK101+TIME(1,30,0)", "=AK102+TIME(1,0,0)",
-          "=AK103+TIME(1,30,0)", "=AK104+TIME(1,0,0)", "=AK105+TIME(1,30,0)", "=AK106+TIME(1,0,0)",
-          "=AK107+TIME(1,30,0)", "=AK108+TIME(1,0,0)", "=AK109+TIME(1,30,0)", "=AK110+TIME(1,0,0)",
-          "=AK111+TIME(1,30,0)", "=AK112+TIME(1,0,0)", "=AK113+TIME(1,30,0)", "=AK114+TIME(1,0,0)",
-          "=AK115+TIME(1,30,0)", "=AK116+TIME(1,0,0)", "=AK117+TIME(1,30,0)", "=AK118+TIME(1,0,0)",
-          "=AK119+TIME(1,30,0)", "=AK120+TIME(1,0,0)", "=AK121+TIME(1,30,0)", "=AK122+TIME(1,0,0)",
-          "=AK123+TIME(1,30,0)", "=AK124+TIME(1,0,0)", "=AK125+TIME(1,30,0)", "=AK126+TIME(1,0,0)",
-          "=AK127+TIME(1,30,0)", "=AK128+TIME(1,0,0)", "=AK129+TIME(1,30,0)", "=AK130+TIME(1,0,0)",
-          "=AK131+TIME(1,30,0)", "=AK132+TIME(1,0,0)", "=AK133+TIME(1,30,0)", "=AK134+TIME(1,0,0)",
-          "=AK135+TIME(1,30,0)", "=AK136+TIME(1,0,0)", "=AK137+TIME(1,30,0)", "=AK138+TIME(1,0,0)",
-          "=AK139+TIME(1,30,0)", "=AK140+TIME(1,0,0)", "=AK141+TIME(1,30,0)", "=AK142+TIME(1,0,0)",
-          "=AK143+TIME(1,30,0)", "=AK144+TIME(1,0,0)", "=AK145+TIME(1,30,0)", "=AK146+TIME(1,0,0)",
-          "=AK147+TIME(1,30,0)", "=AK148+TIME(1,0,0)", "=AK149+TIME(1,30,0)", "=AK150+TIME(1,0,0)",
-          "=AK151+TIME(1,30,0)", "=AK152+TIME(1,0,0)", "=AK153+TIME(1,30,0)", "=AK154+TIME(1,0,0)",
-          "=AK155+TIME(1,30,0)", "=AK156+TIME(1,0,0)", "=AK157+TIME(1,30,0)", "=AK158+TIME(1,0,0)",
-          "=AK159+TIME(1,30,0)", "=AK160+TIME(1,0,0)", "=AK161+TIME(1,30,0)", "=AK162+TIME(1,0,0)",
-          "=AK163+TIME(1,30,0)", "=AK164+TIME(1,0,0)", "=AK165+TIME(1,30,0)", "=AK166+TIME(1,0,0)",
-          "=AK167+TIME(1,30,0)", "=AK168+TIME(1,0,0)", "=AK169+TIME(1,30,0)", "=AK170+TIME(1,0,0)",
-          "=AK171+TIME(1,30,0)", "=AK172+TIME(1,0,0)", "=AK173+TIME(1,30,0)", "=AK174+TIME(1,0,0)",
-          "=AK175+TIME(1,30,0)", "=AK176+TIME(1,0,0)", "=AK177+TIME(1,30,0)", "=AK178+TIME(1,0,0)",
-          "=AK179+TIME(1,30,0)", "=AK180+TIME(1,0,0)", "=AK181+TIME(1,30,0)", "=AK182+TIME(1,0,0)",
-          "=AK183+TIME(1,30,0)", "=AK184+TIME(1,0,0)", "=AK185+TIME(1,30,0)", "=AK186+TIME(1,0,0)",
-          "=AK187+TIME(1,30,0)", "=AK188+TIME(1,0,0)", "=AK189+TIME(1,30,0)", "=AK190+TIME(1,0,0)",
-          "=AK191+TIME(1,30,0)", "=AK192+TIME(1,0,0)", "=AK193+TIME(1,30,0)", "=AK194+TIME(1,0,0)",
-          "=AK195+TIME(1,30,0)", "=AK196+TIME(1,0,0)", "=AK197+TIME(1,30,0)", "=AK198+TIME(1,0,0)",
-          "=AK199+TIME(1,30,0)", "=AK200+TIME(1,0,0)", "=AK201+TIME(1,30,0)", "=AK202+TIME(1,0,0)",
-          "=AK203+TIME(1,30,0)", "=AK204+TIME(1,0,0)", "=AK205+TIME(1,30,0)", "=AK206+TIME(1,0,0)",
-          "=AK207+TIME(1,30,0)", "=AK208+TIME(1,0,0)", "=AK209+TIME(1,30,0)", "=AK210+TIME(1,0,0)",
-          "=AK211+TIME(1,30,0)", "=AK212+TIME(1,0,0)", "=AK213+TIME(1,30,0)", "=AK214+TIME(1,0,0)",
-          "=AK215+TIME(1,30,0)", "=AK216+TIME(1,0,0)", "=AK217+TIME(1,30,0)", "=AK218+TIME(1,0,0)",
-          "=AK219+TIME(1,30,0)", "=AK220+TIME(1,0,0)", "=AK221+TIME(1,30,0)", "=AK222+TIME(1,0,0)",
-          "=AK223+TIME(1,30,0)", "=AK224+TIME(1,0,0)", "=AK225+TIME(1,30,0)", "=AK226+TIME(1,0,0)",
-          "=AK227+TIME(1,30,0)", "=AK228+TIME(1,0,0)", "=AK229+TIME(1,30,0)", "=AK230+TIME(1,0,0)",
-          "=AK231+TIME(1,30,0)", "=AK232+TIME(1,0,0)", "=AK233+TIME(1,30,0)", "=AK234+TIME(1,0,0)",
-          "=AK235+TIME(1,30,0)", "=AK236+TIME(1,0,0)", "=AK237+TIME(1,30,0)", "=AK238+TIME(1,0,0)",
-          "=AK239+TIME(1,30,0)", "=AK240+TIME(1,0,0)", "=AK241+TIME(1,30,0)", "=AK242+TIME(1,0,0)",
-          "=AK243+TIME(1,30,0)", "=AK244+TIME(1,0,0)", "=AK245+TIME(1,30,0)", "=AK246+TIME(1,0,0)",
-          "=AK247+TIME(1,30,0)", "=AK248+TIME(1,0,0)", "=AK249+TIME(1,30,0)", "=AK250+TIME(1,0,0)",
-          "=AK251+TIME(1,30,0)", "=AK252+TIME(1,0,0)", "=AK253+TIME(1,30,0)", "=AK254+TIME(1,0,0)",
-          "=AK255+TIME(1,30,0)", "=AK256+TIME(1,0,0)", "=AK257+TIME(1,30,0)", "=AK258+TIME(1,0,0)",
-          "=AK259+TIME(1,30,0)", "=AK260+TIME(1,0,0)", "=AK261+TIME(1,30,0)", "=AK262+TIME(1,0,0)",
-          "=AK263+TIME(1,30,0)", "=AK264+TIME(1,0,0)", "=AK265+TIME(1,30,0)", "=AK266+TIME(1,0,0)",
-          "=AK267+TIME(1,30,0)", "=AK268+TIME(1,0,0)", "=AK269+TIME(1,30,0)", "=AK270+TIME(1,0,0)",
-          "=AK271+TIME(1,30,0)", "=AK272+TIME(1,0,0)", "=AK273+TIME(1,30,0)", "=AK274+TIME(1,0,0)",
-          "=AK275+TIME(1,30,0)", "=AK276+TIME(1,0,0)", "=AK277+TIME(1,30,0)", "=AK278+TIME(1,0,0)",
-          "=AK279+TIME(1,30,0)", "=AK280+TIME(1,0,0)", "=AK281+TIME(1,30,0)", "=AK282+TIME(1,0,0)",
-          "=AK283+TIME(1,30,0)", "=AK284+TIME(1,0,0)", "=AK285+TIME(1,30,0)", "=AK286+TIME(1,0,0)",
-          "=AK287+TIME(1,30,0)", "=AK288+TIME(1,0,0)", "=AK289+TIME(1,30,0)", "=AK290+TIME(1,0,0)",
-          "=AK291+TIME(1,30,0)", "=AK292+TIME(1,0,0)", "=AK293+TIME(1,30,0)", "=AK294+TIME(1,0,0)",
-          "=AK295+TIME(1,30,0)", "=AK296+TIME(1,0,0)", "=AK297+TIME(1,30,0)", "=AK298+TIME(1,0,0)",
-          "=AK299+TIME(1,30,0)", "=AK300+TIME(1,0,0)", "=AK301+TIME(1,30,0)", "=AK302+TIME(1,0,0)",
-          "=AK303+TIME(1,30,0)", "=AK304+TIME(1,0,0)", "=AK305+TIME(1,30,0)", "=AK306+TIME(1,0,0)",
-          "=AK307+TIME(1,30,0)", "=AK308+TIME(1,0,0)", "=AK309+TIME(1,30,0)", "=AK310+TIME(1,0,0)",
-          "=AK311+TIME(1,30,0)", "=AK312+TIME(1,0,0)", "=AK313+TIME(1,30,0)", "=AK314+TIME(1,0,0)",
-          "=AK315+TIME(1,30,0)", "=AK316+TIME(1,0,0)", "=AK317+TIME(1,30,0)", "=AK318+TIME(1,0,0)",
-          "=AK319+TIME(1,30,0)", "=AK320+TIME(1,0,0)", "=AK321+TIME(1,30,0)", "=AK322+TIME(1,0,0)",
-          "=AK323+TIME(1,30,0)", "=AK324+TIME(1,0,0)", "=AK325+TIME(1,30,0)", "=AK326+TIME(1,0,0)",
-          "=AK327+TIME(1,30,0)", "=AK328+TIME(1,0,0)", "=AK329+TIME(1,30,0)", "=AK330+TIME(1,0,0)",
-          "=AK331+TIME(1,30,0)", "=AK332+TIME(1,0,0)", "=AK333+TIME(1,30,0)", "=AK334+TIME(1,0,0)",
-          "=AK335+TIME(1,30,0)", "=AK336+TIME(1,0,0)", "=AK337+TIME(1,30,0)", "=AK338+TIME(1,0,0)"
+
+winter <- c("=AK3+TIME(1,30,0)", "=AK4+TIME(1,0,0)", "=AK5+TIME(1,30,0)", "=AK6+TIME(1,0,0)",
+            "=AK7+TIME(1,30,0)", "=AK8+TIME(1,0,0)", "=AK9+TIME(1,30,0)", "=AK10+TIME(1,0,0)",
+            "=AK11+TIME(1,30,0)", "=AK12+TIME(1,0,0)", "=AK13+TIME(1,30,0)", "=AK14+TIME(1,0,0)",
+            "=AK15+TIME(1,30,0)", "=AK16+TIME(1,0,0)", "=AK17+TIME(1,30,0)", "=AK18+TIME(1,0,0)",
+            "=AK19+TIME(1,30,0)", "=AK20+TIME(1,0,0)", "=AK21+TIME(1,30,0)", "=AK22+TIME(1,0,0)",
+            "=AK23+TIME(1,30,0)", "=AK24+TIME(1,0,0)", "=AK25+TIME(1,30,0)", "=AK26+TIME(1,0,0)",
+            "=AK27+TIME(1,30,0)", "=AK28+TIME(1,0,0)", "=AK29+TIME(1,30,0)", "=AK30+TIME(1,0,0)",
+            "=AK31+TIME(1,30,0)", "=AK32+TIME(1,0,0)", "=AK33+TIME(1,30,0)", "=AK34+TIME(1,0,0)",
+            "=AK35+TIME(1,30,0)", "=AK36+TIME(1,0,0)", "=AK37+TIME(1,30,0)", "=AK38+TIME(1,0,0)",
+            "=AK39+TIME(1,30,0)", "=AK40+TIME(1,0,0)", "=AK41+TIME(1,30,0)", "=AK42+TIME(1,0,0)",
+            "=AK43+TIME(1,30,0)", "=AK44+TIME(1,0,0)", "=AK45+TIME(1,30,0)", "=AK46+TIME(1,0,0)",
+            "=AK47+TIME(1,30,0)", "=AK48+TIME(1,0,0)", "=AK49+TIME(1,30,0)", "=AK50+TIME(1,0,0)",
+            "=AK51+TIME(1,30,0)", "=AK52+TIME(1,0,0)", "=AK53+TIME(1,30,0)", "=AK54+TIME(1,0,0)",
+            "=AK55+TIME(1,30,0)", "=AK56+TIME(1,0,0)", "=AK57+TIME(1,30,0)", "=AK58+TIME(1,0,0)",
+            "=AK59+TIME(1,30,0)", "=AK60+TIME(1,0,0)", "=AK61+TIME(1,30,0)", "=AK62+TIME(1,0,0)",
+            "=AK63+TIME(1,30,0)", "=AK64+TIME(1,0,0)", "=AK65+TIME(1,30,0)", "=AK66+TIME(1,0,0)",
+            "=AK67+TIME(1,30,0)", "=AK68+TIME(1,0,0)", "=AK69+TIME(1,30,0)", "=AK70+TIME(1,0,0)",
+            "=AK71+TIME(1,30,0)", "=AK72+TIME(1,0,0)", "=AK73+TIME(1,30,0)", "=AK74+TIME(1,0,0)",
+            "=AK75+TIME(1,30,0)", "=AK76+TIME(1,0,0)", "=AK77+TIME(1,30,0)", "=AK78+TIME(1,0,0)",
+            "=AK79+TIME(1,30,0)", "=AK80+TIME(1,0,0)", "=AK81+TIME(1,30,0)", "=AK82+TIME(1,0,0)",
+            "=AK83+TIME(1,30,0)", "=AK84+TIME(1,0,0)", "=AK85+TIME(1,30,0)", "=AK86+TIME(1,0,0)",
+            "=AK87+TIME(1,30,0)", "=AK88+TIME(1,0,0)", "=AK89+TIME(1,30,0)", "=AK90+TIME(1,0,0)",
+            "=AK91+TIME(1,30,0)", "=AK92+TIME(1,0,0)", "=AK93+TIME(1,30,0)", "=AK94+TIME(1,0,0)",
+            "=AK95+TIME(1,30,0)", "=AK96+TIME(1,0,0)", "=AK97+TIME(1,30,0)", "=AK98+TIME(1,0,0)",
+            "=AK99+TIME(1,30,0)", "=AK100+TIME(1,0,0)", "=AK101+TIME(1,30,0)", "=AK102+TIME(1,0,0)",
+            "=AK103+TIME(1,30,0)", "=AK104+TIME(1,0,0)", "=AK105+TIME(1,30,0)", "=AK106+TIME(1,0,0)",
+            "=AK107+TIME(1,30,0)", "=AK108+TIME(1,0,0)", "=AK109+TIME(1,30,0)", "=AK110+TIME(1,0,0)",
+            "=AK111+TIME(1,30,0)", "=AK112+TIME(1,0,0)", "=AK113+TIME(1,30,0)", "=AK114+TIME(1,0,0)",
+            "=AK115+TIME(1,30,0)", "=AK116+TIME(1,0,0)", "=AK117+TIME(1,30,0)", "=AK118+TIME(1,0,0)",
+            "=AK119+TIME(1,30,0)", "=AK120+TIME(1,0,0)", "=AK121+TIME(1,30,0)", "=AK122+TIME(1,0,0)",
+            "=AK123+TIME(1,30,0)", "=AK124+TIME(1,0,0)", "=AK125+TIME(1,30,0)", "=AK126+TIME(1,0,0)",
+            "=AK127+TIME(1,30,0)", "=AK128+TIME(1,0,0)", "=AK129+TIME(1,30,0)", "=AK130+TIME(1,0,0)",
+            "=AK131+TIME(1,30,0)", "=AK132+TIME(1,0,0)", "=AK133+TIME(1,30,0)", "=AK134+TIME(1,0,0)",
+            "=AK135+TIME(1,30,0)", "=AK136+TIME(1,0,0)", "=AK137+TIME(1,30,0)", "=AK138+TIME(1,0,0)",
+            "=AK139+TIME(1,30,0)", "=AK140+TIME(1,0,0)", "=AK141+TIME(1,30,0)", "=AK142+TIME(1,0,0)",
+            "=AK143+TIME(1,30,0)", "=AK144+TIME(1,0,0)", "=AK145+TIME(1,30,0)", "=AK146+TIME(1,0,0)",
+            "=AK147+TIME(1,30,0)", "=AK148+TIME(1,0,0)", "=AK149+TIME(1,30,0)", "=AK150+TIME(1,0,0)",
+            "=AK151+TIME(1,30,0)", "=AK152+TIME(1,0,0)", "=AK153+TIME(1,30,0)", "=AK154+TIME(1,0,0)",
+            "=AK155+TIME(1,30,0)", "=AK156+TIME(1,0,0)", "=AK157+TIME(1,30,0)", "=AK158+TIME(1,0,0)",
+            "=AK159+TIME(1,30,0)", "=AK160+TIME(1,0,0)", "=AK161+TIME(1,30,0)", "=AK162+TIME(1,0,0)",
+            "=AK163+TIME(1,30,0)", "=AK164+TIME(1,0,0)", "=AK165+TIME(1,30,0)", "=AK166+TIME(1,0,0)",
+            "=AK167+TIME(1,30,0)", "=AK168+TIME(1,0,0)", "=AK169+TIME(1,30,0)", "=AK170+TIME(1,0,0)",
+            "=AK171+TIME(1,30,0)", "=AK172+TIME(1,0,0)", "=AK173+TIME(1,30,0)", "=AK174+TIME(1,0,0)",
+            "=AK175+TIME(1,30,0)", "=AK176+TIME(1,0,0)", "=AK177+TIME(1,30,0)", "=AK178+TIME(1,0,0)",
+            "=AK179+TIME(1,30,0)", "=AK180+TIME(1,0,0)", "=AK181+TIME(1,30,0)", "=AK182+TIME(1,0,0)",
+            "=AK183+TIME(1,30,0)", "=AK184+TIME(1,0,0)", "=AK185+TIME(1,30,0)", "=AK186+TIME(1,0,0)",
+            "=AK187+TIME(1,30,0)", "=AK188+TIME(1,0,0)", "=AK189+TIME(1,30,0)", "=AK190+TIME(1,0,0)",
+            "=AK191+TIME(1,30,0)", "=AK192+TIME(1,0,0)", "=AK193+TIME(1,30,0)", "=AK194+TIME(1,0,0)",
+            "=AK195+TIME(1,30,0)", "=AK196+TIME(1,0,0)", "=AK197+TIME(1,30,0)", "=AK198+TIME(1,0,0)",
+            "=AK199+TIME(1,30,0)", "=AK200+TIME(1,0,0)", "=AK201+TIME(1,30,0)", "=AK202+TIME(1,0,0)",
+            "=AK203+TIME(1,30,0)", "=AK204+TIME(1,0,0)", "=AK205+TIME(1,30,0)", "=AK206+TIME(1,0,0)",
+            "=AK207+TIME(1,30,0)", "=AK208+TIME(1,0,0)", "=AK209+TIME(1,30,0)", "=AK210+TIME(1,0,0)",
+            "=AK211+TIME(1,30,0)", "=AK212+TIME(1,0,0)", "=AK213+TIME(1,30,0)", "=AK214+TIME(1,0,0)",
+            "=AK215+TIME(1,30,0)", "=AK216+TIME(1,0,0)", "=AK217+TIME(1,30,0)", "=AK218+TIME(1,0,0)",
+            "=AK219+TIME(1,30,0)", "=AK220+TIME(1,0,0)", "=AK221+TIME(1,30,0)", "=AK222+TIME(1,0,0)",
+            "=AK223+TIME(1,30,0)", "=AK224+TIME(1,0,0)", "=AK225+TIME(1,30,0)", "=AK226+TIME(1,0,0)",
+            "=AK227+TIME(1,30,0)", "=AK228+TIME(1,0,0)", "=AK229+TIME(1,30,0)", "=AK230+TIME(1,0,0)",
+            "=AK231+TIME(1,30,0)", "=AK232+TIME(1,0,0)", "=AK233+TIME(1,30,0)", "=AK234+TIME(1,0,0)",
+            "=AK235+TIME(1,30,0)", "=AK236+TIME(1,0,0)", "=AK237+TIME(1,30,0)", "=AK238+TIME(1,0,0)",
+            "=AK239+TIME(1,30,0)", "=AK240+TIME(1,0,0)", "=AK241+TIME(1,30,0)", "=AK242+TIME(1,0,0)",
+            "=AK243+TIME(1,30,0)", "=AK244+TIME(1,0,0)", "=AK245+TIME(1,30,0)", "=AK246+TIME(1,0,0)",
+            "=AK247+TIME(1,30,0)", "=AK248+TIME(1,0,0)", "=AK249+TIME(1,30,0)", "=AK250+TIME(1,0,0)",
+            "=AK251+TIME(1,30,0)", "=AK252+TIME(1,0,0)", "=AK253+TIME(1,30,0)", "=AK254+TIME(1,0,0)",
+            "=AK255+TIME(1,30,0)", "=AK256+TIME(1,0,0)", "=AK257+TIME(1,30,0)", "=AK258+TIME(1,0,0)",
+            "=AK259+TIME(1,30,0)", "=AK260+TIME(1,0,0)", "=AK261+TIME(1,30,0)", "=AK262+TIME(1,0,0)",
+            "=AK263+TIME(1,30,0)", "=AK264+TIME(1,0,0)", "=AK265+TIME(1,30,0)", "=AK266+TIME(1,0,0)",
+            "=AK267+TIME(1,30,0)", "=AK268+TIME(1,0,0)", "=AK269+TIME(1,30,0)", "=AK270+TIME(1,0,0)",
+            "=AK271+TIME(1,30,0)", "=AK272+TIME(1,0,0)", "=AK273+TIME(1,30,0)", "=AK274+TIME(1,0,0)",
+            "=AK275+TIME(1,30,0)", "=AK276+TIME(1,0,0)", "=AK277+TIME(1,30,0)", "=AK278+TIME(1,0,0)",
+            "=AK279+TIME(1,30,0)", "=AK280+TIME(1,0,0)", "=AK281+TIME(1,30,0)", "=AK282+TIME(1,0,0)",
+            "=AK283+TIME(1,30,0)", "=AK284+TIME(1,0,0)", "=AK285+TIME(1,30,0)", "=AK286+TIME(1,0,0)",
+            "=AK287+TIME(1,30,0)", "=AK288+TIME(1,0,0)", "=AK289+TIME(1,30,0)", "=AK290+TIME(1,0,0)",
+            "=AK291+TIME(1,30,0)", "=AK292+TIME(1,0,0)", "=AK293+TIME(1,30,0)", "=AK294+TIME(1,0,0)",
+            "=AK295+TIME(1,30,0)", "=AK296+TIME(1,0,0)", "=AK297+TIME(1,30,0)", "=AK298+TIME(1,0,0)",
+            "=AK299+TIME(1,30,0)", "=AK300+TIME(1,0,0)", "=AK301+TIME(1,30,0)", "=AK302+TIME(1,0,0)",
+            "=AK303+TIME(1,30,0)", "=AK304+TIME(1,0,0)", "=AK305+TIME(1,30,0)", "=AK306+TIME(1,0,0)",
+            "=AK307+TIME(1,30,0)", "=AK308+TIME(1,0,0)", "=AK309+TIME(1,30,0)", "=AK310+TIME(1,0,0)",
+            "=AK311+TIME(1,30,0)", "=AK312+TIME(1,0,0)", "=AK313+TIME(1,30,0)", "=AK314+TIME(1,0,0)",
+            "=AK315+TIME(1,30,0)", "=AK316+TIME(1,0,0)", "=AK317+TIME(1,30,0)", "=AK318+TIME(1,0,0)",
+            "=AK319+TIME(1,30,0)", "=AK320+TIME(1,0,0)", "=AK321+TIME(1,30,0)", "=AK322+TIME(1,0,0)",
+            "=AK323+TIME(1,30,0)", "=AK324+TIME(1,0,0)", "=AK325+TIME(1,30,0)", "=AK326+TIME(1,0,0)",
+            "=AK327+TIME(1,30,0)", "=AK328+TIME(1,0,0)", "=AK329+TIME(1,30,0)", "=AK330+TIME(1,0,0)",
+            "=AK331+TIME(1,30,0)", "=AK332+TIME(1,0,0)", "=AK333+TIME(1,30,0)", "=AK334+TIME(1,0,0)",
+            "=AK335+TIME(1,30,0)", "=AK336+TIME(1,0,0)", "=AK337+TIME(1,30,0)", "=AK338+TIME(1,0,0)"
 )
+
+summer <- c("=AK3+TIME(2,30,0)", "=AK4+TIME(2,0,0)", "=AK5+TIME(2,30,0)", "=AK6+TIME(2,0,0)",
+            "=AK7+TIME(2,30,0)", "=AK8+TIME(2,0,0)", "=AK9+TIME(2,30,0)", "=AK10+TIME(2,0,0)",
+            "=AK11+TIME(2,30,0)", "=AK12+TIME(2,0,0)", "=AK13+TIME(2,30,0)", "=AK14+TIME(2,0,0)",
+            "=AK15+TIME(2,30,0)", "=AK16+TIME(2,0,0)", "=AK17+TIME(2,30,0)", "=AK18+TIME(2,0,0)",
+            "=AK19+TIME(2,30,0)", "=AK20+TIME(2,0,0)", "=AK21+TIME(2,30,0)", "=AK22+TIME(2,0,0)",
+            "=AK23+TIME(2,30,0)", "=AK24+TIME(2,0,0)", "=AK25+TIME(2,30,0)", "=AK26+TIME(2,0,0)",
+            "=AK27+TIME(2,30,0)", "=AK28+TIME(2,0,0)", "=AK29+TIME(2,30,0)", "=AK30+TIME(2,0,0)",
+            "=AK31+TIME(2,30,0)", "=AK32+TIME(2,0,0)", "=AK33+TIME(2,30,0)", "=AK34+TIME(2,0,0)",
+            "=AK35+TIME(2,30,0)", "=AK36+TIME(2,0,0)", "=AK37+TIME(2,30,0)", "=AK38+TIME(2,0,0)",
+            "=AK39+TIME(2,30,0)", "=AK40+TIME(2,0,0)", "=AK41+TIME(2,30,0)", "=AK42+TIME(2,0,0)",
+            "=AK43+TIME(2,30,0)", "=AK44+TIME(2,0,0)", "=AK45+TIME(2,30,0)", "=AK46+TIME(2,0,0)",
+            "=AK47+TIME(2,30,0)", "=AK48+TIME(2,0,0)", "=AK49+TIME(2,30,0)", "=AK50+TIME(2,0,0)",
+            "=AK51+TIME(2,30,0)", "=AK52+TIME(2,0,0)", "=AK53+TIME(2,30,0)", "=AK54+TIME(2,0,0)",
+            "=AK55+TIME(2,30,0)", "=AK56+TIME(2,0,0)", "=AK57+TIME(2,30,0)", "=AK58+TIME(2,0,0)",
+            "=AK59+TIME(2,30,0)", "=AK60+TIME(2,0,0)", "=AK61+TIME(2,30,0)", "=AK62+TIME(2,0,0)",
+            "=AK63+TIME(2,30,0)", "=AK64+TIME(2,0,0)", "=AK65+TIME(2,30,0)", "=AK66+TIME(2,0,0)",
+            "=AK67+TIME(2,30,0)", "=AK68+TIME(2,0,0)", "=AK69+TIME(2,30,0)", "=AK70+TIME(2,0,0)",
+            "=AK71+TIME(2,30,0)", "=AK72+TIME(2,0,0)", "=AK73+TIME(2,30,0)", "=AK74+TIME(2,0,0)",
+            "=AK75+TIME(2,30,0)", "=AK76+TIME(2,0,0)", "=AK77+TIME(2,30,0)", "=AK78+TIME(2,0,0)",
+            "=AK79+TIME(2,30,0)", "=AK80+TIME(2,0,0)", "=AK81+TIME(2,30,0)", "=AK82+TIME(2,0,0)",
+            "=AK83+TIME(2,30,0)", "=AK84+TIME(2,0,0)", "=AK85+TIME(2,30,0)", "=AK86+TIME(2,0,0)",
+            "=AK87+TIME(2,30,0)", "=AK88+TIME(2,0,0)", "=AK89+TIME(2,30,0)", "=AK90+TIME(2,0,0)",
+            "=AK91+TIME(2,30,0)", "=AK92+TIME(2,0,0)", "=AK93+TIME(2,30,0)", "=AK94+TIME(2,0,0)",
+            "=AK95+TIME(2,30,0)", "=AK96+TIME(2,0,0)", "=AK97+TIME(2,30,0)", "=AK98+TIME(2,0,0)",
+            "=AK99+TIME(2,30,0)", "=AK100+TIME(2,0,0)", "=AK101+TIME(2,30,0)", "=AK102+TIME(2,0,0)",
+            "=AK103+TIME(2,30,0)", "=AK104+TIME(2,0,0)", "=AK105+TIME(2,30,0)", "=AK106+TIME(2,0,0)",
+            "=AK107+TIME(2,30,0)", "=AK108+TIME(2,0,0)", "=AK109+TIME(2,30,0)", "=AK110+TIME(2,0,0)",
+            "=AK111+TIME(2,30,0)", "=AK112+TIME(2,0,0)", "=AK113+TIME(2,30,0)", "=AK114+TIME(2,0,0)",
+            "=AK115+TIME(2,30,0)", "=AK116+TIME(2,0,0)", "=AK117+TIME(2,30,0)", "=AK118+TIME(2,0,0)",
+            "=AK119+TIME(2,30,0)", "=AK120+TIME(2,0,0)", "=AK121+TIME(2,30,0)", "=AK122+TIME(2,0,0)",
+            "=AK123+TIME(2,30,0)", "=AK124+TIME(2,0,0)", "=AK125+TIME(2,30,0)", "=AK126+TIME(2,0,0)",
+            "=AK127+TIME(2,30,0)", "=AK128+TIME(2,0,0)", "=AK129+TIME(2,30,0)", "=AK130+TIME(2,0,0)",
+            "=AK131+TIME(2,30,0)", "=AK132+TIME(2,0,0)", "=AK133+TIME(2,30,0)", "=AK134+TIME(2,0,0)",
+            "=AK135+TIME(2,30,0)", "=AK136+TIME(2,0,0)", "=AK137+TIME(2,30,0)", "=AK138+TIME(2,0,0)",
+            "=AK139+TIME(2,30,0)", "=AK140+TIME(2,0,0)", "=AK141+TIME(2,30,0)", "=AK142+TIME(2,0,0)",
+            "=AK143+TIME(2,30,0)", "=AK144+TIME(2,0,0)", "=AK145+TIME(2,30,0)", "=AK146+TIME(2,0,0)",
+            "=AK147+TIME(2,30,0)", "=AK148+TIME(2,0,0)", "=AK149+TIME(2,30,0)", "=AK150+TIME(2,0,0)",
+            "=AK151+TIME(2,30,0)", "=AK152+TIME(2,0,0)", "=AK153+TIME(2,30,0)", "=AK154+TIME(2,0,0)",
+            "=AK155+TIME(2,30,0)", "=AK156+TIME(2,0,0)", "=AK157+TIME(2,30,0)", "=AK158+TIME(2,0,0)",
+            "=AK159+TIME(2,30,0)", "=AK160+TIME(2,0,0)", "=AK161+TIME(2,30,0)", "=AK162+TIME(2,0,0)",
+            "=AK163+TIME(2,30,0)", "=AK164+TIME(2,0,0)", "=AK165+TIME(2,30,0)", "=AK166+TIME(2,0,0)",
+            "=AK167+TIME(2,30,0)", "=AK168+TIME(2,0,0)", "=AK169+TIME(2,30,0)", "=AK170+TIME(2,0,0)",
+            "=AK171+TIME(2,30,0)", "=AK172+TIME(2,0,0)", "=AK173+TIME(2,30,0)", "=AK174+TIME(2,0,0)",
+            "=AK175+TIME(2,30,0)", "=AK176+TIME(2,0,0)", "=AK177+TIME(2,30,0)", "=AK178+TIME(2,0,0)",
+            "=AK179+TIME(2,30,0)", "=AK180+TIME(2,0,0)", "=AK181+TIME(2,30,0)", "=AK182+TIME(2,0,0)",
+            "=AK183+TIME(2,30,0)", "=AK184+TIME(2,0,0)", "=AK185+TIME(2,30,0)", "=AK186+TIME(2,0,0)",
+            "=AK187+TIME(2,30,0)", "=AK188+TIME(2,0,0)", "=AK189+TIME(2,30,0)", "=AK190+TIME(2,0,0)",
+            "=AK191+TIME(2,30,0)", "=AK192+TIME(2,0,0)", "=AK193+TIME(2,30,0)", "=AK194+TIME(2,0,0)",
+            "=AK195+TIME(2,30,0)", "=AK196+TIME(2,0,0)", "=AK197+TIME(2,30,0)", "=AK198+TIME(2,0,0)",
+            "=AK199+TIME(2,30,0)", "=AK200+TIME(2,0,0)", "=AK201+TIME(2,30,0)", "=AK202+TIME(2,0,0)",
+            "=AK203+TIME(2,30,0)", "=AK204+TIME(2,0,0)", "=AK205+TIME(2,30,0)", "=AK206+TIME(2,0,0)",
+            "=AK207+TIME(2,30,0)", "=AK208+TIME(2,0,0)", "=AK209+TIME(2,30,0)", "=AK210+TIME(2,0,0)",
+            "=AK211+TIME(2,30,0)", "=AK212+TIME(2,0,0)", "=AK213+TIME(2,30,0)", "=AK214+TIME(2,0,0)",
+            "=AK215+TIME(2,30,0)", "=AK216+TIME(2,0,0)", "=AK217+TIME(2,30,0)", "=AK218+TIME(2,0,0)",
+            "=AK219+TIME(2,30,0)", "=AK220+TIME(2,0,0)", "=AK221+TIME(2,30,0)", "=AK222+TIME(2,0,0)",
+            "=AK223+TIME(2,30,0)", "=AK224+TIME(2,0,0)", "=AK225+TIME(2,30,0)", "=AK226+TIME(2,0,0)",
+            "=AK227+TIME(2,30,0)", "=AK228+TIME(2,0,0)", "=AK229+TIME(2,30,0)", "=AK230+TIME(2,0,0)",
+            "=AK231+TIME(2,30,0)", "=AK232+TIME(2,0,0)", "=AK233+TIME(2,30,0)", "=AK234+TIME(2,0,0)",
+            "=AK235+TIME(2,30,0)", "=AK236+TIME(2,0,0)", "=AK237+TIME(2,30,0)", "=AK238+TIME(2,0,0)",
+            "=AK239+TIME(2,30,0)", "=AK240+TIME(2,0,0)", "=AK241+TIME(2,30,0)", "=AK242+TIME(2,0,0)",
+            "=AK243+TIME(2,30,0)", "=AK244+TIME(2,0,0)", "=AK245+TIME(2,30,0)", "=AK246+TIME(2,0,0)",
+            "=AK247+TIME(2,30,0)", "=AK248+TIME(2,0,0)", "=AK249+TIME(2,30,0)", "=AK250+TIME(2,0,0)",
+            "=AK251+TIME(2,30,0)", "=AK252+TIME(2,0,0)", "=AK253+TIME(2,30,0)", "=AK254+TIME(2,0,0)",
+            "=AK255+TIME(2,30,0)", "=AK256+TIME(2,0,0)", "=AK257+TIME(2,30,0)", "=AK258+TIME(2,0,0)",
+            "=AK259+TIME(2,30,0)", "=AK260+TIME(2,0,0)", "=AK261+TIME(2,30,0)", "=AK262+TIME(2,0,0)",
+            "=AK263+TIME(2,30,0)", "=AK264+TIME(2,0,0)", "=AK265+TIME(2,30,0)", "=AK266+TIME(2,0,0)",
+            "=AK267+TIME(2,30,0)", "=AK268+TIME(2,0,0)", "=AK269+TIME(2,30,0)", "=AK270+TIME(2,0,0)",
+            "=AK271+TIME(2,30,0)", "=AK272+TIME(2,0,0)", "=AK273+TIME(2,30,0)", "=AK274+TIME(2,0,0)",
+            "=AK275+TIME(2,30,0)", "=AK276+TIME(2,0,0)", "=AK277+TIME(2,30,0)", "=AK278+TIME(2,0,0)",
+            "=AK279+TIME(2,30,0)", "=AK280+TIME(2,0,0)", "=AK281+TIME(2,30,0)", "=AK282+TIME(2,0,0)",
+            "=AK283+TIME(2,30,0)", "=AK284+TIME(2,0,0)", "=AK285+TIME(2,30,0)", "=AK286+TIME(2,0,0)",
+            "=AK287+TIME(2,30,0)", "=AK288+TIME(2,0,0)", "=AK289+TIME(2,30,0)", "=AK290+TIME(2,0,0)",
+            "=AK291+TIME(2,30,0)", "=AK292+TIME(2,0,0)", "=AK293+TIME(2,30,0)", "=AK294+TIME(2,0,0)",
+            "=AK295+TIME(2,30,0)", "=AK296+TIME(2,0,0)", "=AK297+TIME(2,30,0)", "=AK298+TIME(2,0,0)",
+            "=AK299+TIME(2,30,0)", "=AK300+TIME(2,0,0)", "=AK301+TIME(2,30,0)", "=AK302+TIME(2,0,0)",
+            "=AK303+TIME(2,30,0)", "=AK304+TIME(2,0,0)", "=AK305+TIME(2,30,0)", "=AK306+TIME(2,0,0)",
+            "=AK307+TIME(2,30,0)", "=AK308+TIME(2,0,0)", "=AK309+TIME(2,30,0)", "=AK310+TIME(2,0,0)",
+            "=AK311+TIME(2,30,0)", "=AK312+TIME(2,0,0)", "=AK313+TIME(2,30,0)", "=AK314+TIME(2,0,0)",
+            "=AK315+TIME(2,30,0)", "=AK316+TIME(2,0,0)", "=AK317+TIME(2,30,0)", "=AK318+TIME(2,0,0)",
+            "=AK319+TIME(2,30,0)", "=AK320+TIME(2,0,0)", "=AK321+TIME(2,30,0)", "=AK322+TIME(2,0,0)",
+            "=AK323+TIME(2,30,0)", "=AK324+TIME(2,0,0)", "=AK325+TIME(2,30,0)", "=AK326+TIME(2,0,0)",
+            "=AK327+TIME(2,30,0)", "=AK328+TIME(2,0,0)", "=AK329+TIME(2,30,0)", "=AK330+TIME(2,0,0)",
+            "=AK331+TIME(2,30,0)", "=AK332+TIME(2,0,0)", "=AK333+TIME(2,30,0)", "=AK334+TIME(2,0,0)",
+            "=AK335+TIME(2,30,0)", "=AK336+TIME(2,0,0)", "=AK337+TIME(2,30,0)", "=AK338+TIME(2,0,0)"
+)
+
+season <- c()
+
+if (firstday2 > as.Date(paste0(as.numeric(year)-1,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year),"-4-01"), format = "%Y-%m-%d")) {
+  temp <- winter
+  season <- "winter"
+} else {
+  temp <- summer
+  season <- "summer"
+}
+
 writeFormula(wb = mywb, sheet = CC, x = temp, startCol = 40, startRow = 3)
 
 temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=TEXT(AM", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AN", index, ",\"hh:mm:ss\")&\"+01:00\""))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 41)
 
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=AK", index, "+TIME(2,0,0)"))
+if (season == "winter") {
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=TEXT(AM", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AN", index, ",\"hh:mm:ss\")&\"+01:00\""))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 41)
+  } 
+  temp <- c()
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=AK", index, "+TIME(2,0,0)"))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
+  }
+  temp <- c()
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+02:00\""))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
+  }
+  temp <- c()
+} else if (season == "summer") {
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=TEXT(AM", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AN", index, ",\"hh:mm:ss\")&\"+02:00\""))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 41)
+  } 
+  temp <- c()
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=AK", index, "+TIME(1,0,0)"))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
+  }
+  temp <- c()
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+01:00\""))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
+  }
+  temp <- c()
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
 
-temp <- c()
-for (index in 3:338) {
-  temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+02:00\""))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
 
 temp <- c()
 for (index in 3:338) {
@@ -2743,9 +2870,12 @@ for (col in c(46,56)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#D9E1F2"), rows = 1, cols = col)
 }
 
-for (col in c(78:100)) {
-  addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = 1, cols = col)
+for (row in 3:338) {
+  for (col in c(78:100)) {
+    addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
+  }
 }
+
 
 
 
@@ -3437,34 +3567,10 @@ for (col in c(6:10,14:17,22:25,30:33,38:41,46)) {
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r M+4}
 ##################################################################################################################################################################################################
 ################################################################################ M+4 settlement section ##########################################################################################
 ##################################################################################################################################################################################################
@@ -4985,7 +5091,7 @@ for (index in 4:51) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 5)
 
 temp <- c()
-for (index in 3:288) {
+for (index in 3:290) {
   temp <- c(temp, paste0("=E", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 5)
@@ -5082,10 +5188,21 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 39)
 
 
 temp <- c()
-for (index in 3:338) {
+for (index in 3:48) {
   temp <- c(temp, paste0("=BO", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 66)
+
+writeFormula(wb = mywb, sheet = CC, x = "=BN48+1", startRow = 49, startCol = 66)
+
+writeFormula(wb = mywb, sheet = CC, x = "=BN48+1", startRow = 50, startCol = 66)
+
+temp <- c()
+for (index in 3:290) {
+  temp <- c(temp, paste0("=BO", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 66)
+
 
 temp <- c()
 for (index in 3:338) {
@@ -5354,7 +5471,7 @@ summer <- c("=AK3+TIME(2,30,0)", "=AK4+TIME(2,0,0)", "=AK5+TIME(2,30,0)", "=AK6+
 
 season <- c()
 
-if (firstday2 > as.Date(paste0(year,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year)-1,"-4-01"), format = "%Y-%m-%d")) {
+if (firstday2 > as.Date(paste0(as.numeric(year)-1,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year),"-4-01"), format = "%Y-%m-%d")) {
   temp <- winter
   season <- "winter"
 } else {
@@ -6457,7 +6574,7 @@ for (ROW in ROWS) {
   writeData(mywb, RS, "HH", startRow = ROW, startCol = 2)
   writeData(mywb, RS, "NHH", startRow = ROW, startCol = 3)
   writeData(mywb, RS, "PPA Gen", startRow = ROW, startCol = 4)
-  writeData(mywb, RS, "GU_5", startRow = ROW, startCol = 5)
+  writeData(mywb, RS, "GU_503310", startRow = ROW, startCol = 5)
   writeData(mywb, RS, "CCA", startRow = ROW, startCol = 6)
   writeData(mywb, RS, "Total", startRow = ROW, startCol = 8)
 }
@@ -6646,27 +6763,10 @@ for (ROW in c(5,8,11,15,18,21,25)) {
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r M+13}
 ################################################################################################################################################################################################
 ############################################################################### M+13 settlement section ########################################################################################
 ################################################################################################################################################################################################
@@ -8556,7 +8656,7 @@ summer <- c("=AK3+TIME(2,30,0)", "=AK4+TIME(2,0,0)", "=AK5+TIME(2,30,0)", "=AK6+
 
 season <- c()
 
-if (firstday2 > as.Date(paste0(year,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year)-1,"-4-01"), format = "%Y-%m-%d")) {
+if (firstday2 > as.Date(paste0(as.numeric(year)-1,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year),"-4-01"), format = "%Y-%m-%d")) {
   temp <- winter
   season <- "winter"
 } else {
@@ -9851,17 +9951,7 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 
-
-
-
-
-
-
-
-
-
-
-```{r}
+```{r Invoice Backup}
 ###############################################################################################################################################################################################
 ############################################################################### Invoice Backup section ########################################################################################
 ###############################################################################################################################################################################################
