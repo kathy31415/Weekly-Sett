@@ -1877,32 +1877,33 @@ writeFormula(wb = mywb, sheet = "Summary", xy = c(13,49), x = "=L49+K49")
 writeFormula(wb = mywb, sheet = "Summary", xy = c(13,50), x = "=L50+K50")
 
 for (row in c(44:50)) {
-  addStyle(wb = mywb, sheet = activesheet, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 11:13)
+  addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 11:13)
 }
 
 for (row in c(2:10, 13)) {
   openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 10, rows = row, rule = paste0("=AND(J", row, "<=-15, J", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 10, rows = row, rule = paste0("=AND(J", row, "<15, J", row, ">-15)"), type = 'expression', style = posStyle)
 }
-  
 
-saveWorkbook(mywb, outputfile, overwrite = TRUE)
+for (row in c(18:24, 26)) {
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 8, rows = row, rule = paste0("=AND(H", row, "<=-15, H", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(mywb, "Summary", cols = 8, rows = row, rule = paste0("=AND(H", row, "<15, H", row, ">-15)"), type = 'expression', style = posStyle)
+}
 
+for (row in c(31:37,39,43:49, 51, 55:61, 63, 67:73, 75, 79:85, 87)) {
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 7, rows = row, rule = paste0("=AND(G", row, "<=-15, G", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(mywb, "Summary", cols = 7, rows = row, rule = paste0("=AND(G", row, "<15, G", row, ">-15)"), type = 'expression', style = posStyle)
+}
 
-#conditionalFormatting(wb = mywb, sheet = BU, cols = 16, rows = ROW, rule = paste0("=AND(",toupper(letters[16]),ROW, "<5, ", toupper(letters[16]),ROW, ">-5)"), type = 'expression', style = posStyle)
+for (row in c(91:97,99)) {
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 4, rows = row, rule = paste0("=AND(D", row, "<=-15, D", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(mywb, "Summary", cols = 4, rows = row, rule = paste0("=AND(D", row, "<15, D", row, ">-15)"), type = 'expression', style = posStyle)
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+for (row in c(18:20)) {
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 18, rows = row, rule = paste0("=AND(R", row, "<=-15, R", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(mywb, "Summary", cols = 18, rows = row, rule = paste0("=AND(R", row, "<15, R", row, ">-15)"), type = 'expression', style = posStyle)
+}
 
 
 # Shadow Settled sheet
@@ -2225,14 +2226,14 @@ for (index in 3:48) {
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 66)
 
-writeFormula(wb = mywb, sheet = CC, x = "=BN48+1", startRow = 51, startCol = 66)
-writeFormula(wb = mywb, sheet = CC, x = "=BN48+1", startRow = 52, startCol = 66)
+writeFormula(wb = mywb, sheet = CC, x = "=BN48+1", startRow = 49, startCol = 66)
+writeFormula(wb = mywb, sheet = CC, x = "=BN48+1", startRow = 50, startCol = 66)
 
 temp <- c()
 for (index in 3:290) {
-  temp <- c(temp, paste0("=BN+1", index))
+  temp <- c(temp, paste0("=BN", index, "+1"))
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 66)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 66)
 
 
 temp <- c()
@@ -2888,17 +2889,11 @@ for (col in c(46,56)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#D9E1F2"), rows = 1, cols = col)
 }
 
-for (row in 3:338) {
-  for (col in c(78:100)) {
-    addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
-  }
-}
-
-
-
-
-
-
+# for (row in 3:338) {
+#   for (col in c(78:85, 86:100)) {
+#     addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
+#   }
+# }
 
 
 # Ex-Ante Consumption sheet
@@ -3586,6 +3581,9 @@ for (col in c(6:10,14:17,22:25,30:33,38:41,46)) {
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 ```
+
+
+
 
 
 ```{r M+4}
@@ -9973,8 +9971,6 @@ for (ROW in c(5,8,11,15,18,21,25)) {
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 ```
-
-
 
 
 ```{r Invoice Backup}
