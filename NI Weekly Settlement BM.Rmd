@@ -1,4 +1,4 @@
-```{r required functions}
+```{r required functions & pkgs}
 ################################################################################################################################################################################################
 ################################################################### Load required packages & create .na functions}##############################################################################
 ################################################################################################################################################################################################
@@ -429,20 +429,11 @@ firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
 year <- substring(text = firstday, first = 1, last = 4)
 yeard4 <- year
 
-lineskipper <- readline(prompt = "Were files downloaded using Linqpad web scrape? (Y/N): ")
-
 settype <- "D+4"
 settype2 <- "D+4 Initial"
 settype3 <- "INIT"
 settype4 <- "D4"
 mm <- 20
-
-if (toupper(lineskipper) == "Y" | toupper(lineskipper) == "YES") {
-  lineskipper <- 0
-} else {
-  lineskipper <- 5
-}
-
 
 
 # DOCUMENT
@@ -1654,6 +1645,9 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=B97-C97", xy = c(4,startingrow+
 
 
 
+
+
+
 # ==============================================================================================================================================================================
 # ================================================================================= Main Table =================================================================================
 # ==============================================================================================================================================================================
@@ -1741,7 +1735,12 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L22:P22)", xy = c(17,22))
 
 # CHECK
 writeFormula(wb = mywb, sheet = "Summary", x = "=Q18+Q19+I13", xy = c(18,18))
-writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$Z$1056:$Z$1062)"), xy = c(18,20))
+
+etsfile <- openxlsx::read.xlsx(xlsxFile = "X:/Day Ahead/ETS Results and Settlementv2.xlsx", sheet = "Settlement Check", detectDates = TRUE)
+etsrowstart <- which(etsfile$X1 == firstday2)+1
+etsrowend <- etsrowstart + 6
+
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$Z$", etsrowstart, ":$Z$", etsrowend,")"), xy = c(18,20))
 
 for (row in c(18:22)) {
   addStyle(wb = mywb, sheet = activesheet, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 12:19)
@@ -1881,7 +1880,26 @@ for (row in c(44:50)) {
   addStyle(wb = mywb, sheet = activesheet, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 11:13)
 }
 
+for (row in c(2:10, 13)) {
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 10, rows = row, rule = paste0("=AND(J", row, "<=-15, J", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(mywb, "Summary", cols = 10, rows = row, rule = paste0("=AND(J", row, "<15, J", row, ">-15)"), type = 'expression', style = posStyle)
+}
+  
+
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
+
+
+#conditionalFormatting(wb = mywb, sheet = BU, cols = 16, rows = ROW, rule = paste0("=AND(",toupper(letters[16]),ROW, "<5, ", toupper(letters[16]),ROW, ">-5)"), type = 'expression', style = posStyle)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4810,7 +4828,11 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L22:P22)", xy = c(17,22))
 
 # CHECK
 writeFormula(wb = mywb, sheet = "Summary", x = "=Q18+Q19+I13", xy = c(18,18))
-writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$Z$1056:$Z$1062)"), xy = c(18,20))
+
+etsrowstart <- which(etsfile$X1 == firstday2)+1
+etsrowend <- etsrowstart + 6
+
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$Z$", etsrowstart, ":$Z$", etsrowend,")"), xy = c(18,20))
 
 for (row in c(18:22)) {
   addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 12:19)
@@ -8003,7 +8025,11 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L22:P22)", xy = c(17,22))
 
 # CHECK
 writeFormula(wb = mywb, sheet = "Summary", x = "=Q18+Q19+I13", xy = c(18,18))
-writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$Z$1056:$Z$1062)"), xy = c(18,20))
+
+etsrowstart <- which(etsfile$X1 == firstday2)+1
+etsrowend <- etsrowstart + 6
+
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$Z$", etsrowstart, ":$Z$", etsrowend,")"), xy = c(18,20))
 
 for (row in c(18:22)) {
   addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 12:19)
