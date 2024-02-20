@@ -3,6 +3,8 @@
 ################################################################### Load required packages & create .na functions}##############################################################################
 ################################################################################################################################################################################################
 
+rm(list = ls())
+
 requiredpackages <- c("berryFunctions", "dplyr", "lubridate", "ggsci", "pivottabler", "purrr", "readxl", "openxlsx", "tidyr", "XML", "xml2")
 
 install_load <- function(packages) {
@@ -404,7 +406,6 @@ data.frame.na <- function (..., row.names = NULL, check.rows = FALSE, check.name
 ```
 
 
-
 ```{r D+4}
 ################################################################################################################################################################################################
 ############################################################################## D+4 settlement section ##########################################################################################
@@ -552,7 +553,6 @@ receiveddate3 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d-%m-%Y")
 writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/Document ", invoicenumber, " for ", PTunit, " received ", receiveddate3, ".xlsx"))
 
 
-
 ### STATEMENT
 
 for (f in 1:7) {
@@ -687,7 +687,6 @@ for (file in inputfiles) {
 }
 
 writexl::write_xlsx(dfstatements, outputfile)
-
 
 
 ### REPORT
@@ -844,10 +843,6 @@ writexl::write_xlsx(dfreports, outputfile)
 # housekeeping
 rm(list = ls(pattern = "accept|amount|band|[Cc]harge|datetime|delivery|detail|determ|ECC|[Ee]xchange|max|name|node|order|output|p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
 suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
-
-
-
-
 
 
 
@@ -1071,15 +1066,11 @@ writeData(mywb, sheet = "EX-Ante Report", x = df)
 
 
 
-
-
-
 # Summary sheet
 
 activesheet <- `activeSheet<-`(mywb, 'Summary')$ActiveSheet
 dates <- seq(from = as.Date(firstday, format = "%Y%m%d"), by = "1 day", length.out = 7) %>% format("%d/%m/%Y")
 charges <- c('CCA', 'CDIFFPDA', 'CDIFFPID', 'CDIFFPIMB', 'CIMB', 'CIMP', 'CREIMDIFFP', 'CREV', 'CSHORTDIFFP')
-
 
 
 # ==============================================================================================================================================================================
@@ -1213,6 +1204,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U9,'Z:/I-SEM/[I-SEM Day
 
 addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "#,##0.0000", fgFill = "#F8CBAD"), rows = 2:9, cols = 24)
 addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#C0C0C0", textDecoration = 'bold', fontColour = '#00008B'), rows = 1, cols = 21:25)
+addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "DATE"), rows = 2:9, cols = 21)
 
 temp <- c()
 temp <- c(temp, paste0("=SUM(B18:B24)"))
@@ -3292,12 +3284,17 @@ for (col in c(4,5,56)) {
 
 addStyle(wb = mywb, sheet = EAC, createStyle(textDecoration = 'bold'), rows = 2, cols = 1:61)
 
-for (row in 52:57) {
-  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "0.00"), rows = row, cols = 1:61)
+for (col in 47:49) {
+  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "0.00"), rows = 3:338, cols = col)
+}
+
+for (col in 50:53) {
+  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "[$£]#,##0.00"), rows = 3:338, cols = col)
 }
 
 for (row in 3:11) {
-  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 53:57)
+  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 57:61
+           )
 }
 
 # En & Imp Split sheet
@@ -3585,10 +3582,11 @@ for (col in c(6:10,14:17,22:25,30:33,38:41,46)) {
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
+
 ```
 
 
-```{r}
+```{r M4}
 ##################################################################################################################################################################################################
 ################################################################################ M+4 settlement section ##########################################################################################
 ##################################################################################################################################################################################################
@@ -6815,9 +6813,10 @@ for (ROW in c(5,8,11,15,18,21,25)) {
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
+```
 
 
-
+```{r M13}
 ################################################################################################################################################################################################
 ############################################################################### M+13 settlement section ########################################################################################
 ################################################################################################################################################################################################
