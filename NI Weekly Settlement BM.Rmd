@@ -894,33 +894,33 @@ addWorksheet(wb = mywb, sheetName = "SHADOW SETTLED")
 addWorksheet(wb = mywb, sheetName = "Ex-Ante Consumption")
 
 for (col in c(4,5,12)) {
-  addStyle(wb = mywb, sheet = "REPORT", createStyle(numFmt = "DATE"), rows = 2:14162, cols = col)
+  addStyle(wb = mywb, sheet = "REPORT", style = DATE, rows = 2:14162, cols = col)
 }
 
 for (col in c(9,13,19,21,22)) {
-  addStyle(wb = mywb, sheet = "REPORT", createStyle(numFmt = "NUMBER"), rows = 2:14162, cols = col)
+  addStyle(wb = mywb, sheet = "REPORT"style = NUMBER, rows = 2:14162, cols = col)
 }
 
 for (col in c(4,5,11)) {
-  addStyle(wb = mywb, sheet = "STATEMENT", createStyle(numFmt = "DATE"), rows = 2:4481, cols = col)
+  addStyle(wb = mywb, sheet = "STATEMENT", style = DATE, rows = 2:4481, cols = col)
 }
 
 for (col in c(9,12,16)) {
-  addStyle(wb = mywb, sheet = "STATEMENT", createStyle(numFmt = "NUMBER"), rows = 2:4481, cols = col)
+  addStyle(wb = mywb, sheet = "STATEMENT"style = NUMBER, rows = 2:4481, cols = col)
 }
 
 for (col in c(5,7,33,34,56)) {
-  addStyle(wb = mywb, sheet = "DOCUMENT", createStyle(numFmt = "DATE"), rows = 2:991, cols = col)
+  addStyle(wb = mywb, sheet = "DOCUMENT", style = DATE, rows = 2:991, cols = col)
 }
 
 for (col in c(9,18:29,36:55,60:62)) {
-  addStyle(wb = mywb, sheet = "DOCUMENT", createStyle(numFmt = "NUMBER"), rows = 2:991, cols = col)
+  addStyle(wb = mywb, sheet = "DOCUMENT"style = NUMBER, rows = 2:991, cols = col)
 }
 
-addStyle(wb = mywb, sheet = "Ex-Ante Consumption", createStyle(numFmt = "DATE"), rows = 2:194, cols = 2)
+addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = DATE, rows = 2:194, cols = 2)
 
 for (col in c(4,15,16,20,26:28,30:35,41)) {
-  addStyle(wb = mywb, sheet = "Ex-Ante Consumption", createStyle(numFmt = "NUMBER"), rows = 2:194, cols = col)
+  addStyle(wb = mywb, sheet = "Ex-Ante Consumption"style = NUMBER, rows = 2:194, cols = col)
 }
 
 # *Styles*
@@ -930,9 +930,11 @@ boldStyle <- createStyle(textDecoration = "bold")
 yellowStyle <- createStyle(fontColour = 'red', textDecoration = 'bold', fgFill = 'yellow', border = "TopBottomLeftRight")
 orangeStyle <- createStyle(numFmt = "[$£]#,##0.00", fgFill = '#FFCC99', border = "TopBottomLeftRight")
 whiteStyle <- createStyle(numFmt = "[$£]#,##0.00", border = "TopBottomLeftRight")
-
-
-
+sterling <- createStyle(numFmt = "[$£]#,##0.00")
+DATE <- createStyle(numFmt = "DATE")
+NUMBER <- createStyle(numFmt = "NUMBER")
+TIME <- createStyle(numFmt = "hh:mm:ss")
+PERCENT <- createStyle(numFmt = "0%")
 
 # ECC Ex-Ante Report sheet
 
@@ -1093,7 +1095,7 @@ writeFormula(wb = mywb, sheet = activesheet, x = temp, startCol = 7, startRow = 
 temp <- "=G1+1"
 writeFormula(wb = mywb, sheet = activesheet, x = temp, startCol = 8, startRow = 1)
 
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "DATE"), rows = 1, cols = 2:8)
+addStyle(wb = mywb, sheet = activesheet, style = DATE, rows = 1, cols = 2:8)
 
 writeData(wb = mywb, sheet = activesheet, x = charges, startCol = 1, startRow = 2)
 writeData(wb = mywb, sheet = activesheet, x = settype3, startCol = 1, startRow = 1)
@@ -1103,7 +1105,7 @@ writeData(wb = mywb, sheet = activesheet, x = "Check", startCol = 10, startRow =
 for (COLUMN in 2:8) {
   for (ROW in 2:10) {
     writeFormula(wb = mywb, sheet = activesheet, x = paste0("=SUMIFS(INDEX(DOCUMENT!$A:$BX,0,60),INDEX(DOCUMENT!$A:$BX,0,56),Summary!", toupper(letters[COLUMN]), "$1,INDEX(DOCUMENT!$A:$BX,0,59),Summary!$A", ROW, ")"), xy = c(COLUMN, ROW))
-    addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = ROW, cols = COLUMN)
+    addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = ROW, cols = COLUMN)
   }
 }
 
@@ -1117,7 +1119,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G2:G10)", startRow = 13, st
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(H2:H10)", startRow = 13, startCol = 8)
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B13:H13)", startRow = 13, startCol = 9)
 
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 13, cols = 2:10)
+addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 13, cols = 2:10)
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B2:H2)", xy = c(9,2))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B3:H3)", xy = c(9,3))
@@ -1129,8 +1131,8 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B8:H8)", xy = c(9,8))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B9:H9)", xy = c(9,9))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B10:H10)", xy = c(9,10))
 
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 2:10, cols = 9)
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 2:10, cols = 10)
+addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 2:10, cols = 9)
+addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 2:10, cols = 10)
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=I2-B99", xy = c(10,2))
 writeFormula(wb = mywb, sheet = "Summary", x = "=I3-B100", xy = c(10,3))
@@ -1183,7 +1185,7 @@ writeData(wb = mywb, sheet ="Summary", x = temp, startRow = 2, startCol = 25)
 writeData(wb = mywb, sheet ="Summary", x = "Against Doc Total", startRow = 18, startCol = 19)
 writeData(wb = mywb, sheet ="Summary", x = "Against AD Day ahead Sheet", startRow = 20, startCol = 19)
 
-addStyle(wb = mywb, sheet = activesheet, createStyle(numFmt = "DATE"), rows = 2:9, cols = 21)
+addStyle(wb = mywb, sheet = activesheet, style = DATE, rows = 2:9, cols = 21)
 
 for (ROW in 2:9) {
   writeData(wb = mywb, "Summary", x = "E", startRow = ROW, startCol = 22)
@@ -1204,7 +1206,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U9,'Z:/I-SEM/[I-SEM Day
 
 addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "#,##0.0000", fgFill = "#F8CBAD"), rows = 2:9, cols = 24)
 addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#C0C0C0", textDecoration = 'bold', fontColour = '#00008B'), rows = 1, cols = 21:25)
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "DATE"), rows = 2:9, cols = 21)
+addStyle(wb = mywb, sheet = activesheet, style = DATE, rows = 2:9, cols = 21)
 
 temp <- c()
 temp <- c(temp, paste0("=SUM(B18:B24)"))
@@ -1270,11 +1272,11 @@ temp <- c("=F18+G18", "=F19+G19", "=F20+G20", "=F21+G21", "=F22+G22", "=F23+G23"
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 8)
 
 for (col in 2:8) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 18:24, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 18:24, cols = col)
 }
 
 for (col in 2:8) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 26, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 26, cols = col)
 }
 
 
@@ -1310,7 +1312,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B36:D36)", xy = c(5,36))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B37:D37)", xy = c(5,37))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 31:37, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 31:37, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A31,STATEMENT!J:J,\"CIMP\")", xy = c(6,31))
@@ -1337,7 +1339,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F31:F37)", xy = c(6,39))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G31:G37)", xy = c(7,39))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 39, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 39, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B43:B49)", xy = c(2,51))
@@ -1348,7 +1350,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F43:F49)", xy = c(6,51))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G43:G49)", xy = c(7,51))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 51, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 51, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B55:B61)", xy = c(2,63))
@@ -1359,7 +1361,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F55:F61)", xy = c(6,63))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G55:G61)", xy = c(7,63))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 63, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 63, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B67:B73)", xy = c(2,75))
@@ -1370,7 +1372,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F67:F73)", xy = c(6,75))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G67:G73)", xy = c(7,75))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 75, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 75, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B79:B85)", xy = c(2,87))
@@ -1381,7 +1383,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F79:F85)", xy = c(6,87))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G79:G85)", xy = c(7,87))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 87, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 87, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B91:B97)", xy = c(2,99))
@@ -1389,7 +1391,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(C91:C97)", xy = c(3,99))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(D91:D97)", xy = c(4,99))
 
 for (col in 2:4) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 99, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 99, cols = col)
 }
 
 
@@ -1407,7 +1409,7 @@ writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 7, startRow = 42
 addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#B4C6E7"), rows = 42, cols = 2:7)
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 43:49, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 43:49, cols = col)
 }
 
 temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A31,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A32,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A33,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A34,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A35,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A36,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A37,'Consumption Checks'!CI:CI)")
@@ -1460,7 +1462,7 @@ addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#B4C6E7")
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 55:61, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 55:61, cols = col)
 }
 
 temp <- c("=SUMIF('En & Imp Split'!$A:$A,Summary!$A55,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A56,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A57,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A58,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A59,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A60,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A61,'En & Imp Split'!AD:AD)")
@@ -1513,7 +1515,7 @@ addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#B4C6E7")
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 67:73, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 67:73, cols = col)
 }
 
 temp <- c("='En & Imp Split'!AL4", "='En & Imp Split'!AL5", "='En & Imp Split'!AL6", "='En & Imp Split'!AL7", "='En & Imp Split'!AL8", "='En & Imp Split'!AL9", "='En & Imp Split'!AL10")
@@ -1567,7 +1569,7 @@ addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#B4C6E7")
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 79:85, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 79:85, cols = col)
 }
 
 temp <- c("='En & Imp Split'!AL17", "='En & Imp Split'!AL18", "='En & Imp Split'!AL19", "='En & Imp Split'!AL20", "='En & Imp Split'!AL21", "='En & Imp Split'!AL22", "='En & Imp Split'!AL23")
@@ -1617,7 +1619,7 @@ addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#B4C6E7")
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "[$£]#,##0.00"), rows = 91:97, cols = col)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = 91:97, cols = col)
 }
 
 temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A91,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A92,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A93,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A94,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A95,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A96,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A97,'Consumption Checks'!CM:CM)")
@@ -1652,10 +1654,9 @@ for (col in 12:19) {
 }
 
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 11, x = paste0(toupper(settype2), " ENERGY WEEK ", weekno))
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(), rows = 14, cols = 11:18)
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "DATE"), rows = 14, cols = 16)
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "DATE"), rows = 14, cols = 18)
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(textDecoration = "bold"), rows = 14, cols = 11:13)
+addStyle(wb = mywb, sheet = activesheet, style = DATE, rows = 14, cols = 16)
+addStyle(wb = mywb, sheet = activesheet, style = DATE, rows = 14, cols = 18)
+addStyle(wb = mywb, sheet = activesheet, style = boldStyle, rows = 14, cols = 11:13)
 
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 15, x = "FROM")
 writeFormula(wb = mywb, sheet = "Summary", x = "=U2", xy = c(16,14))
@@ -1736,7 +1737,7 @@ etsrowend <- etsrowstart + 6
 writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$Z$", etsrowstart, ":$Z$", etsrowend,")"), xy = c(18,20))
 
 for (row in c(18:22)) {
-  addStyle(wb = mywb, sheet = activesheet, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 12:19)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = row, cols = 12:19)
 }
 
 
@@ -1833,7 +1834,7 @@ writeFormula(wb = mywb, sheet = "Summary", xy = c(21,45), x = "=-B97")
 
 for (col in c(17:21)) {
   for (row in c(29:35, 39:45)) {
-    addStyle(wb = mywb, sheet = activesheet, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
+    addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = row, cols = col)
   }
 }
 
@@ -1870,7 +1871,7 @@ writeFormula(wb = mywb, sheet = "Summary", xy = c(13,49), x = "=L49+K49")
 writeFormula(wb = mywb, sheet = "Summary", xy = c(13,50), x = "=L50+K50")
 
 for (row in c(44:50)) {
-  addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 11:13)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = row, cols = 11:13)
 }
 
 for (row in c(2:10, 13)) {
@@ -1969,10 +1970,10 @@ for (index in 2:289) {
 writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 50, startCol = 4)
 
 for (col in c(1,4)) {
-  addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "DATE"), rows = 2:337, cols = col)
+  addStyle(wb = mywb, sheet = SS, style = DATE, rows = 2:337, cols = col)
 }
 
-addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "hh:mm:ss"), rows = 2:337, cols = 2)
+addStyle(wb = mywb, sheet = SS, style = TIME, rows = 2:337, cols = 2)
 
 which_column <- c()
 if(as.numeric(firstday) > 20231001) {
@@ -2043,10 +2044,10 @@ for (i in 1:7) {
 }
 
 for (col in 5:12) {
-  addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "[$£]#,##0.00"), rows = 2:337, cols = col)
+  addStyle(wb = mywb, sheet = SS, style = sterling, rows = 2:337, cols = col)
 }
 
-addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "[$£]#,##0.00"), rows = 2:5, cols = 16)
+addStyle(wb = mywb, sheet = SS, style = sterling, rows = 2:5, cols = 16)
 
 writeData(wb = mywb, sheet = SS, x = "PIMP", startRow = 2, startCol = 15)
 writeData(wb = mywb, sheet = SS, x = "PREV", startRow = 3, startCol = 15)
@@ -2054,7 +2055,7 @@ writeData(wb = mywb, sheet = SS, x = "PCC", startRow = 4, startCol = 15)
 writeData(wb = mywb, sheet = SS, x = "PSTR", startRow = 5, startCol = 15)
 
 for (row in c(2:5)) {
-  addStyle(wb = mywb, sheet = activesheet, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 16:21)
+  addStyle(wb = mywb, sheet = activesheet, style = sterling, rows = row, cols = 16:21)
 }
 
 
@@ -2086,7 +2087,7 @@ for (index in 3:290) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 1)
 
 for (col in c(1,13,25,36,39,42,66,67)) {
-  addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "DATE"), rows = 3:338, cols = col)
+  addStyle(wb = mywb, sheet = CC, style = DATE, rows = 3:338, cols = col)
 }
 
 temp <- c()
@@ -2097,7 +2098,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 2)
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 37)
 
 for (col in c(2,5,15,27,37,40,43)) {
-  addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "hh:mm:ss"), rows = 3:338, cols = col)
+  addStyle(wb = mywb, sheet = CC, style = TIME, rows = 3:338, cols = col)
 }
 
 temp <- c()
@@ -2872,7 +2873,7 @@ for (index in 3:338) {
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 100)
 
-addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = 1, cols = 69:70)
+addStyle(wb = mywb, sheet = CC, style = sterling, rows = 1, cols = 69:70)
 
 for (col in c(45,55, 71:91,93:100)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#FFEB9C", fontColour = "#9C5700"), rows = 1, cols = col)
@@ -2883,8 +2884,8 @@ for (col in c(46,56)) {
 }
 
 for (row in 3:338) {
- for (col in c(78:85, 86:100)) {
-   addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
+ for (col in c(78:100)) {
+   addStyle(wb = mywb, sheet = CC, style = sterling, rows = row, cols = col)
  }
 }
 
@@ -2945,7 +2946,7 @@ writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 5)
 writeData(wb = mywb, sheet = EAC, x = rep.int("98%", times = 336), startRow = 3, startCol = 6)
 
 for (col in c(6,11:13)) {
-  addStyle(wb = mywb, sheet = EAC, createStyle(numFmt = "0%"), rows = 3:338, cols = col)
+  addStyle(wb = mywb, sheet = EAC, style = PERCENT, rows = 3:338, cols = col)
 }
 
 temp <- c()
@@ -3279,10 +3280,10 @@ for (col in c(14:18,29:32,37:41,47:49)) {
   addStyle(wb = mywb, sheet = EAC, style = createStyle(fgFill = "#D9E1F2", halign = "center"), rows = 1, cols = col)
 }
 for (col in c(4,5,56)) {
-  addStyle(wb = mywb, sheet = EAC, style = createStyle(numFmt = "DATE"), rows = 3:338, cols = col)
+  addStyle(wb = mywb, sheet = EAC, style = DATE, rows = 3:338, cols = col)
 }
 
-addStyle(wb = mywb, sheet = EAC, createStyle(textDecoration = 'bold'), rows = 2, cols = 1:61)
+addStyle(wb = mywb, sheet = EAC, boldStyle, rows = 2, cols = 1:61)
 
 for (col in 47:49) {
   addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "0.00"), rows = 3:338, cols = col)
@@ -3569,16 +3570,16 @@ writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 46)
 
 # FORMATTING
 for (col in c(1,2,11,19,27,43)) {
-  addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "DATE"), rows = 4:339, cols = col)
+  addStyle(wb = mywb, sheet = EIS, style = DATE, rows = 4:339, cols = col)
 }
 for (col in c(5,13,21,29,45)) {
   addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "hh:mm:ss"), rows = 4:339, cols = col)
 }
 for (row in c(4:10,17:23)) {
-  addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "DATE"), rows = row, cols = 35)
+  addStyle(wb = mywb, sheet = EIS, style = DATE, rows = row, cols = 35)
 }
 for (col in c(6:10,14:17,22:25,30:33,38:41,46)) {
-  addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "[$£]#,##0.00"), rows = 4:339, cols = col)
+  addStyle(wb = mywb, sheet = EIS, style = sterling, rows = 4:339, cols = col)
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
@@ -3972,33 +3973,33 @@ addWorksheet(wb = mywb, sheetName = "SHADOW SETTLED")
 addWorksheet(wb = mywb, sheetName = "Ex-Ante Consumption")
 
 for (col in c(4,5,12)) {
-  addStyle(wb = mywb, sheet = "REPORT", createStyle(numFmt = "DATE"), rows = 2:14162, cols = col)
+  addStyle(wb = mywb, sheet = "REPORT", style = DATE, rows = 2:14162, cols = col)
 }
 
 for (col in c(9,13,19,21,22)) {
-  addStyle(wb = mywb, sheet = "REPORT", createStyle(numFmt = "NUMBER"), rows = 2:14162, cols = col)
+  addStyle(wb = mywb, sheet = "REPORT"style = NUMBER, rows = 2:14162, cols = col)
 }
 
 for (col in c(4,5,11)) {
-  addStyle(wb = mywb, sheet = "STATEMENT", createStyle(numFmt = "DATE"), rows = 2:4481, cols = col)
+  addStyle(wb = mywb, sheet = "STATEMENT", style = DATE, rows = 2:4481, cols = col)
 }
 
 for (col in c(9,12,16)) {
-  addStyle(wb = mywb, sheet = "STATEMENT", createStyle(numFmt = "NUMBER"), rows = 2:4481, cols = col)
+  addStyle(wb = mywb, sheet = "STATEMENT"style = NUMBER, rows = 2:4481, cols = col)
 }
 
 for (col in c(5,7,33,34,56)) {
-  addStyle(wb = mywb, sheet = "DOCUMENT", createStyle(numFmt = "DATE"), rows = 2:991, cols = col)
+  addStyle(wb = mywb, sheet = "DOCUMENT", style = DATE, rows = 2:991, cols = col)
 }
 
 for (col in c(9,18:29,36:55,60:62)) {
-  addStyle(wb = mywb, sheet = "DOCUMENT", createStyle(numFmt = "NUMBER"), rows = 2:991, cols = col)
+  addStyle(wb = mywb, sheet = "DOCUMENT"style = NUMBER, rows = 2:991, cols = col)
 }
 
-addStyle(wb = mywb, sheet = "Ex-Ante Consumption", createStyle(numFmt = "DATE"), rows = 2:194, cols = 2)
+addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = DATE, rows = 2:194, cols = 2)
 
 for (col in c(4,15,16,20,26:28,30:35,41)) {
-  addStyle(wb = mywb, sheet = "Ex-Ante Consumption", createStyle(numFmt = "NUMBER"), rows = 2:194, cols = col)
+  addStyle(wb = mywb, sheet = "Ex-Ante Consumption"style = NUMBER, rows = 2:194, cols = col)
 }
 
 
@@ -4054,7 +4055,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = temp, startCol = 7, startRow = 1)
 temp <- "=G1+1"
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startCol = 8, startRow = 1)
 
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "DATE"), rows = 1, cols = 2:8)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 1, cols = 2:8)
 
 writeData(wb = mywb, sheet = "Summary", x = charges, startCol = 1, startRow = 2)
 writeData(wb = mywb, sheet = "Summary", x = settype4, startCol = 1, startRow = 1)
@@ -4219,7 +4220,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G2:G10)", startRow = 13, st
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(H2:H10)", startRow = 13, startCol = 8)
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B13:H13)", startRow = 13, startCol = 9)
 
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 13, cols = 2:10)
+addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 13, cols = 2:10)
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B2:H2)", xy = c(9,2))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B3:H3)", xy = c(9,3))
@@ -4231,8 +4232,8 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B8:H8)", xy = c(9,8))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B9:H9)", xy = c(9,9))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B10:H10)", xy = c(9,10))
 
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 2:10, cols = 9)
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 2:10, cols = 10)
+addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 2:10, cols = 9)
+addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 2:10, cols = 10)
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=I2-B99", xy = c(10,2))
 writeFormula(wb = mywb, sheet = "Summary", x = "=I3-B100", xy = c(10,3))
@@ -4285,7 +4286,7 @@ writeData(wb = mywb, sheet ="Summary", x = temp, startRow = 2, startCol = 25)
 writeData(wb = mywb, sheet ="Summary", x = "Against Doc Total", startRow = 18, startCol = 19)
 writeData(wb = mywb, sheet ="Summary", x = "Against AD Day ahead Sheet", startRow = 20, startCol = 19)
 
-addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "DATE"), rows = 2:9, cols = 21)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 2:9, cols = 21)
 
 for (ROW in 2:9) {
   writeData(wb = mywb, "Summary", x = "E", startRow = ROW, startCol = 22)
@@ -4371,11 +4372,11 @@ temp <- c("=F18+G18", "=F19+G19", "=F20+G20", "=F21+G21", "=F22+G22", "=F23+G23"
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 8)
 
 for (col in 2:8) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 18:24, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 18:24, cols = col)
 }
 
 for (col in 2:8) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 26, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 26, cols = col)
 }
 
 
@@ -4411,7 +4412,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B36:D36)", xy = c(5,36))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B37:D37)", xy = c(5,37))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 31:37, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 31:37, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A31,STATEMENT!J:J,\"CIMP\")", xy = c(6,31))
@@ -4438,7 +4439,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F31:F37)", xy = c(6,39))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G31:G37)", xy = c(7,39))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 39, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 39, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B43:B49)", xy = c(2,51))
@@ -4449,7 +4450,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F43:F49)", xy = c(6,51))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G43:G49)", xy = c(7,51))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 51, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 51, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B55:B61)", xy = c(2,63))
@@ -4460,7 +4461,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F55:F61)", xy = c(6,63))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G55:G61)", xy = c(7,63))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 63, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 63, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B67:B73)", xy = c(2,75))
@@ -4471,7 +4472,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F67:F73)", xy = c(6,75))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G67:G73)", xy = c(7,75))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 75, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 75, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B79:B85)", xy = c(2,87))
@@ -4482,7 +4483,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F79:F85)", xy = c(6,87))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G79:G85)", xy = c(7,87))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 87, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 87, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B91:B97)", xy = c(2,99))
@@ -4490,7 +4491,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(C91:C97)", xy = c(3,99))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(D91:D97)", xy = c(4,99))
 
 for (col in 2:4) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 99, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 99, cols = col)
 }
 
 
@@ -4508,7 +4509,7 @@ writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 7, startRow = 42
 addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), rows = 42, cols = 2:7)
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 43:49, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 43:49, cols = col)
 }
 
 temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A31,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A32,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A33,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A34,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A35,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A36,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A37,'Consumption Checks'!CI:CI)")
@@ -4561,7 +4562,7 @@ addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), 
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 55:61, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 55:61, cols = col)
 }
 
 temp <- c("=SUMIF('En & Imp Split'!$A:$A,Summary!$A55,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A56,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A57,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A58,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A59,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A60,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A61,'En & Imp Split'!AD:AD)")
@@ -4614,7 +4615,7 @@ addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), 
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 67:73, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 67:73, cols = col)
 }
 
 temp <- c("='En & Imp Split'!AL4", "='En & Imp Split'!AL5", "='En & Imp Split'!AL6", "='En & Imp Split'!AL7", "='En & Imp Split'!AL8", "='En & Imp Split'!AL9", "='En & Imp Split'!AL10")
@@ -4668,7 +4669,7 @@ addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), 
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 79:85, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 79:85, cols = col)
 }
 
 temp <- c("='En & Imp Split'!AL17", "='En & Imp Split'!AL18", "='En & Imp Split'!AL19", "='En & Imp Split'!AL20", "='En & Imp Split'!AL21", "='En & Imp Split'!AL22", "='En & Imp Split'!AL23")
@@ -4718,7 +4719,7 @@ addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), 
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 91:97, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 91:97, cols = col)
 }
 
 temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A91,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A92,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A93,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A94,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A95,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A96,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A97,'Consumption Checks'!CM:CM)")
@@ -4751,8 +4752,8 @@ for (col in 12:19) {
 
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 11, x = paste0(toupper(settype2), " ENERGY WEEK ", weekno))
 addStyle(wb = mywb, sheet = "Summary", style = createStyle(), rows = 14, cols = 11:18)
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "DATE"), rows = 14, cols = 16)
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "DATE"), rows = 14, cols = 18)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 16)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 18)
 addStyle(wb = mywb, sheet = "Summary", style = createStyle(textDecoration = "bold"), rows = 14, cols = 11:13)
 
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 15, x = "FROM")
@@ -4833,7 +4834,7 @@ etsrowend <- etsrowstart + 6
 writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$Z$", etsrowstart, ":$Z$", etsrowend,")"), xy = c(18,20))
 
 for (row in c(18:22)) {
-  addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 12:19)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = row, cols = 12:19)
 }
 
 # GU_503310 Table
@@ -4869,7 +4870,7 @@ writeFormula(wb = mywb, sheet = "Summary", xy = c(13,49), x = "=L49+K49")
 writeFormula(wb = mywb, sheet = "Summary", xy = c(13,50), x = "=L50+K50")
 
 for (row in c(44:50)) {
-  addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 11:13)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = row, cols = 11:13)
 }
 
 for (row in c(2:10, 13)) {
@@ -4975,7 +4976,7 @@ for (index in 2:289) {
 writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 50, startCol = 4)
 
 for (col in c(1,4)) {
-  addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "DATE"), rows = 2:337, cols = col)
+  addStyle(wb = mywb, sheet = SS, style = DATE, rows = 2:337, cols = col)
 }
 
 addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "hh:mm:ss"), rows = 2:337, cols = 2)
@@ -5049,10 +5050,10 @@ for (i in 1:7) {
 }
 
 for (col in 5:12) {
-  addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "[$£]#,##0.00"), rows = 2:337, cols = col)
+  addStyle(wb = mywb, sheet = SS, style = sterling, rows = 2:337, cols = col)
 }
 
-addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "[$£]#,##0.00"), rows = 2:5, cols = 16)
+addStyle(wb = mywb, sheet = SS, style = sterling, rows = 2:5, cols = 16)
 
 writeData(wb = mywb, sheet = SS, x = "PIMP", startRow = 2, startCol = 15)
 writeData(wb = mywb, sheet = SS, x = "PREV", startRow = 3, startCol = 15)
@@ -5060,7 +5061,7 @@ writeData(wb = mywb, sheet = SS, x = "PCC", startRow = 4, startCol = 15)
 writeData(wb = mywb, sheet = SS, x = "PSTR", startRow = 5, startCol = 15)
 
 for (row in c(2:5)) {
-  addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 16:21)
+  addStyle(wb = mywb, sheet = SS, style = sterling, rows = row, cols = 16:21)
 }
 
 saveWorkbook(wb = mywb, file = outputfile, overwrite = TRUE)
@@ -5097,7 +5098,7 @@ for (index in 3:290) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 1)
 
 for (col in c(1,13,25,36,39,42,66,67)) {
-  addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "DATE"), rows = 3:338, cols = col)
+  addStyle(wb = mywb, sheet = CC, style = DATE, rows = 3:338, cols = col)
 }
 
 temp <- c()
@@ -5887,7 +5888,7 @@ for (index in 3:338) {
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 100)
 
-addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = 1, cols = 69:70)
+addStyle(wb = mywb, sheet = CC, style = sterling, rows = 1, cols = 69:70)
 
 for (col in c(45,55, 71:77, 78:91, 93:100)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#FFEB9C", fontColour = "#9C5700"), rows = 1, cols = col)
@@ -5899,7 +5900,7 @@ for (col in c(46,56)) {
 
 for (row in c(3:338)) {
   for (col in c(78:100)) {
-    addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
+    addStyle(wb = mywb, sheet = CC, style = sterling, rows = row, cols = col)
   }
 }
 
@@ -6276,10 +6277,10 @@ for (col in c(14:18,33:37,43:45)) {
   addStyle(wb = mywb, sheet = EAC, style = createStyle(fgFill = "#D9E1F2", halign = "center"), rows = 1, cols = col)
 }
 for (col in c(4,5,52)) {
-  addStyle(wb = mywb, sheet = EAC, style = createStyle(numFmt = "DATE"), rows = 3:338, cols = col)
+  addStyle(wb = mywb, sheet = EAC, style = DATE, rows = 3:338, cols = col)
 }
 
-addStyle(wb = mywb, sheet = EAC, createStyle(textDecoration = 'bold'), rows = 2, cols = 1:61)
+addStyle(wb = mywb, sheet = EAC, boldStyle, rows = 2, cols = 1:61)
 
 for (row in 52:57) {
   addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "0.00"), rows = row, cols = 1:61)
@@ -6568,16 +6569,16 @@ writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 46)
 
 # FORMATTING
 for (col in c(1,2,11,19,27,43)) {
-  addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "DATE"), rows = 4:339, cols = col)
+  addStyle(wb = mywb, sheet = EIS, style = DATE, rows = 4:339, cols = col)
 }
 for (col in c(5,13,21,29,45)) {
   addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "hh:mm:ss"), rows = 4:339, cols = col)
 }
 for (row in c(4:10,17:23)) {
-  addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "DATE"), rows = row, cols = 35)
+  addStyle(wb = mywb, sheet = EIS, style = DATE, rows = row, cols = 35)
 }
 for (col in c(6:10,14:17,22:25,30:33,38:41,46)) {
-  addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "[$£]#,##0.00"), rows = 4:339, cols = col)
+  addStyle(wb = mywb, sheet = EIS, style = sterling, rows = 4:339, cols = col)
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
@@ -6591,7 +6592,7 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 RS <- "Resettlement Summary"
 
-mybold <- createStyle(textDecoration = 'bold')
+mybold <- boldStyle
 bb <- createStyle(textDecoration = 'bold', fontSize = 18)
 
 writeData(mywb, RS, x = paste0(PTunit, " ", settype3, " ENERGY"), startRow = 1, startCol = 2)
@@ -6807,7 +6808,7 @@ writeFormula(mywb, RS, x = "=SUMIFS(DOCUMENT!$AL:$AL,DOCUMENT!$AF:$AF,'Summary'!
 
 for (ROW in c(5,8,11,15,18,21,25)) {
   for (COL in 2:10) {
-    addStyle(mywb, RS, style = createStyle(numFmt = "[$£]#,##0.00"), rows = ROW, cols = COL)
+    addStyle(mywb, RS, style = sterling, rows = ROW, cols = COL)
   }
 }
 
@@ -7203,33 +7204,33 @@ addWorksheet(wb = mywb, sheetName = "SHADOW SETTLED")
 addWorksheet(wb = mywb, sheetName = "Ex-Ante Consumption")
 
 for (col in c(4,5,12)) {
-  addStyle(wb = mywb, sheet = "REPORT", createStyle(numFmt = "DATE"), rows = 2:14162, cols = col)
+  addStyle(wb = mywb, sheet = "REPORT", style = DATE, rows = 2:14162, cols = col)
 }
 
 for (col in c(9,13,19,21,22)) {
-  addStyle(wb = mywb, sheet = "REPORT", createStyle(numFmt = "NUMBER"), rows = 2:14162, cols = col)
+  addStyle(wb = mywb, sheet = "REPORT"style = NUMBER, rows = 2:14162, cols = col)
 }
 
 for (col in c(4,5,11)) {
-  addStyle(wb = mywb, sheet = "STATEMENT", createStyle(numFmt = "DATE"), rows = 2:4481, cols = col)
+  addStyle(wb = mywb, sheet = "STATEMENT", style = DATE, rows = 2:4481, cols = col)
 }
 
 for (col in c(9,12,16)) {
-  addStyle(wb = mywb, sheet = "STATEMENT", createStyle(numFmt = "NUMBER"), rows = 2:4481, cols = col)
+  addStyle(wb = mywb, sheet = "STATEMENT"style = NUMBER, rows = 2:4481, cols = col)
 }
 
 for (col in c(5,7,33,34,56)) {
-  addStyle(wb = mywb, sheet = "DOCUMENT", createStyle(numFmt = "DATE"), rows = 2:991, cols = col)
+  addStyle(wb = mywb, sheet = "DOCUMENT", style = DATE, rows = 2:991, cols = col)
 }
 
 for (col in c(9,18:29,36:55,60:62)) {
-  addStyle(wb = mywb, sheet = "DOCUMENT", createStyle(numFmt = "NUMBER"), rows = 2:991, cols = col)
+  addStyle(wb = mywb, sheet = "DOCUMENT"style = NUMBER, rows = 2:991, cols = col)
 }
 
-addStyle(wb = mywb, sheet = "Ex-Ante Consumption", createStyle(numFmt = "DATE"), rows = 2:194, cols = 2)
+addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = DATE, rows = 2:194, cols = 2)
 
 for (col in c(4,15,16,20,26:28,30:35,41)) {
-  addStyle(wb = mywb, sheet = "Ex-Ante Consumption", createStyle(numFmt = "NUMBER"), rows = 2:194, cols = col)
+  addStyle(wb = mywb, sheet = "Ex-Ante Consumption"style = NUMBER, rows = 2:194, cols = col)
 }
 
 
@@ -7278,7 +7279,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = temp, startCol = 7, startRow = 1)
 temp <- "=G1+1"
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startCol = 8, startRow = 1)
 
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "DATE"), rows = 1, cols = 2:8)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 1, cols = 2:8)
 
 writeData(wb = mywb, sheet = "Summary", x = charges, startCol = 1, startRow = 2)
 writeData(wb = mywb, sheet = "Summary", x = settype4, startCol = 1, startRow = 1)
@@ -7443,7 +7444,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G2:G10)", startRow = 13, st
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(H2:H10)", startRow = 13, startCol = 8)
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B13:H13)", startRow = 13, startCol = 9)
 
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 13, cols = 2:10)
+addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 13, cols = 2:10)
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B2:H2)", xy = c(9,2))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B3:H3)", xy = c(9,3))
@@ -7455,8 +7456,8 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B8:H8)", xy = c(9,8))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B9:H9)", xy = c(9,9))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B10:H10)", xy = c(9,10))
 
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 2:10, cols = 9)
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 2:10, cols = 10)
+addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 2:10, cols = 9)
+addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 2:10, cols = 10)
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=I2-B99", xy = c(10,2))
 writeFormula(wb = mywb, sheet = "Summary", x = "=I3-B100", xy = c(10,3))
@@ -7509,7 +7510,7 @@ writeData(wb = mywb, sheet ="Summary", x = temp, startRow = 2, startCol = 25)
 writeData(wb = mywb, sheet ="Summary", x = "Against Doc Total", startRow = 18, startCol = 19)
 writeData(wb = mywb, sheet ="Summary", x = "Against AD Day ahead Sheet", startRow = 20, startCol = 19)
 
-addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "DATE"), rows = 2:9, cols = 21)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 2:9, cols = 21)
 
 for (ROW in 2:9) {
   writeData(wb = mywb, "Summary", x = "E", startRow = ROW, startCol = 22)
@@ -7598,11 +7599,11 @@ temp <- c("=F18+G18", "=F19+G19", "=F20+G20", "=F21+G21", "=F22+G22", "=F23+G23"
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 8)
 
 for (col in 2:8) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 18:24, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 18:24, cols = col)
 }
 
 for (col in 2:8) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 26, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 26, cols = col)
 }
 
 
@@ -7638,7 +7639,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B36:D36)", xy = c(5,36))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B37:D37)", xy = c(5,37))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 31:37, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 31:37, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A31,STATEMENT!J:J,\"CIMP\")", xy = c(6,31))
@@ -7665,7 +7666,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F31:F37)", xy = c(6,39))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G31:G37)", xy = c(7,39))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 39, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 39, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B43:B49)", xy = c(2,51))
@@ -7676,7 +7677,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F43:F49)", xy = c(6,51))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G43:G49)", xy = c(7,51))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 51, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 51, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B55:B61)", xy = c(2,63))
@@ -7687,7 +7688,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F55:F61)", xy = c(6,63))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G55:G61)", xy = c(7,63))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 63, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 63, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B67:B73)", xy = c(2,75))
@@ -7698,7 +7699,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F67:F73)", xy = c(6,75))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G67:G73)", xy = c(7,75))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 75, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 75, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B79:B85)", xy = c(2,87))
@@ -7709,7 +7710,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F79:F85)", xy = c(6,87))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G79:G85)", xy = c(7,87))
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 87, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 87, cols = col)
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B91:B97)", xy = c(2,99))
@@ -7717,7 +7718,7 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(C91:C97)", xy = c(3,99))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(D91:D97)", xy = c(4,99))
 
 for (col in 2:4) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 99, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 99, cols = col)
 }
 
 
@@ -7735,7 +7736,7 @@ writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 7, startRow = 42
 addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), rows = 42, cols = 2:7)
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 43:49, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 43:49, cols = col)
 }
 
 temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A31,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A32,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A33,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A34,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A35,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A36,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A37,'Consumption Checks'!CI:CI)")
@@ -7788,7 +7789,7 @@ addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), 
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 55:61, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 55:61, cols = col)
 }
 
 temp <- c("=SUMIF('En & Imp Split'!$A:$A,Summary!$A55,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A56,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A57,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A58,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A59,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A60,'En & Imp Split'!AD:AD)", "=SUMIF('En & Imp Split'!$A:$A,Summary!$A61,'En & Imp Split'!AD:AD)")
@@ -7841,7 +7842,7 @@ addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), 
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 67:73, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 67:73, cols = col)
 }
 
 temp <- c("='En & Imp Split'!AL4", "='En & Imp Split'!AL5", "='En & Imp Split'!AL6", "='En & Imp Split'!AL7", "='En & Imp Split'!AL8", "='En & Imp Split'!AL9", "='En & Imp Split'!AL10")
@@ -7895,7 +7896,7 @@ addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), 
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 79:85, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 79:85, cols = col)
 }
 
 temp <- c("='En & Imp Split'!AL17", "='En & Imp Split'!AL18", "='En & Imp Split'!AL19", "='En & Imp Split'!AL20", "='En & Imp Split'!AL21", "='En & Imp Split'!AL22", "='En & Imp Split'!AL23")
@@ -7945,7 +7946,7 @@ addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), 
 
 
 for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "[$£]#,##0.00"), rows = 91:97, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = sterling, rows = 91:97, cols = col)
 }
 
 temp <- c("=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A91,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A92,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A93,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A94,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A95,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A96,'Consumption Checks'!CM:CM)", "=SUMIF('Consumption Checks'!$BO:$BO,Summary!$A97,'Consumption Checks'!CM:CM)")
@@ -7977,10 +7978,9 @@ for (col in 12:19) {
 }
 
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 11, x = paste0(toupper(settype2), " ENERGY WEEK ", weekno))
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(), rows = 14, cols = 11:18)
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "DATE"), rows = 14, cols = 16)
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "DATE"), rows = 14, cols = 18)
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(textDecoration = "bold"), rows = 14, cols = 11:13)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 16)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 18)
+addStyle(wb = mywb, sheet = "Summary", style = boldStyle, rows = 14, cols = 11:13)
 
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 15, x = "FROM")
 writeFormula(wb = mywb, sheet = "Summary", x = "=U2", xy = c(16,14))
@@ -8013,7 +8013,7 @@ writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 13, x = "20000
 writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 14, x = "200001.4")
 writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 15, x = "200000")
 writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 16, x = "200001.6")
-addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#FFFF00", textDecoration = 'bold', halign = 'center'), rows = 17, cols = 11)
+addStyle(wb = mywb, sheet = "Summary", style = yellowStyle, rows = 17, cols = 11)
 addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#FFFF00", textDecoration = 'bold', halign = 'center', fontColour = 'red'), rows = 17, cols = 12:16)
 
 writeData(wb = mywb, sheet = "Summary", startRow = 18, startCol = 11, x = "SEMO Purchases")
@@ -8060,7 +8060,7 @@ etsrowend <- etsrowstart + 6
 writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$Z$", etsrowstart, ":$Z$", etsrowend,")"), xy = c(18,20))
 
 for (row in c(18:22)) {
-  addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 12:19)
+  addStyle(wb = mywb, sheet = "Summary", style = NUMBER, rows = row, cols = 12:19)
 }
 
 # GU_503310 Table
@@ -8096,7 +8096,7 @@ writeFormula(wb = mywb, sheet = "Summary", xy = c(13,49), x = "=L49+K49")
 writeFormula(wb = mywb, sheet = "Summary", xy = c(13,50), x = "=L50+K50")
 
 for (row in c(44:50)) {
-  addStyle(wb = mywb, sheet = "Summary", createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 11:13)
+  addStyle(wb = mywb, sheet = "Summary", style = NUMBER, rows = row, cols = 11:13)
 }
 
 for (row in c(2:10, 13)) {
@@ -8197,7 +8197,7 @@ for (index in 2:289) {
 writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 50, startCol = 4)
 
 for (col in c(1,4)) {
-  addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "DATE"), rows = 2:337, cols = col)
+  addStyle(wb = mywb, sheet = SS, style = DATE, rows = 2:337, cols = col)
 }
 
 addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "hh:mm:ss"), rows = 2:337, cols = 2)
@@ -8271,10 +8271,10 @@ for (i in 1:7) {
 }
 
 for (col in 5:12) {
-  addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "[$£]#,##0.00"), rows = 2:337, cols = col)
+  addStyle(wb = mywb, sheet = SS, style = sterling, rows = 2:337, cols = col)
 }
 
-addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "[$£]#,##0.00"), rows = 2:5, cols = 16)
+addStyle(wb = mywb, sheet = SS, style = sterling, rows = 2:5, cols = 16)
 
 writeData(wb = mywb, sheet = SS, x = "PIMP", startRow = 2, startCol = 15)
 writeData(wb = mywb, sheet = SS, x = "PREV", startRow = 3, startCol = 15)
@@ -8282,7 +8282,7 @@ writeData(wb = mywb, sheet = SS, x = "PCC", startRow = 4, startCol = 15)
 writeData(wb = mywb, sheet = SS, x = "PSTR", startRow = 5, startCol = 15)
 
 for (row in c(2:5)) {
-  addStyle(wb = mywb, sheet = SS, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 16:21)
+  addStyle(wb = mywb, sheet = SS, style = sterling, rows = row, cols = 16:21)
 }
 
 saveWorkbook(wb = mywb, file = outputfile, overwrite = TRUE)
@@ -8317,7 +8317,7 @@ for (index in 3:290) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 1)
 
 for (col in c(1,13,25,36,39,42,66,67)) {
-  addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "DATE"), rows = 3:338, cols = col)
+  addStyle(wb = mywb, sheet = CC, style = DATE, rows = 3:338, cols = col)
 }
 
 temp <- c()
@@ -8390,7 +8390,7 @@ for (index in 3:338) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 9)
 
 for (col in c(6:10,16:20, 45:52, 55:62, 71:77)) {
-  addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "#,##0.00"), rows = 3:338, cols = col)
+  addStyle(wb = mywb, sheet = CC, style = NUMBER, rows = 3:338, cols = col)
 }
 
 
@@ -9106,7 +9106,7 @@ for (index in 3:338) {
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 100)
 
-addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = 1, cols = 69:70)
+addStyle(wb = mywb, sheet = CC, style = sterling, rows = 1, cols = 69:70)
 
 for (col in c(45,55, 71:91,93:100)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#FFEB9C", fontColour = "#9C5700"), rows = 1, cols = col)
@@ -9118,12 +9118,12 @@ for (col in c(46,56)) {
 
 for (row in c(3:338)) {
   for (col in c(78:100)) {
-    addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
+    addStyle(wb = mywb, sheet = CC, style = sterling, rows = row, cols = col)
   }
 }
 
 for (row in 52:57) {
-  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "0.00"), rows = row, cols = 1:61)
+  addStyle(wb = mywb, sheet = EAC, style = NUMBER, rows = row, cols = 1:61)
 }
 
 
@@ -9494,10 +9494,10 @@ for (col in c(14:18,33:37,43:45)) {
   addStyle(wb = mywb, sheet = EAC, style = createStyle(fgFill = "#D9E1F2", halign = "center"), rows = 1, cols = col)
 }
 for (col in c(4,5,52)) {
-  addStyle(wb = mywb, sheet = EAC, style = createStyle(numFmt = "DATE"), rows = 3:338, cols = col)
+  addStyle(wb = mywb, sheet = EAC, style = DATE, rows = 3:338, cols = col)
 }
 
-addStyle(wb = mywb, sheet = EAC, createStyle(textDecoration = 'bold'), rows = 2, cols = 1:61)
+addStyle(wb = mywb, sheet = EAC, boldStyle, rows = 2, cols = 1:61)
 
 
 
@@ -9783,16 +9783,16 @@ writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 46)
 
 # FORMATTING
 for (col in c(1,2,11,19,27,43)) {
-  addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "DATE"), rows = 4:339, cols = col)
+  addStyle(wb = mywb, sheet = EIS, style = DATE, rows = 4:339, cols = col)
 }
 for (col in c(5,13,21,29,45)) {
   addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "hh:mm:ss"), rows = 4:339, cols = col)
 }
 for (row in c(4:10,17:23)) {
-  addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "DATE"), rows = row, cols = 35)
+  addStyle(wb = mywb, sheet = EIS, style = DATE, rows = row, cols = 35)
 }
 for (col in c(6:10,14:17,22:25,30:33,38:41,46)) {
-  addStyle(wb = mywb, sheet = EIS, createStyle(numFmt = "[$£]#,##0.00"), rows = 4:339, cols = col)
+  addStyle(wb = mywb, sheet = EIS, style = sterling, rows = 4:339, cols = col)
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
@@ -9806,7 +9806,7 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 RS <- "Resettlement Summary"
 
-mybold <- createStyle(textDecoration = 'bold')
+mybold <- boldStyle
 bb <- createStyle(textDecoration = 'bold', fontSize = 18)
 
 writeData(mywb, RS, x = paste0(PTunit, " ", settype3, " ENERGY"), startRow = 1, startCol = 2)
@@ -10022,7 +10022,7 @@ writeFormula(mywb, RS, x = "=SUMIFS(DOCUMENT!$AL:$AL,DOCUMENT!$AF:$AF,'Summary'!
 
 for (ROW in c(5,8,11,15,18,21,25)) {
   for (COL in 2:10) {
-    addStyle(mywb, RS, style = createStyle(numFmt = "[$£]#,##0.00"), rows = ROW, cols = COL)
+    addStyle(mywb, RS, style = sterling, rows = ROW, cols = COL)
   }
 }
 
@@ -10074,7 +10074,7 @@ writeData(wb = mywb, sheet = BU, x = temp, startRow = 3, startCol = 7)
 
 writeFormula(wb = mywb, sheet = BU, x = "=DOCUMENT!F2", startRow = 5, startCol = 7)
 writeFormula(wb = mywb, sheet = BU, x = "=DOCUMENT!H2", startRow = 6, startCol = 7)
-addStyle(mywb, BU, style = createStyle(numFmt = "DATE"), rows = 5:6, cols = 7)
+addStyle(mywb, BU, style = DATE, rows = 5:6, cols = 7)
 
 for (ROW in c(12,34)) {
   writeData(mywb, BU, rep.int("BALIMB",4), startRow = ROW, startCol = 2)
@@ -10191,7 +10191,7 @@ temp <- c("start", "end")
 for (COL in c(7,8)) {
   for (ROW in c(12:15, 23:25, 34:37, 45:47)) {
     writeFormula(mywb, BU, x = paste0("=IFERROR(VLOOKUP(B", ROW, "&C", ROW, ",DOCUMENT!$A:$BM,MATCH(\"bp_", temp[COL-6], "_date\", DOCUMENT!$A$1:$BM$1,0),0),\"\")"), startCol = COL, startRow = ROW)
-    addStyle(mywb, BU, style = createStyle(numFmt = "DATE"), cols = COL, rows = ROW)
+    addStyle(mywb, BU, style = DATE, cols = COL, rows = ROW)
   }
 }
 
