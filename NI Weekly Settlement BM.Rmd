@@ -2890,11 +2890,11 @@ for (col in c(46,56)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#D9E1F2"), rows = 1, cols = col)
 }
 
-# for (row in 3:338) {
-#   for (col in c(78:85, 86:100)) {
-#     addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
-#   }
-# }
+for (row in 3:338) {
+ for (col in c(78:85, 86:100)) {
+   addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
+ }
+}
 
 
 # Ex-Ante Consumption sheet
@@ -3292,9 +3292,13 @@ for (col in c(4,5,56)) {
 
 addStyle(wb = mywb, sheet = EAC, createStyle(textDecoration = 'bold'), rows = 2, cols = 1:61)
 
+for (row in 52:57) {
+  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "0.00"), rows = row, cols = 1:61)
+}
 
-
-
+for (row in 3:11) {
+  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 53:57)
+}
 
 # En & Imp Split sheet
 
@@ -3584,7 +3588,7 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 ```
 
 
-```{r M+4}
+```{r}
 ##################################################################################################################################################################################################
 ################################################################################ M+4 settlement section ##########################################################################################
 ##################################################################################################################################################################################################
@@ -5240,7 +5244,7 @@ writeFormula(wb = mywb, sheet = CC, x = "=BN48+1", startRow = 50, startCol = 66)
 
 temp <- c()
 for (index in 3:290) {
-  temp <- c(temp, paste0("=BO", index))
+  temp <- c(temp, paste0("=BN", index, "+1"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 66)
 
@@ -5887,7 +5891,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 100)
 
 addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = 1, cols = 69:70)
 
-for (col in c(45,55, 71:91,93:100)) {
+for (col in c(45,55, 71:77, 78:91, 93:100)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#FFEB9C", fontColour = "#9C5700"), rows = 1, cols = col)
 }
 
@@ -5895,9 +5899,12 @@ for (col in c(46,56)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#D9E1F2"), rows = 1, cols = col)
 }
 
-for (col in c(78:100)) {
-  addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = 1, cols = col)
+for (row in c(3:338)) {
+  for (col in c(78:100)) {
+    addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
+  }
 }
+
 
 
 
@@ -6276,10 +6283,13 @@ for (col in c(4,5,52)) {
 
 addStyle(wb = mywb, sheet = EAC, createStyle(textDecoration = 'bold'), rows = 2, cols = 1:61)
 
+for (row in 52:57) {
+  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "0.00"), rows = row, cols = 1:61)
+}
 
-
-
-
+for (row in 3:11) {
+  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = 53:57)
+}
 
 
 # En & Imp Split sheet
@@ -6804,10 +6814,10 @@ for (ROW in c(5,8,11,15,18,21,25)) {
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
-```
 
 
-```{r M+13}
+
+
 ################################################################################################################################################################################################
 ############################################################################### M+13 settlement section ########################################################################################
 ################################################################################################################################################################################################
@@ -9107,11 +9117,15 @@ for (col in c(46,56)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#D9E1F2"), rows = 1, cols = col)
 }
 
-for (col in c(78:100)) {
-  addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = 1, cols = col)
+for (row in c(3:338)) {
+  for (col in c(78:100)) {
+    addStyle(wb = mywb, sheet = CC, createStyle(numFmt = "[$£]#,##0.00"), rows = row, cols = col)
+  }
 }
 
-
+for (row in 52:57) {
+  addStyle(wb = mywb, sheet = EAC, style= createStyle(numFmt = "0.00"), rows = row, cols = 1:61)
+}
 
 
 
@@ -10018,6 +10032,7 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 ```{r Invoice Backup}
+
 ###############################################################################################################################################################################################
 ############################################################################### Invoice Backup section ########################################################################################
 ###############################################################################################################################################################################################
@@ -10222,7 +10237,7 @@ for (COL in c(15:16)) {
     writeFormula(mywb, BU, x = paste0("=SUMIFS(DOCUMENT!AO:AO,DOCUMENT!AF:AF,Backup!B", ROW, ",DOCUMENT!AG:AG,Backup!C", ROW, ")"), startRow = ROW, startCol = 15)
     writeFormula(mywb, BU, x = paste0("=O", ROW, "+N", ROW), startRow = ROW, startCol = 16)
     addStyle(mywb, BU, whiteStyle, rows = ROW, cols = COL)
-    conditionalFormatting(wb = mywb, sheet = BU, cols = 16, rows = ROW, rule = paste0("=AND(",toupper(letters[16]),ROW, "<0.99, ", toupper(letters[16]),ROW, ">-0.99)"), type = 'expression', style = posStyle)
+    conditionalFormatting(wb = mywb, sheet = BU, cols = 16, rows = ROW, rule = paste0("=AND(", toupper(letters[16]), ROW, "<0.99, ", toupper(letters[16]), ROW, ">-0.99)"), type = 'expression', style = posStyle)
     conditionalFormatting(wb = mywb, sheet = BU, cols = 16, rows = ROW, rule = paste0("=OR(",toupper(letters[16]),ROW, "<=-1, ", toupper(letters[16]),ROW, ">=1)"), type = 'expression', style = negStyle)
 
   }
