@@ -5059,8 +5059,6 @@ for (row in c(2:5)) {
   addStyle(wb = mywb, sheet = SS, style = sterling, rows = row, cols = 16:21)
 }
 
-saveWorkbook(wb = mywb, file = outputfile, overwrite = TRUE)
-
 
 
 
@@ -8276,9 +8274,6 @@ for (row in c(2:5)) {
   addStyle(wb = mywb, sheet = SS, style = sterling, rows = row, cols = 16:21)
 }
 
-saveWorkbook(wb = mywb, file = outputfile, overwrite = TRUE)
-
-
 
 
 
@@ -9785,9 +9780,6 @@ for (row in c(4:10,17:23)) {
 for (col in c(6:10,14:17,22:25,30:33,38:41,46)) {
   addStyle(wb = mywb, sheet = EIS, style = sterling, rows = 4:339, cols = col)
 }
-
-saveWorkbook(mywb, outputfile, overwrite = TRUE)
-
 
 
 
