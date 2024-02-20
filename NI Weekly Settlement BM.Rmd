@@ -1655,9 +1655,9 @@ for (col in 12:19) {
 }
 
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 11, x = paste0(toupper(settype2), " ENERGY WEEK ", weekno))
-addStyle(wb = mywb, sheet = activesheet, style = DATE, rows = 14, cols = 16)
-addStyle(wb = mywb, sheet = activesheet, style = DATE, rows = 14, cols = 18)
-addStyle(wb = mywb, sheet = activesheet, style = boldStyle, rows = 14, cols = 11:13)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 16)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 18)
+addStyle(wb = mywb, sheet = "Summary", style = boldStyle, rows = 14, cols = 11:13)
 
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 15, x = "FROM")
 writeFormula(wb = mywb, sheet = "Summary", x = "=U2", xy = c(16,14))
@@ -1698,19 +1698,37 @@ writeData(wb = mywb, sheet = "Summary", startRow = 19, startCol = 11, x = "SEMO 
 writeData(wb = mywb, sheet = "Summary", startRow = 20, startCol = 11, x = "Ex-Ante")
 writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total")
 
-# purchases
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87+D51", xy = c(14,18))
+# formulas for sales and purchases depend on date
+
+if (as.Date(firstday, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
+  # purchases
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87+D51", xy = c(14,18))
+
+
+  # sales
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)", xy = c(14,19))
+
+} else {
+  # purchases
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87", xy = c(14,18))
+
+
+  # sales
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)+B51", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+C51", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+D51", xy = c(14,19))
+}
+
 writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CV3:CV338)", xy = c(15,18))
+writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CR3:CR338)", xy = c(15,19))
 writeFormula(wb = mywb, sheet = "Summary", x = "=-B99", xy = c(16,18))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L18:P18)", xy = c(17,18))
-
-# sales
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(12,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)", xy = c(13,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)", xy = c(14,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CR3:CR338)", xy = c(15,19))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L19:P19)", xy = c(17,19))
 
 # ex ante
@@ -4795,19 +4813,37 @@ writeData(wb = mywb, sheet = "Summary", startRow = 19, startCol = 11, x = "SEMO 
 writeData(wb = mywb, sheet = "Summary", startRow = 20, startCol = 11, x = "Ex-Ante")
 writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total")
 
-# purchases
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87+D51", xy = c(14,18))
+# formulas for sales and purchases depend on date
+
+if (as.Date(firstday, format = "%Y%m%d") < as.Date("20221001", format = "%Y%m%d")) {
+  # purchases
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87+D51", xy = c(14,18))
+
+
+  # sales
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)", xy = c(14,19))
+
+} else {
+  # purchases
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87", xy = c(14,18))
+
+
+  # sales
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)+B51", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+C51", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+D51", xy = c(14,19))
+}
+
 writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CV3:CV338)", xy = c(15,18))
+writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CR3:CR338)", xy = c(15,19))
 writeFormula(wb = mywb, sheet = "Summary", x = "=-B99", xy = c(16,18))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L18:P18)", xy = c(17,18))
-
-# sales
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(12,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)", xy = c(13,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)", xy = c(14,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CR3:CR338)", xy = c(15,19))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L19:P19)", xy = c(17,19))
 
 # ex ante
@@ -8010,19 +8046,37 @@ writeData(wb = mywb, sheet = "Summary", startRow = 19, startCol = 11, x = "SEMO 
 writeData(wb = mywb, sheet = "Summary", startRow = 20, startCol = 11, x = "Ex-Ante")
 writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total")
 
-# purchases
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87+D51", xy = c(14,18))
+# formulas for sales and purchases depend on date
+
+if (as.Date(firstday, format = "%Y%m%d") < as.Date("20221001", format = "%Y%m%d")) {
+  # purchases
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87+D51", xy = c(14,18))
+
+
+  # sales
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)", xy = c(14,19))
+
+} else {
+  # purchases
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87", xy = c(14,18))
+
+
+  # sales
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)+B51", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+C51", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+D51", xy = c(14,19))
+}
+
 writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CV3:CV338)", xy = c(15,18))
+writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CR3:CR338)", xy = c(15,19))
 writeFormula(wb = mywb, sheet = "Summary", x = "=-B99", xy = c(16,18))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L18:P18)", xy = c(17,18))
-
-# sales
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(12,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)", xy = c(13,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)", xy = c(14,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CR3:CR338)", xy = c(15,19))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L19:P19)", xy = c(17,19))
 
 # ex ante
