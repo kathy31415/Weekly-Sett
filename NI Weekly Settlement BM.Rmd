@@ -437,6 +437,19 @@ settype3 <- "INIT"
 settype4 <- "D4"
 mm <- 20
 
+# USERNAME & DRIVES
+un <- Sys.getenv("USERNAME")
+if (un == "kathy.callan") {
+  accdrive <- "X"
+  edrive <- "Y"
+  e2drive <- "Z"
+} else if (un == "emma.mullan") {
+  accdrive <- "X"
+  edrive <- "Z"
+  e2drive <- "Y"
+}
+
+
 # *Styles*
 negStyle <- createStyle(fontColour = "#9C0006", bgFill = "#FFC7CE")
 posStyle <- createStyle(fontColour = "#006100", bgFill = "#C6EFCE")
@@ -455,7 +468,7 @@ redStyle <- createStyle(fontColour = 'red', textDecoration = 'bold')
 # DOCUMENT
 
 # read in XML file
-xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SD_", PTunit, "_\\d{8}_\\d{8}_BMCRM_REPT_\\d{8}T\\d{6}\\.XML$")))
+xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SD_", PTunit, "_\\d{8}_\\d{8}_BMCRM_REPT_\\d{8}T\\d{6}\\.XML$")))
 
 # Get invoice document number
 v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
@@ -572,7 +585,7 @@ writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/D
 for (f in 1:7) {
   
   # read in XML file
-  xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SS_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+  xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SS_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
   
   # filter out everything not in the reqd week
   unique_dates <- seq(from = as.Date(firstday2, format = "%Y-%m-%d"), by = 1, length.out = 7)
@@ -708,7 +721,7 @@ writexl::write_xlsx(dfstatements, outputfile)
 for (f in 1:7) {
   
   # read in XML file
-  xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SR_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+  xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SR_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
   xmlfile <- xmlfile[grepl(x = xmlfile, pattern = unique_dates)]
   
   xmlfile <- xmlfile[[f]]
@@ -869,7 +882,7 @@ inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
 inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
 
 # Get file path for output file
-outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
 if (file.exists(outputfile)) {
   file.remove(outputfile)
 }
@@ -940,7 +953,7 @@ for (col in c(4,15,16,20,26:28,30:35,41)) {
 # ECC Ex-Ante Report sheet
 
 # read in xml file
-xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^Online_C_LCC")))
+xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^Online_C_LCC")))
 
 if (is.error(read_xml(xmlfile)) == TRUE) {
   stop("Download Ex-Ante Report from ECC website before rerunning this chunk.")
@@ -1196,14 +1209,14 @@ for (ROW in 2:9) {
   writeData(wb = mywb, "Summary", x = "P", startRow = ROW, startCol = 23)
 }
 
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U2,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,2))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U3,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,3))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U4,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,4))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U5,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,5))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U6,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,6))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U7,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,7))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U8,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,8))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U9,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,9))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U2,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,2))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U3,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,3))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U4,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,4))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U5,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,5))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U6,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,6))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U7,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,7))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U8,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,8))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U9,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,9))
 
 addStyle(wb = mywb, sheet = activesheet, style = createStyle(numFmt = "#,##0.0000", fgFill = "#F8CBAD"), rows = 2:9, cols = 24)
 addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#C0C0C0", textDecoration = 'bold', fontColour = '#00008B'), rows = 1, cols = 21:25)
@@ -2150,13 +2163,13 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 15)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM596'!$A:$AY,D", index, ",0)"))
+  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM596'!$A:$AY,D", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 6)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM594'!$A:$AY,D", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM594'!$A:$AY,D", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 7)
 
@@ -2264,19 +2277,19 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 69)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM595 LA'!$A:$AY,$N", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM595 LA'!$A:$AY,$N", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 16)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM591 LA'!$A:$AY,$N", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM591 LA'!$A:$AY,$N", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 17)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM598'!$A:$AY,$N", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM598'!$A:$AY,$N", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 18)
 
@@ -2970,19 +2983,19 @@ for (col in c(6,11:13)) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM595 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM595 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM595 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM595 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM595 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM595 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 7)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM591 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM591 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM591 LA'!$C$1:$AX$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM591 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM591 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM591 LA'!$C$1:$AX$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 8)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(-INDEX('X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM598'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM598'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM598'!$C$1:$AZ$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(-INDEX('X:/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM598'!$C$3:$AZ$1048576,MATCH(E", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM598'!$A$3:$A$1048576,0),MATCH(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM598'!$C$1:$AZ$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 9)
 
@@ -3640,7 +3653,7 @@ mm <- 30
 for (f in 1:7) {
   
   # read in XML file
-  xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SS_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+  xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SS_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
   
   # filter out everything not in the reqd week
   unique_dates <- seq(from = as.Date(firstday2, format = "%Y-%m-%d"), by = 1, length.out = 7)
@@ -3777,7 +3790,7 @@ writexl::write_xlsx(dfstatements, outputfile)
 for (f in 1:7) {
   
   # read in XML file
-  xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SR_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+  xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SR_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
   xmlfile <- xmlfile[grepl(x = xmlfile, pattern = unique_dates)]
   
   xmlfile <- xmlfile[[f]]
@@ -3941,7 +3954,7 @@ inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
 inputfiles <- inputfiles[grepl(pattern = paste0("Document|Week ", as.character(weekno)), x = inputfiles)]
 
 # Get previous week's file
-prevfile <- list.files(path = paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/"), full.names = TRUE)
+prevfile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/"), full.names = TRUE)
 prevfile <- prevfile[grepl(x = prevfile, pattern = as.character(prevweekno))]
 prevfile <- prevfile[grepl(x = prevfile, pattern = as.character(year))]
 
@@ -3950,7 +3963,7 @@ if (length(prevfile[grepl(x = prevfile, pattern = "$")]) > 1) {
 }
 
 # Get file path for output file
-outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
 if (file.exists(outputfile)) {
   file.remove(outputfile)
 }
@@ -4031,7 +4044,7 @@ for (col in c(4,15,16,20,26:28,30:35,41)) {
 
 EAR <- "EX-Ante Report"
 
-prevtypefile <- list.files(path = paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/D+4 INITIAL/"), full.names = TRUE)
+prevtypefile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/D+4 INITIAL/"), full.names = TRUE)
 if (length(prevtypefile[grepl(x = prevtypefile, pattern = paste0(" ", as.character(weekno)))]) == 0) {
   prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = as.character(weekno))]
 } else {
@@ -4315,14 +4328,14 @@ for (ROW in 2:9) {
   writeData(wb = mywb, "Summary", x = "P", startRow = ROW, startCol = 23)
 }
 
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U2,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,2))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U3,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,3))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U4,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,4))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U5,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,5))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U6,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,6))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U7,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,7))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U8,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,8))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U9,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,9))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U2,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,2))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U3,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,3))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U4,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,4))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U5,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,5))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U6,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,6))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U7,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,7))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U8,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,8))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U9,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,9))
 
 addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "#,##0.0000", fgFill = "#F8CBAD"), rows = 2:9, cols = 24)
 addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#C0C0C0", textDecoration = 'bold', fontColour = '#00008B'), rows = 1, cols = 21:25)
@@ -5177,13 +5190,13 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 15)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM596'!$A:$AY,D", index, ",0)"))
+  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM596'!$A:$AY,D", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 6)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM594 LA'!$A:$AY,D", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM594 LA'!$A:$AY,D", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 7)
 
@@ -5292,19 +5305,19 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 69)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM595 LA'!$A:$AY,$N", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM595 LA'!$A:$AY,$N", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 16)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM591 LA'!$A:$AY,$N", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM591 LA'!$A:$AY,$N", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 17)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM598 LA'!$A:$AY,$N", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM598 LA'!$A:$AY,$N", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 18)
 
@@ -6001,19 +6014,19 @@ for (col in c(6,11:13)) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM595 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM595 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM595 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM595 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM595 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM595 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 7)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM591 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM591 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM591 LA'!$C$1:$AX$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM591 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM591 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM591 LA'!$C$1:$AX$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 8)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(-INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM598 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM598 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM598 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(-INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM598 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM598 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+4 Initial 30 MM/[NI MASTER MM Messages M+4.xlsx]MM598 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 9)
 
@@ -6671,7 +6684,7 @@ temp <- c()
 # Formulas for Tables
 temp2 <- paste0("PT_500057 SEMO Wk ", weekno, " ", year, " Shadow Settlement D+4.xlsx")
 
-if (temp2 %in% list.files(paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/D+4 Initial")) == FALSE) {
+if (temp2 %in% list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/D+4 Initial")) == FALSE) {
   temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/D+4 Initial/[PT_500057 SEMO Wk", weekno, " ", year, " Shadow Settlement D+4.xlsx]Summary'!L18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 2)
   
@@ -6874,7 +6887,7 @@ mm <- 40
 for (f in 1:7) {
   
   # read in XML file
-  xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SS_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+  xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SS_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
   
   # filter out everything not in the reqd week
   unique_dates <- seq(from = as.Date(firstday2, format = "%Y-%m-%d"), by = 1, length.out = 7)
@@ -7011,7 +7024,7 @@ writexl::write_xlsx(dfstatements, outputfile)
 for (f in 1:7) {
   
   # read in XML file
-  xmlfile <- paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SR_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+  xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SR_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
   xmlfile <- xmlfile[grepl(x = xmlfile, pattern = unique_dates)]
   
   xmlfile <- xmlfile[[f]]
@@ -7178,7 +7191,7 @@ if (length(inputfiles) > 3 | length(inputfiles) < 3) {
 }
 
 # Get previous week's file
-prevfile <- list.files(path = paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/"), full.names = TRUE)
+prevfile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/"), full.names = TRUE)
 prevfile <- prevfile[grepl(x = prevfile, pattern = as.character(prevweekno))]
 prevfile <- prevfile[grepl(x = prevfile, pattern = as.character(year))]
 
@@ -7187,7 +7200,7 @@ if (length(prevfile[grepl(x = prevfile, pattern = "$")]) > 1) {
 }
 
 # Get file path for output file
-outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
 if (file.exists(outputfile)) {
   file.remove(outputfile)
 }
@@ -7267,7 +7280,7 @@ for (col in c(4,15,16,20,26:28,30:35,41)) {
 
 EAR <- "EX-Ante Report"
 
-prevtypefile <- list.files(path = paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/"), full.names = TRUE)
+prevtypefile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/"), full.names = TRUE)
 prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = paste0(" ", as.character(weekno)))]
 prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = as.character(year))]
 
@@ -7545,14 +7558,14 @@ for (ROW in 2:9) {
   writeData(wb = mywb, "Summary", x = "P", startRow = ROW, startCol = 23)
 }
 
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U2,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,2))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U3,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,3))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U4,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,4))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U5,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,5))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U6,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,6))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U7,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,7))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U8,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,8))
-writeFormula(wb = mywb, sheet = "Summary", x = "=VLOOKUP(U9,'Z:/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)", xy = c(24,9))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U2,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,2))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U3,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,3))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U4,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,4))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U5,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,5))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U6,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,6))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U7,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,7))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U8,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,8))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=VLOOKUP(U9,'", e2drive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"), xy = c(24,9))
 
 addStyle(wb = mywb, sheet = "Summary", style = createStyle(numFmt = "#,##0.0000", fgFill = "#F8CBAD"), rows = 2:9, cols = 24)
 addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#C0C0C0", textDecoration = 'bold', fontColour = '#00008B'), rows = 1, cols = 21:25)
@@ -8407,13 +8420,13 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 15)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM596'!$A:$AY,D", index, ",0)"))
+  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM596'!$A:$AY,D", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 6)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM594 LA'!$A:$AY,D", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM594 LA'!$A:$AY,D", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 7)
 
@@ -8521,19 +8534,19 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 69)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM595 LA'!$A:$AY,$N", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM595 LA'!$A:$AY,$N", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 16)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM591 LA'!$A:$AY,$N", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM591 LA'!$A:$AY,$N", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 17)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM598 LA'!$A:$AY,$N", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($M", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM598 LA'!$A:$AY,$N", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 18)
 
@@ -9229,19 +9242,19 @@ for (col in c(6,11:13)) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM595 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM595 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM595 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM595 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM595 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM595 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 7)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM591 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM591 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM591 LA'!$C$1:$AX$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM591 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM591 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM591 LA'!$C$1:$AX$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 8)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=(-INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM598 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM598 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM598 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
+  temp <- c(temp, paste0("=(-INDEX('X:/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM598 LA'!$C$3:$AZ$1048576,MATCH(E", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM598 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/M+13 Resettlement 40 MM/[NI MASTER MM Messages M+13.xlsx]MM598 LA'!$C$1:$AZ$1,0)))*F", index, "/1000"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 9)
 
@@ -9897,7 +9910,7 @@ temp <- c()
 # Formulas for Tables
 temp2 <- paste0("PT_500057 SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx")
 
-if (temp2 %in% list.files(paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement")) == FALSE) {
+if (temp2 %in% list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement")) == FALSE) {
   temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[PT_500057 SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!L18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 2)
   
@@ -10079,7 +10092,7 @@ options(openxlsx.dateFormat = "dd/mm/yyyy")
 
 mywb <- createWorkbook()
 
-outputfile <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/Invoice Backups/", documentidnumber, " BACKUP - Temporary.xlsx")
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/Invoice Backups/", documentidnumber, " BACKUP - Temporary.xlsx")
 
 # add sheets
 addWorksheet(wb = mywb, sheetName = "Backup")
