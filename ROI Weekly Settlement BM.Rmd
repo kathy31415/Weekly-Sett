@@ -1240,7 +1240,7 @@ for (col in 2:8) {
   addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 18:24, cols = col)
 }
 for (i in 1:length(temp)) {
-  writeFormula(wb = mywb, sheet = "Summary", x = temp[i], startRow = 26, startCol = 2)
+  writeFormula(wb = mywb, sheet = "Summary", x = temp[i], startRow = 26, startCol = 1+i)
 }
 
 
@@ -1583,29 +1583,29 @@ startingrow <- 92
 
 writeData(wb = mywb, sheet = "Summary", x = "CCA", startCol = 1, startRow = (startingrow-2))
 
-writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 2, startRow = startingrow-1)
-writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 3, startRow = startingrow-1)
-writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 4, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 2, startRow = startingrow)
+writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 3, startRow = startingrow)
+writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 4, startRow = startingrow)
 addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), rows = startingrow-1, cols = 2:4)
 
-for (col in 2:7) {
-  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 91:97, cols = col)
+for (col in 2:4) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 92:100, cols = col)
 }
 
 temp <- c()
-for (index in c(startingrow:startingrow+6)) {
+for (index in c((startingrow):(startingrow+6))) {
   temp <- c(temp, paste0("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A", index, ",'Consumption Checks'!CJ:CJ)"))
 }
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = startingrow, startCol = 2)
 
 temp <- c()
-for (index in c(startingrow:startingrow+6)) {
+for (index in c((startingrow):(startingrow+6))) {
   temp <- c(temp, paste0("=SUMIFS(STATEMENT!P:P,STATEMENT!D:D,Summary!A", index, ",STATEMENT!N:N,\"CCA\")"))
 }
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = startingrow, startCol = 3)
 
 temp <- c()
-for (index in c(startingrow:startingrow+6)) {
+for (index in c((startingrow):(startingrow+6))) {
   temp <- c(temp, paste0("=B", index, "-C", index))
 }
 writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = startingrow, startCol = 4)
@@ -2442,7 +2442,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=AJ", index, "+TIME(2,0,0)"))
+    temp <- c(temp, paste0("=AJ", index, "+TIME(1,0,0)"))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 42)
   }
   temp <- c()
@@ -2458,7 +2458,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=AJ", index, "+TIME(1,0,0)"))
+    temp <- c(temp, paste0("=AJ", index, "+TIME(2,0,0)"))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 42)
   }
   temp <- c()

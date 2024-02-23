@@ -2547,7 +2547,7 @@ if (season == "winter") {
   } 
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=AK", index, "+TIME(2,0,0)"))
+    temp <- c(temp, paste0("=AK", index, "+TIME(1,0,0)"))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
   }
   temp <- c()
@@ -2563,7 +2563,7 @@ if (season == "winter") {
   } 
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=AK", index, "+TIME(1,0,0)"))
+    temp <- c(temp, paste0("=AK", index, "+TIME(2,0,0)"))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
   }
   temp <- c()
@@ -5576,7 +5576,7 @@ if (season == "winter") {
   } 
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=AK", index, "+TIME(2,0,0)"))
+    temp <- c(temp, paste0("=AK", index, "+TIME(1,0,0)"))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
   }
   temp <- c()
@@ -5592,7 +5592,7 @@ if (season == "winter") {
   } 
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=AK", index, "+TIME(1,0,0)"))
+    temp <- c(temp, paste0("=AK", index, "+TIME(2,0,0)"))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
   }
   temp <- c()
@@ -8805,7 +8805,7 @@ if (season == "winter") {
   } 
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=AK", index, "+TIME(2,0,0)"))
+    temp <- c(temp, paste0("=AK", index, "+TIME(1,0,0)"))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
   }
   temp <- c()
@@ -8821,7 +8821,7 @@ if (season == "winter") {
   } 
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=AK", index, "+TIME(1,0,0)"))
+    temp <- c(temp, paste0("=AK", index, "+TIME(2,0,0)"))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
   }
   temp <- c()
