@@ -451,6 +451,10 @@ if (un == "kathy.callan") {
   stop("Unexpected user. Stopping...")
 }
 
+initials <- strsplit(un, "\\.")
+initials <- sapply(initials, function(x) substr(x, 1, 1))
+initials <- toupper(paste(initials[, 1], collapse = ""))
+
 # *Styles*
 negStyle <- createStyle(fontColour = "#9C0006", bgFill = "#FFC7CE")
 posStyle <- createStyle(fontColour = "#006100", bgFill = "#C6EFCE")
@@ -884,7 +888,7 @@ inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
 inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
 
 # Get file path for output file
-outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - ", initials, ".xlsx")
 if (file.exists(outputfile)) {
   file.remove(outputfile)
 }
@@ -3966,7 +3970,7 @@ if (length(prevfile[grepl(x = prevfile, pattern = "$")]) > 1) {
 }
 
 # Get file path for output file
-outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - ", initials, ".xlsx")
 if (file.exists(outputfile)) {
   file.remove(outputfile)
 }
@@ -7204,7 +7208,7 @@ if (length(prevfile[grepl(x = prevfile, pattern = "$")]) > 1) {
 }
 
 # Get file path for output file
-outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - ", initials, ".xlsx")
 if (file.exists(outputfile)) {
   file.remove(outputfile)
 }
@@ -10096,7 +10100,7 @@ options(openxlsx.dateFormat = "dd/mm/yyyy")
 
 mywb <- createWorkbook()
 
-outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/Invoice Backups/", documentidnumber, " BACKUP - Temporary.xlsx")
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/Invoice Backups/", documentidnumber, " BACKUP - ", initials, ".xlsx")
 
 # add sheets
 addWorksheet(wb = mywb, sheetName = "Backup")
@@ -10251,37 +10255,37 @@ for (COL in c(7,8)) {
 
 temp <- c()
 for (index in c(12:16)) {
-  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/D+4 Initial/[PT_500057 SEMO Wk ", weeknod4," ", yeard4, " Shadow Settlement D+4 - Temporary.xlsx]Summary'!", letters[index], "19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/D+4 Initial/[PT_500057 SEMO Wk ", weeknod4," ", yeard4, " Shadow Settlement D+4 - ", initials, ".xlsx]Summary'!", letters[index], "19")
   writeFormula(mywb, BU, temp, startCol = index-3, startRow = 12)
 }
 
 temp <- c()
 for (index in c(12:16)) {
-  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/D+4 Initial/[PT_500057 SEMO Wk ", weeknod4," ", yeard4, " Shadow Settlement D+4 - Temporary.xlsx]Summary'!", letters[index], "18")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/D+4 Initial/[PT_500057 SEMO Wk ", weeknod4," ", yeard4, " Shadow Settlement D+4 - ", initials, ".xlsx]Summary'!", letters[index], "18")
   writeFormula(mywb, BU, temp, startCol = index-3, startRow = 34)
 }
 
 temp <- c()
 for (index in c(12:16)) {
-  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[PT_500057 SEMO Wk ", weeknom4," ", yearm4, " Shadow Settlement M+4 - Temporary.xlsx]Resettlement Summary'!", letters[index-10], "21")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[PT_500057 SEMO Wk ", weeknom4," ", yearm4, " Shadow Settlement M+4 - ", initials, ".xlsx]Resettlement Summary'!", letters[index-10], "21")
   writeFormula(mywb, BU, temp, startCol = index-3, startRow = 13)
 }
 
 temp <- c()
 for (index in c(12:16)) {
-  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[PT_500057 SEMO Wk ", weeknom4," ", yearm4, " Shadow Settlement M+4 - Temporary.xlsx]Resettlement Summary'!", letters[index-10], "11")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[PT_500057 SEMO Wk ", weeknom4," ", yearm4, " Shadow Settlement M+4 - ", initials, ".xlsx]Resettlement Summary'!", letters[index-10], "11")
   writeFormula(mywb, BU, temp, startCol = index-3, startRow = 35)
 }
 
 temp <- c()
 for (index in c(12:16)) {
-  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[PT_500057 SEMO Wk ", weeknom13," ", yearm13, " Shadow Settlement M+13 - Temporary.xlsx]Resettlement Summary'!", letters[index-10], "21")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[PT_500057 SEMO Wk ", weeknom13," ", yearm13, " Shadow Settlement M+13 - ", initials, ".xlsx]Resettlement Summary'!", letters[index-10], "21")
   writeFormula(mywb, BU, temp, startCol = index-3, startRow = 14)
 }
 
 temp <- c()
 for (index in c(12:16)) {
-  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[PT_500057 SEMO Wk ", weeknom13," ", yearm13, " Shadow Settlement M+13 - Temporary.xlsx]Resettlement Summary'!", letters[index-10], "11")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[PT_500057 SEMO Wk ", weeknom13," ", yearm13, " Shadow Settlement M+13 - ", initials, ".xlsx]Resettlement Summary'!", letters[index-10], "11")
   writeFormula(mywb, BU, temp, startCol = index-3, startRow = 36)
 }
 
