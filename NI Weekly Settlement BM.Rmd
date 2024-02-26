@@ -855,6 +855,7 @@ for (f in 1:7) {
 # combine reports
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*REPORT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Reports for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
 
 dfreports <- data.frame()
@@ -3924,6 +3925,7 @@ for (f in 1:7) {
 # combine reports
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*REPORT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Reports for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
 
 dfreports <- data.frame()
@@ -4828,7 +4830,7 @@ writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total
 
 # formulas for sales and purchases depend on date
 
-if (as.Date(firstday, format = "%Y%m%d") < as.Date("20221001", format = "%Y%m%d")) {
+if (as.Date(firstday, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
   # purchases
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
@@ -7158,6 +7160,7 @@ for (f in 1:7) {
 # combine reports
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*REPORT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Reports for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
 
 dfreports <- data.frame()
@@ -8061,7 +8064,7 @@ writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total
 
 # formulas for sales and purchases depend on date
 
-if (as.Date(firstday, format = "%Y%m%d") < as.Date("20221001", format = "%Y%m%d")) {
+if (as.Date(firstday, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
   # purchases
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
