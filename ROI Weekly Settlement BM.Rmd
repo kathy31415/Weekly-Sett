@@ -447,8 +447,13 @@ if (un == "kathy.callan") {
   accdrive <- "X"
   edrive <- "Z"
   e2drive <- "Y"
+} else {
+  stop("Unexpected user. Stopping...")
 }
 
+initials <- strsplit(un, "\\.")
+initials <- sapply(initials, function(x) substr(x, 1, 1))
+initials <- toupper(paste(initials[, 1], collapse = ""))
 
 # *Styles*
 negStyle <- createStyle(fontColour = "#9C0006", bgFill = "#FFC7CE")
@@ -1704,8 +1709,8 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L22:P22)", xy = c(17,22))
 # CHECK
 writeFormula(wb = mywb, sheet = "Summary", x = "=Q18+Q19+I13", xy = c(18,18))
 writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$AF$1112:$AF$1118)"), xy = c(18,20))
-writeData(wb = mywb, sheet = "Summary", x = "Against Doc Total", startRow = 18, startCol = 18)
-writeData(wb = mywb, sheet = "Summary", x = "Against AD Day Ahead Sheet", startRow = 20, startCol = 18)
+writeData(wb = mywb, sheet = "Summary", x = "Against Doc Total", startRow = 18, startCol = 19)
+writeData(wb = mywb, sheet = "Summary", x = "Against AD Day Ahead Sheet", startRow = 20, startCol = 19)
 
 for (row in c(18:22)) {
   addStyle(wb = mywb, sheet = "Summary", style = euro, rows = row, cols = 12:19)
@@ -2105,71 +2110,20 @@ for (index in 3:46) {
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 38)
 temp <- c()
-for (index in 47:52) {
+for (index in 47:50) {
   temp <- c(temp, paste0("=AI", index, "+1"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 47, startCol = 38)
 temp <- c()
-for (index in 53:94) {
+for (index in 51:94) {
   temp <- c(temp, paste0("=AI", index))
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 38)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 38)
 temp <- c()
-for (index in 95:100) {
-  temp <- c(temp, paste0("=AI", index, "+1"))
+for (index in 47:290) {
+  temp <- c(temp, paste0("=AL", index, "+1"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 95, startCol = 38)
-temp <- c()
-for (index in 101:142) {
-  temp <- c(temp, paste0("=AI", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 101, startCol = 38)
-temp <- c()
-for (index in 143:148) {
-  temp <- c(temp, paste0("=AI", index, "+1"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 143, startCol = 38)
-temp <- c()
-for (index in 149:190) {
-  temp <- c(temp, paste0("=AI", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 149, startCol = 38)
-temp <- c()
-for (index in 191:196) {
-  temp <- c(temp, paste0("=AI", index, "+1"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 191, startCol = 38)
-temp <- c()
-for (index in 197:238) {
-  temp <- c(temp, paste0("=AI", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 197, startCol = 38)
-temp <- c()
-for (index in 239:244) {
-  temp <- c(temp, paste0("=AI", index, "+1"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 239, startCol = 38)
-temp <- c()
-for (index in 245:286) {
-  temp <- c(temp, paste0("=AI", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 245, startCol = 38)
-temp <- c()
-for (index in 287:292) {
-  temp <- c(temp, paste0("=AI", index, "+1"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 287, startCol = 38)
-for (index in 293:334) {
-  temp <- c(temp, paste0("=AI", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 293, startCol = 38)
-temp <- c()
-for (index in 335:338) {
-  temp <- c(temp, paste0("=AI", index, "+1"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 335, startCol = 38)
-
-
 
 
 temp <- c()
@@ -2362,80 +2316,26 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 39)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 temp <- c()
-for (index in 3:50) {
+for (index in 3:46) {
   temp <- c(temp, paste0("=AL", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 41)
 
-writeFormula(mywb, CC, x = "=AI51+1", startRow = 51, startCol = 41)
-writeFormula(mywb, CC, x = "=AI52+1", startRow = 52, startCol = 41)
+writeFormula(mywb, CC, x = "=AO46", startRow = 47, startCol = 41)
 
 temp <- c()
-for (index in 53:95) {
-  temp <- c(temp, paste0("=AI", index))
+for (index in 48:94) {
+  temp <- c(temp, paste0("=AL", index))
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 41)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 48, startCol = 41)
 
-writeFormula(mywb, CC, x = "=AL96", startRow = 96, startCol = 41)
-writeFormula(mywb, CC, x = "=AL97", startRow = 97, startCol = 41)
-writeFormula(mywb, CC, x = "=AL98", startRow = 98, startCol = 41)
-writeFormula(mywb, CC, x = "=AI99+1", startRow = 99, startCol = 41)
-writeFormula(mywb, CC, x = "=AI100+1", startRow = 100, startCol = 41)
+writeFormula(mywb, CC, x = "=AO94", startRow = 95, startCol = 41)
 
 temp <- c()
-for (index in 101:143) {
-  temp <- c(temp, paste0("=AI", index))
+for (index in 48:290) {
+  temp <- c(temp, paste0("=AO", index, "+1"))
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 101, startCol = 41)
-
-writeFormula(mywb, CC, x = "=AL144", startRow = 144, startCol = 41)
-writeFormula(mywb, CC, x = "=AL145", startRow = 145, startCol = 41)
-writeFormula(mywb, CC, x = "=AL146", startRow = 146, startCol = 41)
-writeFormula(mywb, CC, x = "=AI147+1", startRow = 147, startCol = 41)
-writeFormula(mywb, CC, x = "=AI148+1", startRow = 148, startCol = 41)
-
-temp <- c()
-for (index in 149:191) {
-  temp <- c(temp, paste0("=AI", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 149, startCol = 41)
-
-writeFormula(mywb, CC, x = "=AL192", startRow = 192, startCol = 41)
-writeFormula(mywb, CC, x = "=AL193", startRow = 193, startCol = 41)
-writeFormula(mywb, CC, x = "=AL194", startRow = 194, startCol = 41)
-writeFormula(mywb, CC, x = "=AI195+1", startRow = 195, startCol = 41)
-writeFormula(mywb, CC, x = "=AI196+1", startRow = 196, startCol = 41)
-
-temp <- c()
-for (index in 197:239) {
-  temp <- c(temp, paste0("=AI", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 197, startCol = 41)
-
-writeFormula(mywb, CC, x = "=AL240", startRow = 240, startCol = 41)
-writeFormula(mywb, CC, x = "=AL241", startRow = 241, startCol = 41)
-writeFormula(mywb, CC, x = "=AL242", startRow = 242, startCol = 41)
-writeFormula(mywb, CC, x = "=AI243+1", startRow = 243, startCol = 41)
-writeFormula(mywb, CC, x = "=AI244+1", startRow = 244, startCol = 41)
-
-temp <- c()
-for (index in 245:287) {
-  temp <- c(temp, paste0("=AI", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 245, startCol = 41)
-
-writeFormula(mywb, CC, x = "=AL288", startRow = 288, startCol = 41)
-writeFormula(mywb, CC, x = "=AL289", startRow = 289, startCol = 41)
-writeFormula(mywb, CC, x = "=AL290", startRow = 290, startCol = 41)
-writeFormula(mywb, CC, x = "=AI291+1", startRow = 291, startCol = 41)
-writeFormula(mywb, CC, x = "=AI292+1", startRow = 292, startCol = 41)
-
-temp <- c()
-for (index in 293:335) {
-  temp <- c(temp, paste0("=AI", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 293, startCol = 41)
-
-writeFormula(mywb, CC, x = "=AL336", startRow = 336, startCol = 41)
-writeFormula(mywb, CC, x = "=AL337", startRow = 337, startCol = 41)
-writeFormula(mywb, CC, x = "=AL338", startRow = 338, startCol = 41)
-
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 96, startCol = 41)
 
 
 temp <- c()
@@ -3616,7 +3516,7 @@ writeData(wb = mywb, sheet = EIS, x = "CIMB", startRow = 1, startCol = 1)
 writeData(wb = mywb, sheet = EIS, x = "CIMP", startRow = 1, startCol = 10)
 writeData(wb = mywb, sheet = EIS, x = "CREV", startRow = 1, startCol = 18)
 writeData(wb = mywb, sheet = EIS, x = "CDIFFPIMB", startRow = 1, startCol = 26)
-writeData(wb = mywb, sheet = EIS, x = "CSHORTSDIFFP", startRow = 1, startCol = 34)
+writeData(wb = mywb, sheet = EIS, x = "CSHORTDIFFP", startRow = 1, startCol = 34)
 writeData(wb = mywb, sheet = EIS, x = "CCA", startRow = 1, startCol = 42)
 
 
@@ -3625,7 +3525,7 @@ headings2 <- c("Settlement Date", "Trading Date",
                rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
                rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
                rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
-               rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
+               rep.int("", times = 6), "HH", "NHH", "PPA Gen", "Total",
                rep.int("", times = 4), "Total")
 
 for (COL in 1:length(headings2)) {
@@ -3957,3 +3857,2847 @@ for (ROW in 4:10) {
 saveWorkbook(mywb, outputfile, TRUE)
 
 ```
+
+```{r read doc statements reports}
+################################################################################################################################################################################################
+############################################################################## M+4 settlement section ##########################################################################################
+################################################################################################################################################################################################
+
+
+# DEFINE VARIABLES
+
+weekno <- readline(prompt = "State WEEK NUMBER of M+4 settlement week: ")
+if (nchar(weekno) == 1) {
+  weekno <- paste0("0", weekno)
+}
+
+weeknom4 <- weekno
+prevweekno <- as.numeric(weekno) - 1
+
+firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
+firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+
+year <- substring(text = firstday, first = 1, last = 4)
+yeard4 <- year
+
+settype <- "M+4"
+settype2 <- "M+4 Resettlement"
+settype3 <- "M4"
+settype4 <- "M4"
+mm <- 30
+
+# DOCUMENT
+
+# read in XML file
+xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SD_", PTunit, "_\\d{8}_\\d{8}_BMCRM_REPT_\\d{8}T\\d{6}\\.XML$")))
+
+# Get invoice document number
+v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
+invoicenumber <- sapply(v5, function(x) ifelse("document_id" %in% names(x), x["document_id"], NA))[1]
+rm(v5)
+documentidnumber <- invoicenumber
+
+doc <- read_xml(xmlfile)
+
+nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
+df1 <- bind_rows(lapply(nodes1, xml_attrs))
+df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+df1$due_date <- as.Date(df1$due_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+
+nodes2 <- xml_find_all(doc, xpath = "//CONTACT")
+df2 <- bind_rows(lapply(nodes2, xml_attrs))
+
+nodes3 <- xml_find_all(doc, xpath = "//REPORT_SUMMARY")
+df3 <- bind_rows(lapply(nodes3, xml_attrs))
+
+nodes4 <- xml_find_all(doc, xpath="//REPORT_DETAIL/*")
+df4 <- bind_rows(lapply(nodes4, xml_attrs))
+df4 <- rename(.data = df4, 'market2' = 'market', 'interest3' = 'interest')
+df4$bp_start_date <- as.Date(df4$bp_start_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+df4$bp_end_date <- as.Date(df4$bp_end_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+
+# ============================================================== sales and purchases section ============================================================== #
+# Extract attributes from REPORT_DETAIL nodes
+nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
+
+# Access the Sales and Purchases sections in REPORT_DETAIL
+details <- xml_find_all(doc, "//REPORT_DETAIL/DETAIL")
+
+# Create an empty data frame to store the results
+result_df <- data.frame(
+  s_total4 = character(),
+  s_local5 = character(),
+  s_eu6 = character(),
+  s_neu7 = character(),
+  s_total_prev = character(),
+  s_local_prev = character(),
+  s_eu_prev = character(),
+  s_neu_prev = character(),
+  p_total8 = character(),
+  p_local9 = character(),
+  p_eu10 = character(),
+  p_neu11 = character(),
+  p_total_prev = character(),
+  p_local_prev = character(),
+  p_eu_prev = character(),
+  p_neu_prev = character(),
+  stringsAsFactors = FALSE
+)
+
+# Loop through each DETAIL section
+for (detail in details) {
+  # Access the SALES section
+  sales <- xml_find_first(detail, ".//SALES")
+  s_total4 <- xml_attr(sales, "s_total")
+  s_local5 <- xml_attr(sales, "s_local")
+  s_eu6 <- xml_attr(sales, "s_eu")
+  s_neu7 <- xml_attr(sales, "s_neu")
+  s_total_prev <- xml_attr(sales, "s_total_prev")
+  s_local_prev <- xml_attr(sales, "s_local_prev")
+  s_eu_prev <- xml_attr(sales, "s_eu_prev")
+  s_neu_prev <- xml_attr(sales, "s_neu_prev")
+  
+  # Access the PURCHASES section
+  purchases <- xml_find_first(detail, ".//PURCHASES")
+  p_total8 <- xml_attr(purchases, "p_total")
+  p_local9 <- xml_attr(purchases, "p_local")
+  p_eu10 <- xml_attr(purchases, "p_eu")
+  p_neu11 <- xml_attr(purchases, "p_neu")
+  p_total_prev <- xml_attr(purchases, "p_total_prev")
+  p_local_prev <- xml_attr(purchases, "p_local_prev")
+  p_eu_prev <- xml_attr(purchases, "p_eu_prev")
+  p_neu_prev <- xml_attr(purchases, "p_neu_prev")
+  
+  # Append the results to the data frame
+  result_df <- rbind(result_df, c(s_total4, s_local5, s_eu6, s_neu7, s_total_prev, s_local_prev, s_eu_prev, s_neu_prev, p_total8, p_local9, p_eu10, p_neu11, p_total_prev, p_local_prev, p_eu_prev, p_neu_prev))
+}
+
+# Set column names
+colnames(result_df) <- c('s_total4', 's_local5', 's_eu6', 's_neu7', 's_total_prev', 's_local_prev', 's_eu_prev', 's_neu_prev', 'p_total8', 'p_local9', 'p_eu10', 'p_neu11', 'p_total_prev', 'p_local_prev', 'p_eu_prev', 'p_neu_prev')
+# ============================================================ sales and purchases section end ============================================================ #
+
+nodes5 <- xml_find_all(doc, xpath = "//REPORT_TRACKING/*")
+df5 <- bind_rows(lapply(nodes5, xml_attrs))
+df5$statement_date <- as.Date(df5$statement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+colnames(df5) <- c("statement_date", "run_type12", "market13", "charge_name14", "charge_amount", "statement_id")
+
+# offset df5 by 56 rows
+df5 <- insertRows(df = df5, r = 1:56)
+
+nodes6 <- xml_find_all(doc, xpath = "//VAT_INFORMATION/STANDARD_INFORMATION/*")
+df6 <- bind_rows(lapply(nodes6, xml_attrs))
+
+# repeat certain lines
+max_row_count <- max(c(nrow(df1), nrow(df2), nrow(df3), nrow(df4), nrow(df5), nrow(df6)))
+df1 <- df1[rep(1:nrow(df1), each = max_row_count), ]
+df2 <- df2[rep(1:nrow(df2), each = max_row_count), ]
+df3 <- df3[rep(1:nrow(df3), each = max_row_count), ]
+
+df <- cbind.na(df1, df2, df3, df4, result_df, df5, df6)
+
+receiveddate3 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d-%m-%Y")
+
+writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/Document ", invoicenumber, " for ", PTunit, " received ", receiveddate3, ".xlsx"))
+
+
+### STATEMENT
+
+for (f in 1:7) {
+  
+  # read in XML file
+  xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SS_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+  
+  # filter out everything not in the reqd week
+  unique_dates <- seq(from = as.Date(firstday2, format = "%Y-%m-%d"), by = 1, length.out = 7)
+  unique_dates <- format(unique_dates, "%Y%m%d")
+  unique_dates <- paste(unique_dates, collapse = "|")
+  xmlfile <- xmlfile[grepl(x = xmlfile, pattern = unique_dates)]
+  
+  xmlfile <- xmlfile[[f]]
+  doc <- read_xml(xmlfile)
+  
+  # Get statement document number
+  v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
+  statementnumber <- sapply(v5, function(x) ifelse("statement_id" %in% names(x), x["statement_id"], NA))[1]
+  rm(v5)
+  
+  nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
+  df1 <- bind_rows(lapply(nodes1, xml_attrs))
+  df1$settlement_date <- as.Date(df1$settlement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1 <- df1[rep(1:nrow(df1), each = 640), ] # each report has report_header repeated 640 times
+  
+  # ================================================================= report summary section ================================================================= #
+  # Extract attributes from REPORT_SUMMARY nodes
+  nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_SUMMARY/*")
+  df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
+  
+  # Access the Sales and Purchases sections in REPORT_SUMMARY
+  details <- xml_find_all(doc, "//REPORT_SUMMARY/*")
+  
+  # Create an empty data frame to store the results
+  result_df <- data.frame(
+    name = character(),
+    date = character(),
+    amount = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Loop through each DETAIL section
+  for (detail in details) {
+    # Access the market attribute of DETAIL
+    name <- xml_attr(detail, "name", default = NA)
+    date <- xml_attr(detail, "date", default = NA)
+    amount <- xml_attr(detail, "amount", default = NA)
+    
+    # Append the results to the data frame
+    result_df <- rbind.na(result_df, c(name, date, amount))
+  }
+  
+  # Set column names
+  colnames(result_df) <- c("name", "date", "amount")
+  
+  result_df$date <- as.Date(result_df$date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  # =============================================================== report summary section end =============================================================== #
+  
+  
+  
+  # ================================================================= report detail section ================================================================= #
+  # Extract attributes from REPORT_DETAIL nodes
+  nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+  df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
+  
+  # Access the RESOURCE sections in REPORT_DETAIL
+  resources <- xml_find_all(doc, "//REPORT_DETAIL/RESOURCE")
+  
+  # Create an empty data frame to store the results
+  result_df2 <- data.frame(
+    Resource = character(),
+    Charge = character(),
+    datetime = character(),
+    amount = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Loop through each RESOURCE section
+  for (i in seq_along(resources)) {
+    # Get the 'name' attribute of the RESOURCE
+    resource_name <- xml_attr(resources[[i]], "name", default = NA)
+    
+    # Access the CHARGE sections within RESOURCE
+    charges <- xml_find_all(resources[[i]], ".//CHARGE")
+    
+    # Loop through each CHARGE section
+    for (j in seq_along(charges)) {
+      # Get the 'name' attribute of the CHARGE
+      charge_name <- xml_attr(charges[[j]], "name", default = NA)
+      
+      # Access the VALUE elements within CHARGE
+      values <- xml_find_all(charges[[j]], ".//VALUE")
+      
+      # Loop through each VALUE element
+      for (k in seq_along(values)) {
+        # Access the attributes of VALUE
+        datetime <- xml_attr(values[[k]], "datetime", default = NA)
+        amount <- xml_attr(values[[k]], "amount", default = NA)
+        
+        # Append the results to the data frame
+        result_df2 <- rbind.na(result_df2, c(resource_name, charge_name, datetime, amount))
+      }
+    }
+  }
+  
+  # Set column names
+  colnames(result_df2) <- c("name2", "name3", "datetime", "amount4")
+  # =============================================================== report detail section end =============================================================== #
+  
+  # Offset start of result_df2 by nrows in result_df
+  result_df2 <- insertRows(df = result_df2, r = 1:nrow(result_df))
+  
+  df <- cbind.na(df1, result_df, result_df2)
+  
+  writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads//", f, " STATEMENT ", statementnumber, " for ", PTunit, ".xlsx"))
+  
+}
+
+# combine statements
+inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*STATEMENT*")]
+outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Statements for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
+
+dfstatements <- data.frame()
+
+for (file in inputfiles) {
+  df <- read_excel(file)
+  dfstatements <- rbind(dfstatements, df)
+  file.remove(file)
+}
+
+writexl::write_xlsx(dfstatements, outputfile)
+
+
+
+### REPORT
+
+for (f in 1:7) {
+  
+  # read in XML file
+  xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SR_", PTunit, "_\\d{8}_\\d{8}_BALIMB_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+  xmlfile <- xmlfile[grepl(x = xmlfile, pattern = unique_dates)]
+  
+  xmlfile <- xmlfile[[f]]
+  doc <- read_xml(xmlfile)
+  
+  # Get report id number
+  v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
+  reportnumber <- sapply(v5, function(x) ifelse("statement_id" %in% names(x), x["statement_id"], NA))[1]
+  rm(v5)
+  
+  # Read in report header node
+  nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
+  df1 <- bind_rows(lapply(nodes1, xml_attrs))
+  df1$settlement_date <- as.Date(df1$settlement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1 <- df1[rep(1:nrow(df1), each = 2023), ] # each report has report_header repeated 2023 times
+  
+  # ========================================================== report detail - determinant section ========================================================== #
+  # Extract attributes from REPORT_DETAIL nodes
+  nodes_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+  df_report_detail <- bind_rows(lapply(nodes_detail, xml_attrs))
+  
+  # Access the DETERMINANT sections in REPORT_DETAIL
+  determinants <- xml_find_all(doc, "//REPORT_DETAIL/DETERMINANT")
+  
+  # Create an empty data frame to store the results
+  result_df <- data.frame(
+    name = character(),
+    unit = character(),
+    date = character(),
+    amount = character(),
+    datetime = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Loop through each DETERMINANT section
+  for (i in seq_along(determinants)) {
+    # Get the 'name' attribute of the RESOURCE
+    name <- xml_attr(determinants[[i]], "name")
+    unit <- xml_attr(determinants[[i]], "unit")
+    
+    # Access the VALUE sections within DETERMINANT
+    values <- xml_find_all(determinants[[i]], ".//VALUE")
+    
+    # Loop through each VALUE section
+    for (j in seq_along(values)) {
+      # Get the attributes of the VALUE
+      datetime <- xml_attr(values[[j]], "datetime")
+      date <- xml_attr(values[[j]], 'date', default = NA)
+      amount <- xml_attr(values[[j]], "amount")
+      
+      # Append the results to the data frame
+      result_df <- rbind.na(result_df, c(name, unit, date, amount, datetime))
+    }
+  }
+  
+  result_df$date <- as.Date(result_df$date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  
+  # ======================================================== report detail - determinant section end ======================================================== #
+  
+  
+  
+  
+  # =========================================================== report detail - resource section =========================================================== #
+  # Extract attributes from REPORT_DETAIL nodes
+  nodes_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+  df_report_detail <- bind_rows(lapply(nodes_detail, xml_attrs))
+  
+  # Access the RESOURCE sections in REPORT_DETAIL
+  resources <- xml_find_all(doc, "//REPORT_DETAIL/RESOURCE")
+  
+  # Create an empty data frame to store the results
+  result_df2 <- data.frame(
+    name2 = character(),
+    name3 = character(),
+    unit4 = character(),
+    datetime5 = character(),
+    amount6 = character(),
+    accept_time = character(),
+    order = character(),
+    band = character(),
+    rank = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Loop through each RESOURCE section
+  for (i in seq_along(resources)) {
+    # Get the 'name' attribute of the RESOURCE
+    name2 <- xml_attr(resources[[i]], "name")
+    
+    # Access the DETERMINANT sections within RESOURCE
+    determs <- xml_find_all(resources[[i]], ".//DETERMINANT")
+    
+    # Loop through each DETERMINANT section
+    for (j in seq_along(determs)) {
+      # Get the attributes of the VALUE
+      name3 <- xml_attr(determs[[j]], "name")
+      unit4 <- xml_attr(determs[[j]], "unit")
+      
+      # Access the VALUE sections within DETERMINANT
+      valus <- xml_find_all(determs[[j]], ".//VALUE")
+      
+      # Loop through each VALUE section
+      for (k in seq_along(valus)) {
+        # Get the attributes
+        datetime5 <- xml_attr(valus[[k]], "datetime")
+        amount6 <- xml_attr(valus[[k]], "amount")
+        accept_time <- xml_attr(valus[[k]], "accept_time")
+        order <- xml_attr(valus[[k]], "order")
+        band <- xml_attr(valus[[k]], "band")
+        rank <- xml_attr(valus[[k]], "rank")
+        
+        # Append the results to the data frame
+        result_df2 <- rbind.na(result_df2, c(name2, name3, unit4, datetime5, amount6, accept_time, order, band, rank))
+      }
+    }
+  }
+  # ========================================================= report detail - resource section end ========================================================= #
+  
+  
+  # Offset start of result_df2 by nrows in result_df
+  result_df2 <- insertRows(df = result_df2, r = 1:nrow(result_df))
+  
+  # Create one df
+  df <- cbind.na(df1, result_df, result_df2)
+  
+  # Create excel file
+  writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads//", f, " REPORT ", reportnumber, " for ", PTunit, ".xlsx"))
+}
+
+# combine reports
+inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*REPORT*")]
+outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Reports for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
+
+dfreports <- data.frame()
+
+for (file in inputfiles) {
+  df <- read_excel(file)
+  dfreports <- rbind(dfreports, df)
+  file.remove(file)
+}
+
+writexl::write_xlsx(dfreports, outputfile)
+
+# housekeeping
+rm(list = ls(pattern = "accept|amount|band|[Cc]harge|datetime|delivery|detail|determ|ECC|[Ee]xchange|max|name|node|order|output|p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
+suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
+```
+
+
+```{r create xl}
+# CREATE EXCEL FILE - SETUP
+
+inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
+inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
+inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
+
+# Get file path for output file
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - Temporary.xlsx")
+if (file.exists(outputfile)) {
+  file.remove(outputfile)
+}
+
+options(openxlsx.dateFormat = "dd/mm/yyyy")
+
+# create excel file
+mywb <- createWorkbook()
+
+# add sheets
+addWorksheet(wb = mywb, sheetName = "Resettlement Summary")
+
+addWorksheet(wb = mywb, sheetName = "Summary", tabColour = '#F4B084')
+
+reportdata <- read_excel(path = inputfiles[1], sheet = 1)
+addWorksheet(mywb, sheet = "REPORT", tabColour = '#F4B084')
+writeData(mywb, sheet = "REPORT", x = reportdata)
+
+statementdata <- read_excel(path = inputfiles[2], sheet = 1)
+addWorksheet(mywb, sheet = "STATEMENT", tabColour = '#F4B084')
+writeData(mywb, sheet = "STATEMENT", x = statementdata)
+
+documentdata <- read_excel(path = inputfiles[3], sheet = 1)
+addWorksheet(mywb, sheet = "DOCUMENT", tabColour = '#F4B084')
+writeData(mywb, sheet = "DOCUMENT", x = documentdata)
+
+delete <- inputfiles[grepl(x = inputfiles, pattern = "All*")]
+
+for (file in delete) {
+ file.remove(file)
+}
+rm(delete)
+
+addWorksheet(wb = mywb, sheetName = "EX-Ante Report", tabColour = '#F4B084')
+addWorksheet(wb = mywb, sheetName = "Consumption Checks")
+addWorksheet(wb = mywb, sheetName = "En & Imp Split")
+addWorksheet(wb = mywb, sheetName = "SHADOW SETTLED")
+addWorksheet(wb = mywb, sheetName = "Ex-Ante Consumption")
+
+for (col in c(4,5,12)) {
+  addStyle(wb = mywb, sheet = "REPORT", style = DATE, rows = 2:14162, cols = col)
+}
+
+for (col in c(9,13,19,21,22)) {
+  addStyle(wb = mywb, sheet = "REPORT", style = NUMBER, rows = 2:14162, cols = col)
+}
+
+for (col in c(4,5,11)) {
+  addStyle(wb = mywb, sheet = "STATEMENT", style = DATE, rows = 2:4481, cols = col)
+}
+
+for (col in c(9,12,16)) {
+  addStyle(wb = mywb, sheet = "STATEMENT", style = NUMBER, rows = 2:4481, cols = col)
+}
+
+for (col in c(5,7,33,34,56)) {
+  addStyle(wb = mywb, sheet = "DOCUMENT", style = DATE, rows = 2:991, cols = col)
+}
+
+for (col in c(9,18:29,36:55,60:62)) {
+  addStyle(wb = mywb, sheet = "DOCUMENT", style = NUMBER, rows = 2:991, cols = col)
+}
+
+addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = DATE, rows = 2:194, cols = 2)
+
+for (col in c(4,15,16,20,26:28,30:35,41)) {
+  addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = NUMBER, rows = 2:194, cols = col)
+}
+```
+
+
+```{r EAR}
+# ECC Ex-Ante Report sheet
+
+EAR <- "EX-Ante Report"
+
+prevtypefile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/D+4 INITIAL/"), full.names = TRUE)
+if (length(prevtypefile[grepl(x = prevtypefile, pattern = paste0(" ", as.character(weekno)))]) == 0) {
+  prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = as.character(weekno))]
+} else {
+  prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = paste0(" ", as.character(weekno)))]
+}
+prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = as.character(year))]
+
+ecc <- read_excel(path = prevtypefile, sheet = EAR)
+writeData(wb = mywb, sheet = "EX-Ante Report", x = ecc, startRow = 1, startCol = 1)
+```
+
+
+```{r Summary}
+# Summary sheet
+
+activesheet <- "Summary"
+dates <- seq(from = as.Date(firstday, format = "%Y%m%d"), by = "1 day", length.out = 7) %>% format("%d/%m/%Y")
+charges <- c('CCA', 'CDIFFPDA', 'CDIFFPID', 'CDIFFPIMB', 'CIMB', 'CIMP', 'CREIMDIFFP', 'CREV', 'CSHORTDIFFP')
+
+
+
+# ==============================================================================================================================================================================
+# ================================================================================== TOP table =================================================================================
+# ==============================================================================================================================================================================
+
+# Create top table in summary sheet
+writeData(wb = mywb, sheet = "Summary", x = dates[1], startCol = 2, startRow = 1)
+
+temp <- "=B1+1"
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startCol = 3, startRow = 1)
+temp <- "=C1+1"
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startCol = 4, startRow = 1)
+temp <- "=D1+1"
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startCol = 5, startRow = 1)
+temp <- "=E1+1"
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startCol = 6, startRow = 1)
+temp <- "=F1+1"
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startCol = 7, startRow = 1)
+temp <- "=G1+1"
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startCol = 8, startRow = 1)
+
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 1, cols = 2:8)
+
+writeData(wb = mywb, sheet = "Summary", x = charges, startCol = 1, startRow = 2)
+writeData(wb = mywb, sheet = "Summary", x = settype3, startCol = 1, startRow = 1)
+writeData(wb = mywb, sheet = "Summary", x = "Week Total", startCol = 9, startRow = 1)
+writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 10, startRow = 1)
+
+for (COLUMN in 2:8) {
+  for (ROW in 2:10) {
+    writeFormula(wb = mywb, sheet = "Summary", x = paste0("=SUMIFS(INDEX(DOCUMENT!$A:$BX,0,60),INDEX(DOCUMENT!$A:$BX,0,56),Summary!", toupper(letters[COLUMN]), "$1,INDEX(DOCUMENT!$A:$BX,0,59),Summary!$A", ROW, ")"), xy = c(COLUMN, ROW))
+    addStyle(wb = mywb, sheet = "Summary", style = euro, rows = ROW, cols = COLUMN)
+  }
+}
+
+writeData(wb = mywb, sheet = "Summary", x = "Total", xy = c(1,13))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B2:B10)", startRow = 13, startCol = 2)
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(C2:C10)", startRow = 13, startCol = 3)
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(D2:D10)", startRow = 13, startCol = 4)
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E2:E10)", startRow = 13, startCol = 5)
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F2:F10)", startRow = 13, startCol = 6)
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G2:G10)", startRow = 13, startCol = 7)
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(H2:H10)", startRow = 13, startCol = 8)
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B13:H13)", startRow = 13, startCol = 9)
+
+addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 13, cols = 2:10)
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B2:H2)", xy = c(9,2))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B3:H3)", xy = c(9,3))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B4:H4)", xy = c(9,4))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B5:H5)", xy = c(9,5))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B6:H6)", xy = c(9,6))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B7:H7)", xy = c(9,7))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B8:H8)", xy = c(9,8))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B9:H9)", xy = c(9,9))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B10:H10)", xy = c(9,10))
+
+addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 2:10, cols = 9)
+addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 2:10, cols = 10)
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=I2-B100", xy = c(10,2))
+writeFormula(wb = mywb, sheet = "Summary", x = "=I3-B101", xy = c(10,3))
+writeFormula(wb = mywb, sheet = "Summary", x = "=I4-B102", xy = c(10,4))
+writeFormula(wb = mywb, sheet = "Summary", x = "=I5+E63", xy = c(10,5))
+writeFormula(wb = mywb, sheet = "Summary", x = "=I6+F26", xy = c(10,6))
+writeFormula(wb = mywb, sheet = "Summary", x = "=I7+E39", xy = c(10,7))
+writeFormula(wb = mywb, sheet = "Summary", x = "=I8+E88", xy = c(10,8))
+writeFormula(wb = mywb, sheet = "Summary", x = "=I9+E51", xy = c(10,9))
+writeFormula(wb = mywb, sheet = "Summary", x = "=I10+E69", xy = c(10,10))
+
+writeData(wb = mywb, sheet = "Summary", x = "Invoice Total", xy = c(9,12))
+writeData(wb = mywb, sheet = "Summary", x = "Check", xy = c(10,12))
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(DOCUMENT!AK:AK,DOCUMENT!AF:AF,Summary!A1,DOCUMENT!AE:AE,\"BALIMB\")-Summary!I13", xy = c(10,13))
+
+for (ROW in c(18,31,43,55,67,79,92)) {
+  writeData(wb = mywb, sheet = "Summary", x = dates, startCol = 1, startRow = ROW)
+}
+
+for (ROW in c(26,39,51,63,75,87,100)) {
+  writeData(wb = mywb, sheet = "Summary", x = "Weekly Total", startCol = 1, startRow = ROW)
+}
+
+
+
+
+
+# ==============================================================================================================================================================================
+# ================================================================================= CIMB table =================================================================================
+# ==============================================================================================================================================================================
+writeData(wb = mywb, sheet = "Summary", x = "CIMB", startCol = 1, startRow = 16)
+
+writeData(wb = mywb, sheet = "Summary", x = "HH", startCol = 2, startRow = 17)
+writeData(wb = mywb, sheet = "Summary", x = "NHH", startCol = 3, startRow = 17)
+writeData(wb = mywb, sheet = "Summary", x = "PPA Gen", startCol = 4, startRow = 17)
+writeData(wb = mywb, sheet = "Summary", x = "AU_400131", startCol = 5, startRow = 17)
+writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 6, startRow = 17)
+writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 7, startRow = 17)
+writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 8, startRow = 17)
+addStyle(wb = mywb, sheet = "Summary", style = bluegrey, rows = 17, cols = 2:8)
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A18,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A19,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A20,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A21,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A22,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A23,'Consumption Checks'!BW:BW)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A24,'Consumption Checks'!BW:BW)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 2)
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A18,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A19,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A20,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A21,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A22,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A23,'Consumption Checks'!BX:BX)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A24,'Consumption Checks'!BX:BX)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 3)
+
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A18,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A19,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A20,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A21,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A22,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A23,'Consumption Checks'!BY:BY)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A24,'Consumption Checks'!BY:BY)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 4)
+
+temp <- c("=-SUMIF('Consumption Checks'!$BM:$BM,Summary!$A18,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A19,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A20,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A21,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A22,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A23,'Consumption Checks'!BZ:BZ)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A24,'Consumption Checks'!BZ:BZ)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 5)
+
+temp <- c("=SUM(B18:E18)", "=SUM(B19:E19)", "=SUM(B20:E20)", "=SUM(B21:E21)", "=SUM(B22:E22)", "=SUM(B23:E23)", "=SUM(B24:E24)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 6)
+
+temp <- c()
+for (index in 18:24) {
+  temp <- c(temp, paste0("=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A", index, ",STATEMENT!J:J,\"CIMB\")"))
+}
+writeFormula(mywb, 'Summary', x = temp, startRow = 18, startCol = 7)
+
+temp <- c()
+temp <- c("=F18+G18", "=F19+G19", "=F20+G20", "=F21+G21", "=F22+G22", "=F23+G23", "=F24+G24")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 18, startCol = 8)
+
+temp <- c()
+for (col in 2:8) {
+  temp <- c(temp, paste0("=SUM(", toupper(letters[col]), "18:", toupper(letters[col]), "24)"))
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 26, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 18:24, cols = col)
+}
+for (i in 1:length(temp)) {
+  writeFormula(wb = mywb, sheet = "Summary", x = temp[i], startRow = 26, startCol = 1+i)
+}
+
+
+# ==============================================================================================================================================================================
+# ================================================================================= CIMP table =================================================================================
+# ==============================================================================================================================================================================
+writeData(wb = mywb, sheet = "Summary", x = "CIMP", startCol = 1, startRow = 29)
+
+writeData(wb = mywb, sheet = "Summary", x = "HH", startCol = 2, startRow = 30)
+writeData(wb = mywb, sheet = "Summary", x = "NHH", startCol = 3, startRow = 30)
+writeData(wb = mywb, sheet = "Summary", x = "PPA Gen", startCol = 4, startRow = 30)
+writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 5, startRow = 30)
+writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 6, startRow = 30)
+writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 7, startRow = 30)
+addStyle(wb = mywb, sheet = "Summary", style = bluegrey, rows = 30, cols = 2:7)
+
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CB:CB)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 31, startCol = 2)
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CC:CC)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CC:CC)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 31, startCol = 3)
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CD:CD)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CD:CD)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 31, startCol = 4)
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CE:CE)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CE:CE)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 31, startCol = 5)
+
+for (col in 2:7) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 31:37, cols = col)
+}
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A31,STATEMENT!J:J,\"CIMP\")", xy = c(6,31))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A32,STATEMENT!J:J,\"CIMP\")", xy = c(6,32))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A33,STATEMENT!J:J,\"CIMP\")", xy = c(6,33))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A34,STATEMENT!J:J,\"CIMP\")", xy = c(6,34))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A35,STATEMENT!J:J,\"CIMP\")", xy = c(6,35))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A36,STATEMENT!J:J,\"CIMP\")", xy = c(6,36))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A37,STATEMENT!J:J,\"CIMP\")", xy = c(6,37))
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E31:F31)", xy = c(7,31))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E32:F32)", xy = c(7,32))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E33:F33)", xy = c(7,33))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E34:F34)", xy = c(7,34))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E35:F35)", xy = c(7,35))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E36:F36)", xy = c(7,36))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E37:F37)", xy = c(7,37))
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B31:B37)", xy = c(2,39))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(C31:C37)", xy = c(3,39))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(D31:D37)", xy = c(4,39))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E31:E37)", xy = c(5,39))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F31:F37)", xy = c(6,39))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G31:G37)", xy = c(7,39))
+
+for (col in 2:7) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 39, cols = col)
+}
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B43:B49)", xy = c(2,51))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(C43:C49)", xy = c(3,51))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(D43:D49)", xy = c(4,51))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E43:E49)", xy = c(5,51))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F43:F49)", xy = c(6,51))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G43:G49)", xy = c(7,51))
+
+for (col in 2:7) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 51, cols = col)
+}
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B55:B61)", xy = c(2,63))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(C55:C61)", xy = c(3,63))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(D55:D61)", xy = c(4,63))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E55:E61)", xy = c(5,63))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F55:F61)", xy = c(6,63))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G55:G61)", xy = c(7,63))
+
+for (col in 2:7) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 63, cols = col)
+}
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B67:B73)", xy = c(2,75))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(C67:C73)", xy = c(3,75))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(D67:D73)", xy = c(4,75))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E67:E73)", xy = c(5,75))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F67:F73)", xy = c(6,75))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G67:G73)", xy = c(7,75))
+
+for (col in 2:7) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 75, cols = col)
+}
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B79:B85)", xy = c(2,87))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(C79:C85)", xy = c(3,87))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(D79:D85)", xy = c(4,87))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E79:E85)", xy = c(5,87))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(F79:F85)", xy = c(6,87))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(G79:G85)", xy = c(7,87))
+
+for (col in 2:7) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 87, cols = col)
+}
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(B92:B98)", xy = c(2,100))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(C92:C98)", xy = c(3,100))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(D92:D98)", xy = c(4,100))
+
+for (col in 2:4) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 100, cols = col)
+}
+
+
+# ==============================================================================================================================================================================
+# ================================================================================== CREV table ================================================================================
+# ==============================================================================================================================================================================
+writeData(wb = mywb, sheet = "Summary", x = "CREV", startCol = 1, startRow = 41)
+
+writeData(wb = mywb, sheet = "Summary", x = "HH", startCol = 2, startRow = 42)
+writeData(wb = mywb, sheet = "Summary", x = "NHH", startCol = 3, startRow = 42)
+writeData(wb = mywb, sheet = "Summary", x = "PPA Gen", startCol = 4, startRow = 42)
+writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 5, startRow = 42)
+writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 6, startRow = 42)
+writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 7, startRow = 42)
+addStyle(wb = mywb, sheet = "Summary", style = bluegrey, rows = 42, cols = 2:7)
+
+for (col in 2:7) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 43:49, cols = col)
+}
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A43,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A44,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A45,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A46,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A47,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A48,'Consumption Checks'!CF:CF)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A49,'Consumption Checks'!CF:CF)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 43, startCol = 2)
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A43,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A44,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A45,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A46,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A47,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A48,'Consumption Checks'!CG:CG)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A49,'Consumption Checks'!CG:CG)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 43, startCol = 3)
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A43,'Consumption Checks'!CH:CH)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A44,'Consumption Checks'!CH:CH)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A45,'Consumption Checks'!CH:CH)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A46,'Consumption Checks'!CH:CH)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A47,'Consumption Checks'!CH:CH)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A48,'Consumption Checks'!CH:CH)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A49,'Consumption Checks'!CH:CH)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 43, startCol = 4)
+
+temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A43,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A44,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A45,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A46,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A47,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A48,'Consumption Checks'!CI:CI)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A49,'Consumption Checks'!CI:CI)")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 43, startCol = 5)
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A43,STATEMENT!J:J,\"CREV\")", xy = c(6,43))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A44,STATEMENT!J:J,\"CREV\")", xy = c(6,44))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A45,STATEMENT!J:J,\"CREV\")", xy = c(6,45))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A46,STATEMENT!J:J,\"CREV\")", xy = c(6,46))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A47,STATEMENT!J:J,\"CREV\")", xy = c(6,47))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A48,STATEMENT!J:J,\"CREV\")", xy = c(6,48))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A49,STATEMENT!J:J,\"CREV\")", xy = c(6,49))
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E43:F43)", xy = c(7,43))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E44:F44)", xy = c(7,44))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E45:F45)", xy = c(7,45))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E46:F46)", xy = c(7,46))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E47:F47)", xy = c(7,47))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E48:F48)", xy = c(7,48))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E49:F49)", xy = c(7,49))
+
+
+
+
+
+
+# ==============================================================================================================================================================================
+# ============================================================================= CDIFFPIMB table ================================================================================
+# ==============================================================================================================================================================================
+startingrow <- 55
+
+writeData(wb = mywb, sheet = "Summary", x = "CDIFFPIMB", startCol = 1, startRow = (startingrow - 2))
+
+writeData(wb = mywb, sheet = "Summary", x = "HH", startCol = 2, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "NHH", startCol = 3, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "PPA Gen", startCol = 4, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 5, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 6, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 7, startRow = startingrow-1)
+addStyle(wb = mywb, sheet = "Summary", style = bluegrey, rows = startingrow-1, cols = 2:7)
+
+
+for (col in 2:7) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 55:61, cols = col)
+}
+
+temp <- character(7)
+for (i in seq_along(temp)) {
+  temp[i] <- paste0("=SUMIF('En & Imp Split'!$A:$A,Summary!$A", startingrow-1 +i, ",'En & Imp Split'!AC:AC)")
+}
+writeFormula(mywb, 'Summary', temp, startRow = 55, startCol = 2)
+
+temp <- character(7)
+for (i in seq_along(temp)) {
+  temp[i] <- paste0("=SUMIF('En & Imp Split'!$A:$A,Summary!$A", startingrow-1+1, ",'En & Imp Split'!AD:AD)")
+}
+writeFormula(mywb, 'Summary', temp, startRow = 55, startCol = 3)
+
+temp <- character(7)
+for (i in seq_along(temp)) {
+  temp[i] <- paste0("=-SUMIF('En & Imp Split'!$A:$A,Summary!$A", startingrow-1+1, ",'En & Imp Split'!AE:AE)")
+}
+writeFormula(mywb, 'Summary', temp, startRow = 55, startCol = 4)
+
+temp <- character(7)
+for (i in seq_along(temp)) {
+  temp[i] <- paste0("=SUMIF('En & Imp Split'!$A:$A,Summary!$A", startingrow-1+1, ",'En & Imp Split'!AF:AF)")
+}
+writeFormula(mywb, 'Summary', temp, startRow = 55, startCol = 5)
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A55,STATEMENT!J:J,\"CDIFFPIMB\")", xy = c(6,55))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A56,STATEMENT!J:J,\"CDIFFPIMB\")", xy = c(6,56))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A57,STATEMENT!J:J,\"CDIFFPIMB\")", xy = c(6,57))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A58,STATEMENT!J:J,\"CDIFFPIMB\")", xy = c(6,58))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A59,STATEMENT!J:J,\"CDIFFPIMB\")", xy = c(6,59))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A60,STATEMENT!J:J,\"CDIFFPIMB\")", xy = c(6,60))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A61,STATEMENT!J:J,\"CDIFFPIMB\")", xy = c(6,61))
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E55:F55)", xy = c(7,55))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E56:F56)", xy = c(7,56))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E57:F57)", xy = c(7,57))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E58:F58)", xy = c(7,58))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E59:F59)", xy = c(7,59))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E60:F60)", xy = c(7,60))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E61:F61)", xy = c(7,61))
+
+
+
+
+
+
+# ==============================================================================================================================================================================
+# ============================================================================ CSHORTDIFFP table ===============================================================================
+# ==============================================================================================================================================================================
+startingrow <- 67
+
+writeData(wb = mywb, sheet = "Summary", x = "CSHORTDIFFP", startCol = 1, startRow = (startingrow - 2))
+
+writeData(wb = mywb, sheet = "Summary", x = "HH", startCol = 2, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "NHH", startCol = 3, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "PPA Gen", startCol = 4, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 5, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 6, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 7, startRow = startingrow-1)
+addStyle(wb = mywb, sheet = "Summary", style = bluegrey, rows = startingrow-1, cols = 2:7)
+
+
+for (col in 2:7) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 67:73, cols = col)
+}
+
+temp <- c("='En & Imp Split'!AK4", "='En & Imp Split'!AK5", "='En & Imp Split'!AK6", "='En & Imp Split'!AK7", "='En & Imp Split'!AK8", "='En & Imp Split'!AK9", "='En & Imp Split'!AK10")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 67, startCol = 2)
+
+temp <- c("='En & Imp Split'!AL4", "='En & Imp Split'!AL5", "='En & Imp Split'!AL6", "='En & Imp Split'!AL7", "='En & Imp Split'!AL8", "='En & Imp Split'!AL9", "='En & Imp Split'!AL10")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 67, startCol = 3)
+
+temp <- c("=-'En & Imp Split'!AM4", "=-'En & Imp Split'!AM5", "=-'En & Imp Split'!AM6", "=-'En & Imp Split'!AM7", "=-'En & Imp Split'!AM8", "=-'En & Imp Split'!AM9", "=-'En & Imp Split'!AM10")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 67, startCol = 4)
+
+temp <- c("='En & Imp Split'!AN4", "='En & Imp Split'!AN5", "='En & Imp Split'!AN6", "='En & Imp Split'!AN7", "='En & Imp Split'!AN8", "='En & Imp Split'!AN9", "='En & Imp Split'!AN10")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = 67, startCol = 5)
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A55,STATEMENT!J:J,\"CSHORTDIFFP\")", xy = c(6,67))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A56,STATEMENT!J:J,\"CSHORTDIFFP\")", xy = c(6,68))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A57,STATEMENT!J:J,\"CSHORTDIFFP\")", xy = c(6,69))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A58,STATEMENT!J:J,\"CSHORTDIFFP\")", xy = c(6,70))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A59,STATEMENT!J:J,\"CSHORTDIFFP\")", xy = c(6,71))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A60,STATEMENT!J:J,\"CSHORTDIFFP\")", xy = c(6,72))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A61,STATEMENT!J:J,\"CSHORTDIFFP\")", xy = c(6,73))
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E67:F67)", xy = c(7,67))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E68:F68)", xy = c(7,68))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E69:F69)", xy = c(7,69))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E70:F70)", xy = c(7,70))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E71:F71)", xy = c(7,71))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E72:F72)", xy = c(7,72))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E73:F73)", xy = c(7,73))
+
+
+
+
+
+
+
+# ==============================================================================================================================================================================
+# ============================================================================= CREIMDIFFP table ===============================================================================
+# ==============================================================================================================================================================================
+startingrow <- 79
+
+writeData(wb = mywb, sheet = "Summary", x = "CREIMDIFFP", startCol = 1, startRow = (startingrow - 2))
+
+writeData(wb = mywb, sheet = "Summary", x = "HH", startCol = 2, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "NHH", startCol = 3, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "PPA Gen", startCol = 4, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 5, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 6, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 7, startRow = startingrow-1)
+addStyle(wb = mywb, sheet = "Summary", style = bluegrey, rows = startingrow-1, cols = 2:7)
+
+
+for (col in 2:7) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 79:85, cols = col)
+}
+
+temp <- c("='En & Imp Split'!AK17", "='En & Imp Split'!AK18", "='En & Imp Split'!AK19", "='En & Imp Split'!AK20", "='En & Imp Split'!AK21", "='En & Imp Split'!AK22", "='En & Imp Split'!AK23")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = startingrow, startCol = 2)
+
+temp <- c("='En & Imp Split'!AL17", "='En & Imp Split'!AL18", "='En & Imp Split'!AL19", "='En & Imp Split'!AL20", "='En & Imp Split'!AL21", "='En & Imp Split'!AL22", "='En & Imp Split'!AL23")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = startingrow, startCol = 3)
+
+temp <- c("='En & Imp Split'!AM17", "='En & Imp Split'!AM18", "='En & Imp Split'!AM19", "='En & Imp Split'!AM20", "='En & Imp Split'!AM21", "='En & Imp Split'!AM22", "='En & Imp Split'!AM23")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = startingrow, startCol = 4)
+
+temp <- c("='En & Imp Split'!AN17", "='En & Imp Split'!AN18", "='En & Imp Split'!AN19", "='En & Imp Split'!AN20", "='En & Imp Split'!AN21", "='En & Imp Split'!AN22", "='En & Imp Split'!AN23")
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = startingrow, startCol = 5)
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A79,STATEMENT!J:J,\"CREIMDIFFP\")", xy = c(6,startingrow))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A80,STATEMENT!J:J,\"CREIMDIFFP\")", xy = c(6,startingrow+1))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A81,STATEMENT!J:J,\"CREIMDIFFP\")", xy = c(6,startingrow+2))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A82,STATEMENT!J:J,\"CREIMDIFFP\")", xy = c(6,startingrow+3))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A83,STATEMENT!J:J,\"CREIMDIFFP\")", xy = c(6,startingrow+4))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A84,STATEMENT!J:J,\"CREIMDIFFP\")", xy = c(6,startingrow+5))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(STATEMENT!L:L,STATEMENT!K:K,Summary!A85,STATEMENT!J:J,\"CREIMDIFFP\")", xy = c(6,startingrow+6))
+
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E79:F79)", xy = c(7,startingrow))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E80:F80)", xy = c(7,startingrow+1))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E81:F81)", xy = c(7,startingrow+2))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E82:F82)", xy = c(7,startingrow+3))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E83:F83)", xy = c(7,startingrow+4))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E84:F84)", xy = c(7,startingrow+5))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(E85:F85)", xy = c(7,startingrow+6))
+
+
+
+
+
+
+# ==============================================================================================================================================================================
+# ================================================================================ CCA table ===================================================================================
+# ==============================================================================================================================================================================
+startingrow <- 92
+
+writeData(wb = mywb, sheet = "Summary", x = "CCA", startCol = 1, startRow = (startingrow-2))
+
+writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 2, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 3, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 4, startRow = startingrow-1)
+addStyle(wb = mywb, sheet = "Summary", style = bluegrey, rows = startingrow-1, cols = 2:4)
+
+for (col in 2:4) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = 92:100, cols = col)
+}
+
+temp <- c()
+for (index in c((startingrow):(startingrow+6))) {
+  temp <- c(temp, paste0("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A", index, ",'Consumption Checks'!CJ:CJ)"))
+}
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = startingrow, startCol = 2)
+
+temp <- c()
+for (index in c((startingrow):(startingrow+6))) {
+  temp <- c(temp, paste0("=SUMIFS(STATEMENT!P:P,STATEMENT!D:D,Summary!A", index, ",STATEMENT!N:N,\"CCA\")"))
+}
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = startingrow, startCol = 3)
+
+temp <- c()
+for (index in c((startingrow):(startingrow+6))) {
+  temp <- c(temp, paste0("=B", index, "-C", index))
+}
+writeFormula(wb = mywb, sheet = "Summary", x = temp, startRow = startingrow, startCol = 4)
+
+
+
+
+
+# ==============================================================================================================================================================================
+# ================================================================================= Main Table =================================================================================
+# ==============================================================================================================================================================================
+
+# box
+for (col in 12:19) {
+  addStyle(wb = mywb, sheet = "Summary", style = thicktop, rows = 14, cols = col)
+  addStyle(wb = mywb, sheet = "Summary", style = thickbottom, rows = 22, cols = col)
+}
+
+writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 11, x = paste0(toupper(settype2), " ENERGY WEEK ", weekno))
+addStyle(wb = mywb, sheet = "Summary", style = createStyle(border = 'TopLeft', borderStyle = 'thick', textDecoration = 'bold'), rows = 14, cols = 11)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 16)
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 18)
+addStyle(wb = mywb, sheet = "Summary", style = boldStyle, rows = 14, cols = 11:13)
+
+writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 15, x = "FROM")
+writeFormula(wb = mywb, sheet = "Summary", x = "=B1", xy = c(16,14))
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 16)
+writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol =, 17, x = "TO")
+writeFormula(wb = mywb, sheet = "Summary", x = "=H1", xy = c(18,14))
+addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 18)
+writeData(wb = mywb, sheet = "Summary", startRow = 15, startCol = 12, x = "Totals")
+
+for (row in 15:21) {
+  addStyle(wb = mywb, sheet = "Summary", style = thickleft, rows = row, cols = 11)
+  addStyle(wb = mywb, sheet = "Summary", style = thickright, rows = row, cols = 20)
+}
+
+addStyle(wb = mywb, sheet = "Summary", style = thicktl, rows = 14, cols = 11)
+addStyle(wb = mywb, sheet = "Summary", style = thicktr, , rows = 14, cols = 20)
+addStyle(wb = mywb, sheet = "Summary", style = thickbl, rows = 22, cols = 11)
+addStyle(wb = mywb, sheet = "Summary", style = thickbr, rows = 22, cols = 20)
+
+writeFormula(wb = mywb, sheet = "Summary", xy = c(12,16), x = "=B17")
+writeFormula(wb = mywb, sheet = "Summary", xy = c(13,16), x = "=C17")
+writeFormula(wb = mywb, sheet = "Summary", xy = c(14,16), x = "=D17")
+writeFormula(wb = mywb, sheet = "Summary", xy = c(15,16), x = "=E17")
+writeData(wb = mywb, sheet = "Summary", startRow = 16, startCol = 16, x = "CCA")
+writeData(wb = mywb, sheet = "Summary", startRow = 16, startCol = 17, x = "Total")
+writeData(wb = mywb, sheet = "Summary", startRow = 16, startCol = 18, x = "Check")
+addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7", textDecoration = 'bold', halign = 'center' ), rows = 16, cols = 12:18)
+
+writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 11, x = "PURCHASE NOMINAL CODE")
+writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 12, x = "200001.2")
+writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 13, x = "200001.3")
+writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 14, x = "200001.4")
+writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 15, x = "200008.1")
+writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 16, x = "200001.6")
+addStyle(wb = mywb, sheet = "Summary", style = yellowStyle, rows = 17, cols = 11:16)
+
+writeData(wb = mywb, sheet = "Summary", startRow = 18, startCol = 11, x = "SALE NOMINAL CODE")
+writeData(wb = mywb, sheet = "Summary", startRow = 18, startCol = 12, x = "100004")
+writeData(wb = mywb, sheet = "Summary", startRow = 18, startCol = 13, x = "100005")
+writeData(wb = mywb, sheet = "Summary", startRow = 18, startCol = 14, x = "100007")
+writeData(wb = mywb, sheet = "Summary", startRow = 18, startCol = 15, x = "100006")
+addStyle(wb = mywb, sheet = "Summary", style = yellowStyle, rows = 18, cols = 11:16)
+
+writeData(wb = mywb, sheet = "Summary", startRow = 19, startCol = 11, x = "SEMO Purchases")
+writeData(wb = mywb, sheet = "Summary", startRow = 20, startCol = 11, x = "SEMO Sales")
+writeData(wb = mywb, sheet = "Summary", startRow = 21, startCol = 11, x = "Ex-Ante")
+writeData(wb = mywb, sheet = "Summary", startRow = 23, startCol = 11, x = "Total")
+
+# purchases
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+B39+B63+B75+B87-H26-G39+B51", xy = c(12,19))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+C39+C63+C75+C87+C51", xy = c(13,19))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CR3:CR338)+D39+D63+D75+D87+D51", xy = c(14,19))
+writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CS3:CS338)", xy = c(15,19))
+writeFormula(wb = mywb, sheet = "Summary", x = "=-B100", xy = c(16,19))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L18:P18)", xy = c(17,19))
+
+# sales
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CL3:CL338)", xy = c(12,20))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CM3:CM338)", xy = c(13,20))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CN3:CN338)", xy = c(14,20))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(15,20))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L19:P19)", xy = c(17,20))
+
+# ex ante
+writeFormula(wb = mywb, sheet = "Summary", x = "='Ex-Ante Consumption'!AZ11", xy = c(12,21))
+writeFormula(wb = mywb, sheet = "Summary", x = "='Ex-Ante Consumption'!BA11", xy = c(13,21))
+writeFormula(wb = mywb, sheet = "Summary", x = "='Ex-Ante Consumption'!BB11", xy = c(14,21))
+writeFormula(wb = mywb, sheet = "Summary", x = "='Ex-Ante Consumption'!BC11", xy = c(15,21))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L20:P20)", xy = c(17,21))
+
+# TOTALS
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L18:L20)", xy = c(12,23))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(M18:M20)", xy = c(13,23))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(N18:N20)", xy = c(14,23))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(O18:O20)", xy = c(15,23))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(P18:P20)", xy = c(16,23))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L22:P22)", xy = c(17,23))
+
+# CHECK
+writeFormula(wb = mywb, sheet = "Summary", x = "=Q18+Q19+I13", xy = c(18,19))
+writeFormula(wb = mywb, sheet = "Summary", x = paste0("=Q20-SUM('X:/Day Ahead/[ETS Results and Settlementv2.xlsx]Settlement Check'!$AF$1112:$AF$1118)"), xy = c(18,21))
+writeData(wb = mywb, sheet = "Summary", x = "Against Doc Total", startRow = 19, startCol = 19)
+writeData(wb = mywb, sheet = "Summary", x = "Against AD Day Ahead Sheet", startRow = 21, startCol = 19)
+
+for (row in c(19:23)) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = row, cols = 12:18)
+}
+
+for (ROW in c(14,23)) {
+  for (COL in 12:19) {
+    addStyle(wb = mywb, sheet = "Summary", style = thicktop, rows = ROW, cols = COL)
+  }
+}
+```
+
+
+```{r SS}
+# Shadow Settled sheet
+
+SS <- "SHADOW SETTLED"
+
+when <- paste0(20, substr(year,3,4), "/", substr(as.numeric(substr(year,3,4))+1,1,2))
+then <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-1), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)), 3, 4)),1,2))
+then2 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-2), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-1), 3, 4)),1,2))
+then3 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-2), 3, 4)),1,2))
+then4 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2))
+then5 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-5), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2))
+
+# Passthroughs from SEMO Charging Statement
+headings1 <- c('Date', 'Time P.E', 'Date/Time', 'Settlement Date', 'CCA', 'CDIFFPDA', 'CDIFFPIMB', 'CIMB', 'CIMP', 'CREV', 'CREIMDIFFP', 'CSHORTDIFFP', rep.int("", times = 3), when, then, then2, then3, then4, then5)
+
+temp <- c(11.52, 1.76, 0.029, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 16, x = temp)
+temp <- c(21.85, -0.67, 0.029, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 17, x = temp)
+temp <- c(9.19, 0.70, 0, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 18, x = temp)
+temp <- c(8.96, 1.61, 0.015, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 19, x = temp)
+temp <- c(10.4, 1.25, 0.015, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 20, x = temp)
+temp <- c(5.22, 1.3, 0.015, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 21, x = temp)
+
+for (COL in 1:length(headings1)) {
+  writeData(wb = mywb, sheet = SS, x = headings1[COL], startRow = 1, startCol = COL)
+}
+
+temp <- c()
+for (index in 2:49) {
+  temp <- c(temp, paste0("=DATE(LEFT(C", index, ",4),MID(C", index, ",6,2),MID(C", index, ",9,2))"))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 2, startCol = 1)
+temp <- c()
+for (index in 2:289) {
+  temp <- c(temp, paste0("=A", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 50, startCol = 1)
+
+temp <- c()
+for (index in 2:49) {
+  temp <- c(temp, paste0("=TIME(MID(C", index, ",12,2),MID(C", index, ",15,2),MID(C", index, ",18,2))"))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 2, startCol = 2)
+temp <- c()
+for (index in 2:289) {
+  temp <- c(temp, paste0("=B", index))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 50, startCol = 2)
+
+temp <- c()
+for (index in 3:50) {
+  temp <- c(temp, paste0("=REPORT!N", index))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 2, startCol = 3)
+temp <- c()
+for (index in 50:337) {
+  temp <- c(temp, paste0("=TEXT(A", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(B", index, ",\"hh:mm:ss\")&\"+00:00\""))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 50, startCol = 3)
+
+temp <- c()
+for (index in 2:49) {
+  temp <- c(temp, paste0("=REPORT!D", index))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 2, startCol = 4)
+temp <- c()
+for (index in 2:289) {
+  temp <- c(temp, paste0("=D", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 50, startCol = 4)
+
+for (col in c(1,4)) {
+  addStyle(wb = mywb, sheet = SS, style = DATE, rows = 2:337, cols = col)
+}
+
+addStyle(wb = mywb, sheet = SS, style = TIME, rows = 2:337, cols = 2)
+
+which_column <- c()
+if(as.numeric(firstday) > 20231001) {
+  which_column <- 16
+} else if (as.numeric(firstday) > 20221001) {
+  which_column <- 17
+} else if (as.numeric(firstday) > 20211001) {
+  which_column <- 18
+} else if (as.numeric(firstday) > 20201001) {
+  which_column <- 19
+} else if (as.numeric(firstday) > 20191001) {
+  which_column <- 20
+} else {
+  which_column <- 21
+}
+
+
+temp <- c()
+for (index in 2:337) {
+  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", index, ")*$", toupper(letters[which_column]), "$4*SUMIFS(REPORT!M:M,REPORT!N:N,'SHADOW SETTLED'!C", index, ",REPORT!J:J,\"FCCA\")"))
+}; writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 2, startCol = 5)
+
+temp <- c()
+for (index in 2:337) {
+  temp <- c(temp, paste0("=MAX(SUMIFS(REPORT!S:S,REPORT!R:R,'SHADOW SETTLED'!C", index, ",REPORT!P:P,\"QDIFFTRACKDA\"),0)*MIN(0,($", toupper(letters[which_column]), "$5-SUMIFS(REPORT!M:M,REPORT!N:N,'SHADOW SETTLED'!C", index, ",REPORT!J:J,\"PTDA\")))"))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 2, startCol = 6)
+
+temp <- c()
+for (index in 2:337) {
+  temp <- c(temp, paste0("=SUMIFS(REPORT!S:S,REPORT!R:R,'SHADOW SETTLED'!C", index, ",REPORT!P:P,\"QDIFFPIMB\")*MIN(0,($", toupper(letters[which_column]), "$5-SUMIFS(REPORT!M:M,REPORT!N:N,'SHADOW SETTLED'!C", index, ",REPORT!J:J,\"PIMB\")))"))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 2, startCol = 7)
+
+temp <- c()
+for (index in 2:337) {
+  temp <- c(temp, paste0("=SUMIFS(REPORT!M:M,REPORT!N:N,'SHADOW SETTLED'!C", index, ",REPORT!J:J,\"PIMB\")*(SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", index, ")-SUMIFS(REPORT!S:S,REPORT!R:R,'SHADOW SETTLED'!C", index, ",REPORT!P:P,\"QEX\"))"))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 2, startCol = 8)
+
+temp <- c()
+for (index in 2:337) {
+  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", index, ")*$", toupper(letters[which_column]), "$2*SUMIFS(REPORT!M:M,REPORT!N:N,'SHADOW SETTLED'!C", index, ",REPORT!J:J,\"FCIMP\")"))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 2, startCol = 9)
+
+temp <- c()
+for (index in 2:337) {
+  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", index, ")*SUMIFS(REPORT!S:S,REPORT!R:R,'SHADOW SETTLED'!C", index, ",REPORT!P:P,\"FNIEP\")*$", toupper(letters[which_column]), "$3"))
+}
+writeFormula(wb = mywb, sheet = SS, x = temp, startRow = 2, startCol = 10)
+
+totals <- c(2, 50, 98, 146, 194, 242, 290)
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=IFERROR(MIN(MAX(SUMIFS(REPORT!M:M,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!J:J,\"CBSOC\"),0),-SUMIFS(REPORT!S:S,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!P:P,\"CSHORTDIFFPTRACK\"))*(SUMIFS(REPORT!S:S,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!P:P,\"CSHORTDIFFPTRACK\")/SUMIFS(REPORT!S:S,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!P:P,\"CSHORTDIFFPTRACK\")),0)"))
+}
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = SS, x = temp[i], startRow = totals[i], startCol = 11)
+}
+
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=IFERROR(MIN(SUMIFS(REPORT!M:M,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!J:J,\"CBSOC\"),0)*(SUMIFS(REPORT!S:S,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!P:P,\"CDIFFPTOT\")/SUMIFS(REPORT!S:S,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!P:P,\"CDIFFPTOTD\")),0)"))
+}
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = SS, x = temp[i], startRow = totals[i], startCol = 12)
+}
+
+for (col in 5:12) {
+  addStyle(wb = mywb, sheet = SS, style = euro, rows = 2:337, cols = col)
+}
+
+addStyle(wb = mywb, sheet = SS, style = euro, rows = 2:5, cols = 16)
+
+writeData(wb = mywb, sheet = SS, x = "PIMP", startRow = 2, startCol = 15)
+writeData(wb = mywb, sheet = SS, x = "PREV", startRow = 3, startCol = 15)
+writeData(wb = mywb, sheet = SS, x = "PCC", startRow = 4, startCol = 15)
+writeData(wb = mywb, sheet = SS, x = "PSTR", startRow = 5, startCol = 15)
+
+for (row in c(2:5)) {
+  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = row, cols = 16:21)
+}
+```
+
+
+```{r CC}
+# Consumption Checks sheet
+
+CC <- "Consumption Checks"
+
+headings1 <- c(rep.int(x = "", times = 14), "No Ex-Ante Trades", rep.int(x = "", times = 11), "With Ex-Ante Trades", rep.int("", times = 16), "SU_400358", "SU_400358_&_SU_400358", rep.int(x = "", times = 8), "AU_400131", "AU_400131_&_AU_400131", "AU_400131_&_P", rep.int("", times = 12), "Ex-ante Q Split", rep.int("", 2), "QEX-QM Split", rep.int("", 2), "SEMO SETTLEMENT - CIMB", rep.int("", 4), "SEMO SETTLEMENT - CIMP", rep.int("", 3), "SEMO Settlement - CREV", rep.int("", 3), "CCA", "", "SEMO Sales - CIMB", rep.int("", 3), "SEMO Purchases - CIMB", rep.int("", 3)) %>% as.data.frame() %>%  t()
+
+headings2 <- c("Settlement Date",	"Time P.E",	"Date/time",	rep.int("", times = 2),	"MM 596",	"QM", "Diff",	rep.int("", times = 6), "MM595",	"MM591",	"MM598",	"MM596", rep.int("", 8), "MM595",	"MM591",	"MM598",	"QM-QEX", rep.int("", times = 4), "Settlement Date",	"Time P.E",	"Date/time",	"ETS DAM Date",	"ETS DAM Time",	"DAM Date/Time",	"ETS ID Date",	"ETS ID Time",	"ID Date/Time",	"QEX",	"ST",	"IT1",	"IT2",	"IT3",	"IT",	"Total", "Diff", "", "",	"QEX",	"ST",	"IT1",	"IT2",	"IT3",	"IT",	"Total", "Diff", "", "", "", "Settlement Date",	"DAM Date/Time",	"ID Date/Time",	"SEMO Date/Time", "HH",	"NHH",	"PPA", "HH",	"NHH",	"PPA", "HH",	"NHH",	"PPA",	"AU_400117",	"Total", "HH",	"NHH",	"PPA",	"Total",	"HH",	"NHH",	"PPA",	"Total", "Total", "", "HH",	"NHH",	"PPA", "AU",	"HH",	"NHH",	"PPA", "AU")
+
+for (COL in 1:length(headings1)) {
+  writeData(wb = mywb, sheet = CC, x = headings1[COL], startRow = 1, startCol = COL)
+  writeData(wb = mywb, sheet = CC, x = headings2[COL], startRow = 2, startCol = COL)
+}
+
+writeFormula(wb = mywb, sheet = CC, x = "='SHADOW SETTLED'!D2", startRow = 3, startCol = 1)
+
+temp <- c()
+for (index in 3:49) {
+  temp <- c(temp, paste0("=A", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 4, startCol = 1)
+
+temp <- c()
+for (index in 3:290) {
+  temp <- c(temp, paste0("=A", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 1)
+
+for (col in c(1,12,24,35,38,41,65)) {
+  addStyle(wb = mywb, sheet = CC, style = DATE, rows = 3:338, cols = col)
+}
+
+temp <- c()
+for (index in 2:337) {
+  temp <- c(temp, paste0("='SHADOW SETTLED'!B", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 2)
+
+for (col in c(2,5,14,26,36,39,42)) {
+  addStyle(wb = mywb, sheet = CC, style = TIME, rows = 3:338, cols = col)
+}
+
+temp <- c()
+for (index in 2:337) {
+  temp <- c(temp, paste0("='SHADOW SETTLED'!C", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 3)
+
+writeData(wb = mywb, x = rep(2:49, times = 7), sheet = CC, startRow = 3, startCol = 4)
+writeData(wb = mywb, x = rep(2:49, times = 7), sheet = CC, startRow = 3, startCol = 13)
+writeData(wb = mywb, x = rep(2:49, times = 7), sheet = CC, startRow = 3, startCol = 25)
+
+temp <- c()
+for (index in 4:51) {
+  temp <- c(temp, paste0("=B", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 5)
+
+temp <- c()
+for (index in 3:290) {
+  temp <- c(temp, paste0("=E", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 5)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=VLOOKUP(A", index, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+4 Resettlement 30 MM/[ESB MASTER MM Messages M+4.xlsx]MM596'!$A:$AY,D", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 6)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUMIFS(REPORT!S:S,REPORT!R:R,'Consumption Checks'!C", index, ",REPORT!P:P,'Consumption Checks'!$G$2)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 7)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("F", index, "-G", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 8)
+
+for (col in c(6:9,15:20, 27:32, 44:52, 54:62, 69:74)) {
+  addStyle(wb = mywb, sheet = CC, style = NUMBER, rows = 3:338, cols = col)
+}
+
+totals <- c(50, 98, 146, 194, 242, 290, 338)
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=SUM(H", total-47, ":H", total, ")"))
+}
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 9)
+  writeData(wb = mywb, sheet = CC, x = "", startRow = ROW, startCol = 9)
+}
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=A", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 12)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 65)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=E", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 14)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=VLOOKUP($L", index, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+4 Resettlement 30 MM/[ESB MASTER MM Messages M+4.xlsx]MM595 LA'!$A:$AY,$M", index, ",0)/1000"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 15)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=VLOOKUP($L", index, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+4 Resettlement 30 MM/[ESB MASTER MM Messages M+4.xlsx]MM591 LA'!$A:$AY,$M", index, ",0)/1000"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 16)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=VLOOKUP($L", index, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+4 Resettlement 30 MM/[ESB MASTER MM Messages M+4.xlsx]MM598'!$A:$AY,$M", index, ",0)/1000"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 17)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=F", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 18)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("(P", index, "+O", index, ")-Q", index, "+R", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 19)
+
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=SUM(S", total-47, ":S", total, ")"))
+}
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 20)
+  writeData(wb = mywb, sheet = CC, x = "", startRow = ROW, startCol = 20)
+}
+
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=IF(AND(SUM(S", total-47, ":S", total, ")<0.01,SUM(S", total-47, ":S", total, ")>-0.01),\"TRUE\",\"FALSE\")"))
+}
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 21)
+}
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=L", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 24)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=M", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 25)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=N", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 26)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=$O", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 27)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=P", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 28)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=Q", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 29)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=($G", index, "-SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$C", index, ",REPORT!$P:$P,\"QEX\"))"))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 30)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=(AB", index, "+AA", index, ")-AC", index, "+AD",index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 31)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=A",index))
+};
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 35)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=B", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 36)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=C", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 37)
+
+temp <- c()
+for (index in 3:46) {
+  temp <- c(temp, paste0("=AI", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 38)
+
+temp <- c()
+for (index in 47:50) {
+  temp <- c(temp, paste0("=AI", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 47, startCol = 38)
+
+temp <- c()
+for (index in 51:94) {
+  temp <- c(temp, paste0("=AI", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 38)
+
+temp <- c()
+for (index in 47:290) {
+  temp <- c(temp, paste0("=AI", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 95, startCol = 38)
+
+
+temp <- c()
+
+winter <- c("=AJ3+TIME(1,30,0)", "=AJ4+TIME(1,0,0)", "=AJ5+TIME(1,30,0)", "=AJ6+TIME(1,0,0)",
+            "=AJ7+TIME(1,30,0)", "=AJ8+TIME(1,0,0)", "=AJ9+TIME(1,30,0)", "=AJ10+TIME(1,0,0)",
+            "=AJ11+TIME(1,30,0)", "=AJ12+TIME(1,0,0)", "=AJ13+TIME(1,30,0)", "=AJ14+TIME(1,0,0)",
+            "=AJ15+TIME(1,30,0)", "=AJ16+TIME(1,0,0)", "=AJ17+TIME(1,30,0)", "=AJ18+TIME(1,0,0)",
+            "=AJ19+TIME(1,30,0)", "=AJ20+TIME(1,0,0)", "=AJ21+TIME(1,30,0)", "=AJ22+TIME(1,0,0)",
+            "=AJ23+TIME(1,30,0)", "=AJ24+TIME(1,0,0)", "=AJ25+TIME(1,30,0)", "=AJ26+TIME(1,0,0)",
+            "=AJ27+TIME(1,30,0)", "=AJ28+TIME(1,0,0)", "=AJ29+TIME(1,30,0)", "=AJ30+TIME(1,0,0)",
+            "=AJ31+TIME(1,30,0)", "=AJ32+TIME(1,0,0)", "=AJ33+TIME(1,30,0)", "=AJ34+TIME(1,0,0)",
+            "=AJ35+TIME(1,30,0)", "=AJ36+TIME(1,0,0)", "=AJ37+TIME(1,30,0)", "=AJ38+TIME(1,0,0)",
+            "=AJ39+TIME(1,30,0)", "=AJ40+TIME(1,0,0)", "=AJ41+TIME(1,30,0)", "=AJ42+TIME(1,0,0)",
+            "=AJ43+TIME(1,30,0)", "=AJ44+TIME(1,0,0)", "=AJ45+TIME(1,30,0)", "=AJ46+TIME(1,0,0)",
+            "=AJ47+TIME(1,30,0)", "=AJ48+TIME(1,0,0)", "=AJ49+TIME(1,30,0)", "=AJ50+TIME(1,0,0)",
+            "=AJ51+TIME(1,30,0)", "=AJ52+TIME(1,0,0)", "=AJ53+TIME(1,30,0)", "=AJ54+TIME(1,0,0)",
+            "=AJ55+TIME(1,30,0)", "=AJ56+TIME(1,0,0)", "=AJ57+TIME(1,30,0)", "=AJ58+TIME(1,0,0)",
+            "=AJ59+TIME(1,30,0)", "=AJ60+TIME(1,0,0)", "=AJ61+TIME(1,30,0)", "=AJ62+TIME(1,0,0)",
+            "=AJ63+TIME(1,30,0)", "=AJ64+TIME(1,0,0)", "=AJ65+TIME(1,30,0)", "=AJ66+TIME(1,0,0)",
+            "=AJ67+TIME(1,30,0)", "=AJ68+TIME(1,0,0)", "=AJ69+TIME(1,30,0)", "=AJ70+TIME(1,0,0)",
+            "=AJ71+TIME(1,30,0)", "=AJ72+TIME(1,0,0)", "=AJ73+TIME(1,30,0)", "=AJ74+TIME(1,0,0)",
+            "=AJ75+TIME(1,30,0)", "=AJ76+TIME(1,0,0)", "=AJ77+TIME(1,30,0)", "=AJ78+TIME(1,0,0)",
+            "=AJ79+TIME(1,30,0)", "=AJ80+TIME(1,0,0)", "=AJ81+TIME(1,30,0)", "=AJ82+TIME(1,0,0)",
+            "=AJ83+TIME(1,30,0)", "=AJ84+TIME(1,0,0)", "=AJ85+TIME(1,30,0)", "=AJ86+TIME(1,0,0)",
+            "=AJ87+TIME(1,30,0)", "=AJ88+TIME(1,0,0)", "=AJ89+TIME(1,30,0)", "=AJ90+TIME(1,0,0)",
+            "=AJ91+TIME(1,30,0)", "=AJ92+TIME(1,0,0)", "=AJ93+TIME(1,30,0)", "=AJ94+TIME(1,0,0)",
+            "=AJ95+TIME(1,30,0)", "=AJ96+TIME(1,0,0)", "=AJ97+TIME(1,30,0)", "=AJ98+TIME(1,0,0)",
+            "=AJ99+TIME(1,30,0)", "=AJ100+TIME(1,0,0)", "=AJ101+TIME(1,30,0)", "=AJ102+TIME(1,0,0)",
+            "=AJ103+TIME(1,30,0)", "=AJ104+TIME(1,0,0)", "=AJ105+TIME(1,30,0)", "=AJ106+TIME(1,0,0)",
+            "=AJ107+TIME(1,30,0)", "=AJ108+TIME(1,0,0)", "=AJ109+TIME(1,30,0)", "=AJ110+TIME(1,0,0)",
+            "=AJ111+TIME(1,30,0)", "=AJ112+TIME(1,0,0)", "=AJ113+TIME(1,30,0)", "=AJ114+TIME(1,0,0)",
+            "=AJ115+TIME(1,30,0)", "=AJ116+TIME(1,0,0)", "=AJ117+TIME(1,30,0)", "=AJ118+TIME(1,0,0)",
+            "=AJ119+TIME(1,30,0)", "=AJ120+TIME(1,0,0)", "=AJ121+TIME(1,30,0)", "=AJ122+TIME(1,0,0)",
+            "=AJ123+TIME(1,30,0)", "=AJ124+TIME(1,0,0)", "=AJ125+TIME(1,30,0)", "=AJ126+TIME(1,0,0)",
+            "=AJ127+TIME(1,30,0)", "=AJ128+TIME(1,0,0)", "=AJ129+TIME(1,30,0)", "=AJ130+TIME(1,0,0)",
+            "=AJ131+TIME(1,30,0)", "=AJ132+TIME(1,0,0)", "=AJ133+TIME(1,30,0)", "=AJ134+TIME(1,0,0)",
+            "=AJ135+TIME(1,30,0)", "=AJ136+TIME(1,0,0)", "=AJ137+TIME(1,30,0)", "=AJ138+TIME(1,0,0)",
+            "=AJ139+TIME(1,30,0)", "=AJ140+TIME(1,0,0)", "=AJ141+TIME(1,30,0)", "=AJ142+TIME(1,0,0)",
+            "=AJ143+TIME(1,30,0)", "=AJ144+TIME(1,0,0)", "=AJ145+TIME(1,30,0)", "=AJ146+TIME(1,0,0)",
+            "=AJ147+TIME(1,30,0)", "=AJ148+TIME(1,0,0)", "=AJ149+TIME(1,30,0)", "=AJ150+TIME(1,0,0)",
+            "=AJ151+TIME(1,30,0)", "=AJ152+TIME(1,0,0)", "=AJ153+TIME(1,30,0)", "=AJ154+TIME(1,0,0)",
+            "=AJ155+TIME(1,30,0)", "=AJ156+TIME(1,0,0)", "=AJ157+TIME(1,30,0)", "=AJ158+TIME(1,0,0)",
+            "=AJ159+TIME(1,30,0)", "=AJ160+TIME(1,0,0)", "=AJ161+TIME(1,30,0)", "=AJ162+TIME(1,0,0)",
+            "=AJ163+TIME(1,30,0)", "=AJ164+TIME(1,0,0)", "=AJ165+TIME(1,30,0)", "=AJ166+TIME(1,0,0)",
+            "=AJ167+TIME(1,30,0)", "=AJ168+TIME(1,0,0)", "=AJ169+TIME(1,30,0)", "=AJ170+TIME(1,0,0)",
+            "=AJ171+TIME(1,30,0)", "=AJ172+TIME(1,0,0)", "=AJ173+TIME(1,30,0)", "=AJ174+TIME(1,0,0)",
+            "=AJ175+TIME(1,30,0)", "=AJ176+TIME(1,0,0)", "=AJ177+TIME(1,30,0)", "=AJ178+TIME(1,0,0)",
+            "=AJ179+TIME(1,30,0)", "=AJ180+TIME(1,0,0)", "=AJ181+TIME(1,30,0)", "=AJ182+TIME(1,0,0)",
+            "=AJ183+TIME(1,30,0)", "=AJ184+TIME(1,0,0)", "=AJ185+TIME(1,30,0)", "=AJ186+TIME(1,0,0)",
+            "=AJ187+TIME(1,30,0)", "=AJ188+TIME(1,0,0)", "=AJ189+TIME(1,30,0)", "=AJ190+TIME(1,0,0)",
+            "=AJ191+TIME(1,30,0)", "=AJ192+TIME(1,0,0)", "=AJ193+TIME(1,30,0)", "=AJ194+TIME(1,0,0)",
+            "=AJ195+TIME(1,30,0)", "=AJ196+TIME(1,0,0)", "=AJ197+TIME(1,30,0)", "=AJ198+TIME(1,0,0)",
+            "=AJ199+TIME(1,30,0)", "=AJ200+TIME(1,0,0)", "=AJ201+TIME(1,30,0)", "=AJ202+TIME(1,0,0)",
+            "=AJ203+TIME(1,30,0)", "=AJ204+TIME(1,0,0)", "=AJ205+TIME(1,30,0)", "=AJ206+TIME(1,0,0)",
+            "=AJ207+TIME(1,30,0)", "=AJ208+TIME(1,0,0)", "=AJ209+TIME(1,30,0)", "=AJ210+TIME(1,0,0)",
+            "=AJ211+TIME(1,30,0)", "=AJ212+TIME(1,0,0)", "=AJ213+TIME(1,30,0)", "=AJ214+TIME(1,0,0)",
+            "=AJ215+TIME(1,30,0)", "=AJ216+TIME(1,0,0)", "=AJ217+TIME(1,30,0)", "=AJ218+TIME(1,0,0)",
+            "=AJ219+TIME(1,30,0)", "=AJ220+TIME(1,0,0)", "=AJ221+TIME(1,30,0)", "=AJ222+TIME(1,0,0)",
+            "=AJ223+TIME(1,30,0)", "=AJ224+TIME(1,0,0)", "=AJ225+TIME(1,30,0)", "=AJ226+TIME(1,0,0)",
+            "=AJ227+TIME(1,30,0)", "=AJ228+TIME(1,0,0)", "=AJ229+TIME(1,30,0)", "=AJ230+TIME(1,0,0)",
+            "=AJ231+TIME(1,30,0)", "=AJ232+TIME(1,0,0)", "=AJ233+TIME(1,30,0)", "=AJ234+TIME(1,0,0)",
+            "=AJ235+TIME(1,30,0)", "=AJ236+TIME(1,0,0)", "=AJ237+TIME(1,30,0)", "=AJ238+TIME(1,0,0)",
+            "=AJ239+TIME(1,30,0)", "=AJ240+TIME(1,0,0)", "=AJ241+TIME(1,30,0)", "=AJ242+TIME(1,0,0)",
+            "=AJ243+TIME(1,30,0)", "=AJ244+TIME(1,0,0)", "=AJ245+TIME(1,30,0)", "=AJ246+TIME(1,0,0)",
+            "=AJ247+TIME(1,30,0)", "=AJ248+TIME(1,0,0)", "=AJ249+TIME(1,30,0)", "=AJ250+TIME(1,0,0)",
+            "=AJ251+TIME(1,30,0)", "=AJ252+TIME(1,0,0)", "=AJ253+TIME(1,30,0)", "=AJ254+TIME(1,0,0)",
+            "=AJ255+TIME(1,30,0)", "=AJ256+TIME(1,0,0)", "=AJ257+TIME(1,30,0)", "=AJ258+TIME(1,0,0)",
+            "=AJ259+TIME(1,30,0)", "=AJ260+TIME(1,0,0)", "=AJ261+TIME(1,30,0)", "=AJ262+TIME(1,0,0)",
+            "=AJ263+TIME(1,30,0)", "=AJ264+TIME(1,0,0)", "=AJ265+TIME(1,30,0)", "=AJ266+TIME(1,0,0)",
+            "=AJ267+TIME(1,30,0)", "=AJ268+TIME(1,0,0)", "=AJ269+TIME(1,30,0)", "=AJ270+TIME(1,0,0)",
+            "=AJ271+TIME(1,30,0)", "=AJ272+TIME(1,0,0)", "=AJ273+TIME(1,30,0)", "=AJ274+TIME(1,0,0)",
+            "=AJ275+TIME(1,30,0)", "=AJ276+TIME(1,0,0)", "=AJ277+TIME(1,30,0)", "=AJ278+TIME(1,0,0)",
+            "=AJ279+TIME(1,30,0)", "=AJ280+TIME(1,0,0)", "=AJ281+TIME(1,30,0)", "=AJ282+TIME(1,0,0)",
+            "=AJ283+TIME(1,30,0)", "=AJ284+TIME(1,0,0)", "=AJ285+TIME(1,30,0)", "=AJ286+TIME(1,0,0)",
+            "=AJ287+TIME(1,30,0)", "=AJ288+TIME(1,0,0)", "=AJ289+TIME(1,30,0)", "=AJ290+TIME(1,0,0)",
+            "=AJ291+TIME(1,30,0)", "=AJ292+TIME(1,0,0)", "=AJ293+TIME(1,30,0)", "=AJ294+TIME(1,0,0)",
+            "=AJ295+TIME(1,30,0)", "=AJ296+TIME(1,0,0)", "=AJ297+TIME(1,30,0)", "=AJ298+TIME(1,0,0)",
+            "=AJ299+TIME(1,30,0)", "=AJ300+TIME(1,0,0)", "=AJ301+TIME(1,30,0)", "=AJ302+TIME(1,0,0)",
+            "=AJ303+TIME(1,30,0)", "=AJ304+TIME(1,0,0)", "=AJ305+TIME(1,30,0)", "=AJ306+TIME(1,0,0)",
+            "=AJ307+TIME(1,30,0)", "=AJ308+TIME(1,0,0)", "=AJ309+TIME(1,30,0)", "=AJ310+TIME(1,0,0)",
+            "=AJ311+TIME(1,30,0)", "=AJ312+TIME(1,0,0)", "=AJ313+TIME(1,30,0)", "=AJ314+TIME(1,0,0)",
+            "=AJ315+TIME(1,30,0)", "=AJ316+TIME(1,0,0)", "=AJ317+TIME(1,30,0)", "=AJ318+TIME(1,0,0)",
+            "=AJ319+TIME(1,30,0)", "=AJ320+TIME(1,0,0)", "=AJ321+TIME(1,30,0)", "=AJ322+TIME(1,0,0)",
+            "=AJ323+TIME(1,30,0)", "=AJ324+TIME(1,0,0)", "=AJ325+TIME(1,30,0)", "=AJ326+TIME(1,0,0)",
+            "=AJ327+TIME(1,30,0)", "=AJ328+TIME(1,0,0)", "=AJ329+TIME(1,30,0)", "=AJ330+TIME(1,0,0)",
+            "=AJ331+TIME(1,30,0)", "=AJ332+TIME(1,0,0)", "=AJ333+TIME(1,30,0)", "=AJ334+TIME(1,0,0)",
+            "=AJ335+TIME(1,30,0)", "=AJ336+TIME(1,0,0)", "=AJ337+TIME(1,30,0)", "=AJ338+TIME(1,0,0)"
+)
+
+summer <- c("=AJ3+TIME(2,30,0)", "=AJ4+TIME(2,0,0)", "=AJ5+TIME(2,30,0)", "=AJ6+TIME(2,0,0)",
+            "=AJ7+TIME(2,30,0)", "=AJ8+TIME(2,0,0)", "=AJ9+TIME(2,30,0)", "=AJ10+TIME(2,0,0)",
+            "=AJ11+TIME(2,30,0)", "=AJ12+TIME(2,0,0)", "=AJ13+TIME(2,30,0)", "=AJ14+TIME(2,0,0)",
+            "=AJ15+TIME(2,30,0)", "=AJ16+TIME(2,0,0)", "=AJ17+TIME(2,30,0)", "=AJ18+TIME(2,0,0)",
+            "=AJ19+TIME(2,30,0)", "=AJ20+TIME(2,0,0)", "=AJ21+TIME(2,30,0)", "=AJ22+TIME(2,0,0)",
+            "=AJ23+TIME(2,30,0)", "=AJ24+TIME(2,0,0)", "=AJ25+TIME(2,30,0)", "=AJ26+TIME(2,0,0)",
+            "=AJ27+TIME(2,30,0)", "=AJ28+TIME(2,0,0)", "=AJ29+TIME(2,30,0)", "=AJ30+TIME(2,0,0)",
+            "=AJ31+TIME(2,30,0)", "=AJ32+TIME(2,0,0)", "=AJ33+TIME(2,30,0)", "=AJ34+TIME(2,0,0)",
+            "=AJ35+TIME(2,30,0)", "=AJ36+TIME(2,0,0)", "=AJ37+TIME(2,30,0)", "=AJ38+TIME(2,0,0)",
+            "=AJ39+TIME(2,30,0)", "=AJ40+TIME(2,0,0)", "=AJ41+TIME(2,30,0)", "=AJ42+TIME(2,0,0)",
+            "=AJ43+TIME(2,30,0)", "=AJ44+TIME(2,0,0)", "=AJ45+TIME(2,30,0)", "=AJ46+TIME(2,0,0)",
+            "=AJ47+TIME(2,30,0)", "=AJ48+TIME(2,0,0)", "=AJ49+TIME(2,30,0)", "=AJ50+TIME(2,0,0)",
+            "=AJ51+TIME(2,30,0)", "=AJ52+TIME(2,0,0)", "=AJ53+TIME(2,30,0)", "=AJ54+TIME(2,0,0)",
+            "=AJ55+TIME(2,30,0)", "=AJ56+TIME(2,0,0)", "=AJ57+TIME(2,30,0)", "=AJ58+TIME(2,0,0)",
+            "=AJ59+TIME(2,30,0)", "=AJ60+TIME(2,0,0)", "=AJ61+TIME(2,30,0)", "=AJ62+TIME(2,0,0)",
+            "=AJ63+TIME(2,30,0)", "=AJ64+TIME(2,0,0)", "=AJ65+TIME(2,30,0)", "=AJ66+TIME(2,0,0)",
+            "=AJ67+TIME(2,30,0)", "=AJ68+TIME(2,0,0)", "=AJ69+TIME(2,30,0)", "=AJ70+TIME(2,0,0)",
+            "=AJ71+TIME(2,30,0)", "=AJ72+TIME(2,0,0)", "=AJ73+TIME(2,30,0)", "=AJ74+TIME(2,0,0)",
+            "=AJ75+TIME(2,30,0)", "=AJ76+TIME(2,0,0)", "=AJ77+TIME(2,30,0)", "=AJ78+TIME(2,0,0)",
+            "=AJ79+TIME(2,30,0)", "=AJ80+TIME(2,0,0)", "=AJ81+TIME(2,30,0)", "=AJ82+TIME(2,0,0)",
+            "=AJ83+TIME(2,30,0)", "=AJ84+TIME(2,0,0)", "=AJ85+TIME(2,30,0)", "=AJ86+TIME(2,0,0)",
+            "=AJ87+TIME(2,30,0)", "=AJ88+TIME(2,0,0)", "=AJ89+TIME(2,30,0)", "=AJ90+TIME(2,0,0)",
+            "=AJ91+TIME(2,30,0)", "=AJ92+TIME(2,0,0)", "=AJ93+TIME(2,30,0)", "=AJ94+TIME(2,0,0)",
+            "=AJ95+TIME(2,30,0)", "=AJ96+TIME(2,0,0)", "=AJ97+TIME(2,30,0)", "=AJ98+TIME(2,0,0)",
+            "=AJ99+TIME(2,30,0)", "=AJ100+TIME(2,0,0)", "=AJ101+TIME(2,30,0)", "=AJ102+TIME(2,0,0)",
+            "=AJ103+TIME(2,30,0)", "=AJ104+TIME(2,0,0)", "=AJ105+TIME(2,30,0)", "=AJ106+TIME(2,0,0)",
+            "=AJ107+TIME(2,30,0)", "=AJ108+TIME(2,0,0)", "=AJ109+TIME(2,30,0)", "=AJ110+TIME(2,0,0)",
+            "=AJ111+TIME(2,30,0)", "=AJ112+TIME(2,0,0)", "=AJ113+TIME(2,30,0)", "=AJ114+TIME(2,0,0)",
+            "=AJ115+TIME(2,30,0)", "=AJ116+TIME(2,0,0)", "=AJ117+TIME(2,30,0)", "=AJ118+TIME(2,0,0)",
+            "=AJ119+TIME(2,30,0)", "=AJ120+TIME(2,0,0)", "=AJ121+TIME(2,30,0)", "=AJ122+TIME(2,0,0)",
+            "=AJ123+TIME(2,30,0)", "=AJ124+TIME(2,0,0)", "=AJ125+TIME(2,30,0)", "=AJ126+TIME(2,0,0)",
+            "=AJ127+TIME(2,30,0)", "=AJ128+TIME(2,0,0)", "=AJ129+TIME(2,30,0)", "=AJ130+TIME(2,0,0)",
+            "=AJ131+TIME(2,30,0)", "=AJ132+TIME(2,0,0)", "=AJ133+TIME(2,30,0)", "=AJ134+TIME(2,0,0)",
+            "=AJ135+TIME(2,30,0)", "=AJ136+TIME(2,0,0)", "=AJ137+TIME(2,30,0)", "=AJ138+TIME(2,0,0)",
+            "=AJ139+TIME(2,30,0)", "=AJ140+TIME(2,0,0)", "=AJ141+TIME(2,30,0)", "=AJ142+TIME(2,0,0)",
+            "=AJ143+TIME(2,30,0)", "=AJ144+TIME(2,0,0)", "=AJ145+TIME(2,30,0)", "=AJ146+TIME(2,0,0)",
+            "=AJ147+TIME(2,30,0)", "=AJ148+TIME(2,0,0)", "=AJ149+TIME(2,30,0)", "=AJ150+TIME(2,0,0)",
+            "=AJ151+TIME(2,30,0)", "=AJ152+TIME(2,0,0)", "=AJ153+TIME(2,30,0)", "=AJ154+TIME(2,0,0)",
+            "=AJ155+TIME(2,30,0)", "=AJ156+TIME(2,0,0)", "=AJ157+TIME(2,30,0)", "=AJ158+TIME(2,0,0)",
+            "=AJ159+TIME(2,30,0)", "=AJ160+TIME(2,0,0)", "=AJ161+TIME(2,30,0)", "=AJ162+TIME(2,0,0)",
+            "=AJ163+TIME(2,30,0)", "=AJ164+TIME(2,0,0)", "=AJ165+TIME(2,30,0)", "=AJ166+TIME(2,0,0)",
+            "=AJ167+TIME(2,30,0)", "=AJ168+TIME(2,0,0)", "=AJ169+TIME(2,30,0)", "=AJ170+TIME(2,0,0)",
+            "=AJ171+TIME(2,30,0)", "=AJ172+TIME(2,0,0)", "=AJ173+TIME(2,30,0)", "=AJ174+TIME(2,0,0)",
+            "=AJ175+TIME(2,30,0)", "=AJ176+TIME(2,0,0)", "=AJ177+TIME(2,30,0)", "=AJ178+TIME(2,0,0)",
+            "=AJ179+TIME(2,30,0)", "=AJ180+TIME(2,0,0)", "=AJ181+TIME(2,30,0)", "=AJ182+TIME(2,0,0)",
+            "=AJ183+TIME(2,30,0)", "=AJ184+TIME(2,0,0)", "=AJ185+TIME(2,30,0)", "=AJ186+TIME(2,0,0)",
+            "=AJ187+TIME(2,30,0)", "=AJ188+TIME(2,0,0)", "=AJ189+TIME(2,30,0)", "=AJ190+TIME(2,0,0)",
+            "=AJ191+TIME(2,30,0)", "=AJ192+TIME(2,0,0)", "=AJ193+TIME(2,30,0)", "=AJ194+TIME(2,0,0)",
+            "=AJ195+TIME(2,30,0)", "=AJ196+TIME(2,0,0)", "=AJ197+TIME(2,30,0)", "=AJ198+TIME(2,0,0)",
+            "=AJ199+TIME(2,30,0)", "=AJ200+TIME(2,0,0)", "=AJ201+TIME(2,30,0)", "=AJ202+TIME(2,0,0)",
+            "=AJ203+TIME(2,30,0)", "=AJ204+TIME(2,0,0)", "=AJ205+TIME(2,30,0)", "=AJ206+TIME(2,0,0)",
+            "=AJ207+TIME(2,30,0)", "=AJ208+TIME(2,0,0)", "=AJ209+TIME(2,30,0)", "=AJ210+TIME(2,0,0)",
+            "=AJ211+TIME(2,30,0)", "=AJ212+TIME(2,0,0)", "=AJ213+TIME(2,30,0)", "=AJ214+TIME(2,0,0)",
+            "=AJ215+TIME(2,30,0)", "=AJ216+TIME(2,0,0)", "=AJ217+TIME(2,30,0)", "=AJ218+TIME(2,0,0)",
+            "=AJ219+TIME(2,30,0)", "=AJ220+TIME(2,0,0)", "=AJ221+TIME(2,30,0)", "=AJ222+TIME(2,0,0)",
+            "=AJ223+TIME(2,30,0)", "=AJ224+TIME(2,0,0)", "=AJ225+TIME(2,30,0)", "=AJ226+TIME(2,0,0)",
+            "=AJ227+TIME(2,30,0)", "=AJ228+TIME(2,0,0)", "=AJ229+TIME(2,30,0)", "=AJ230+TIME(2,0,0)",
+            "=AJ231+TIME(2,30,0)", "=AJ232+TIME(2,0,0)", "=AJ233+TIME(2,30,0)", "=AJ234+TIME(2,0,0)",
+            "=AJ235+TIME(2,30,0)", "=AJ236+TIME(2,0,0)", "=AJ237+TIME(2,30,0)", "=AJ238+TIME(2,0,0)",
+            "=AJ239+TIME(2,30,0)", "=AJ240+TIME(2,0,0)", "=AJ241+TIME(2,30,0)", "=AJ242+TIME(2,0,0)",
+            "=AJ243+TIME(2,30,0)", "=AJ244+TIME(2,0,0)", "=AJ245+TIME(2,30,0)", "=AJ246+TIME(2,0,0)",
+            "=AJ247+TIME(2,30,0)", "=AJ248+TIME(2,0,0)", "=AJ249+TIME(2,30,0)", "=AJ250+TIME(2,0,0)",
+            "=AJ251+TIME(2,30,0)", "=AJ252+TIME(2,0,0)", "=AJ253+TIME(2,30,0)", "=AJ254+TIME(2,0,0)",
+            "=AJ255+TIME(2,30,0)", "=AJ256+TIME(2,0,0)", "=AJ257+TIME(2,30,0)", "=AJ258+TIME(2,0,0)",
+            "=AJ259+TIME(2,30,0)", "=AJ260+TIME(2,0,0)", "=AJ261+TIME(2,30,0)", "=AJ262+TIME(2,0,0)",
+            "=AJ263+TIME(2,30,0)", "=AJ264+TIME(2,0,0)", "=AJ265+TIME(2,30,0)", "=AJ266+TIME(2,0,0)",
+            "=AJ267+TIME(2,30,0)", "=AJ268+TIME(2,0,0)", "=AJ269+TIME(2,30,0)", "=AJ270+TIME(2,0,0)",
+            "=AJ271+TIME(2,30,0)", "=AJ272+TIME(2,0,0)", "=AJ273+TIME(2,30,0)", "=AJ274+TIME(2,0,0)",
+            "=AJ275+TIME(2,30,0)", "=AJ276+TIME(2,0,0)", "=AJ277+TIME(2,30,0)", "=AJ278+TIME(2,0,0)",
+            "=AJ279+TIME(2,30,0)", "=AJ280+TIME(2,0,0)", "=AJ281+TIME(2,30,0)", "=AJ282+TIME(2,0,0)",
+            "=AJ283+TIME(2,30,0)", "=AJ284+TIME(2,0,0)", "=AJ285+TIME(2,30,0)", "=AJ286+TIME(2,0,0)",
+            "=AJ287+TIME(2,30,0)", "=AJ288+TIME(2,0,0)", "=AJ289+TIME(2,30,0)", "=AJ290+TIME(2,0,0)",
+            "=AJ291+TIME(2,30,0)", "=AJ292+TIME(2,0,0)", "=AJ293+TIME(2,30,0)", "=AJ294+TIME(2,0,0)",
+            "=AJ295+TIME(2,30,0)", "=AJ296+TIME(2,0,0)", "=AJ297+TIME(2,30,0)", "=AJ298+TIME(2,0,0)",
+            "=AJ299+TIME(2,30,0)", "=AJ300+TIME(2,0,0)", "=AJ301+TIME(2,30,0)", "=AJ302+TIME(2,0,0)",
+            "=AJ303+TIME(2,30,0)", "=AJ304+TIME(2,0,0)", "=AJ305+TIME(2,30,0)", "=AJ306+TIME(2,0,0)",
+            "=AJ307+TIME(2,30,0)", "=AJ308+TIME(2,0,0)", "=AJ309+TIME(2,30,0)", "=AJ310+TIME(2,0,0)",
+            "=AJ311+TIME(2,30,0)", "=AJ312+TIME(2,0,0)", "=AJ313+TIME(2,30,0)", "=AJ314+TIME(2,0,0)",
+            "=AJ315+TIME(2,30,0)", "=AJ316+TIME(2,0,0)", "=AJ317+TIME(2,30,0)", "=AJ318+TIME(2,0,0)",
+            "=AJ319+TIME(2,30,0)", "=AJ320+TIME(2,0,0)", "=AJ321+TIME(2,30,0)", "=AJ322+TIME(2,0,0)",
+            "=AJ323+TIME(2,30,0)", "=AJ324+TIME(2,0,0)", "=AJ325+TIME(2,30,0)", "=AJ326+TIME(2,0,0)",
+            "=AJ327+TIME(2,30,0)", "=AJ328+TIME(2,0,0)", "=AJ329+TIME(2,30,0)", "=AJ330+TIME(2,0,0)",
+            "=AJ331+TIME(2,30,0)", "=AJ332+TIME(2,0,0)", "=AJ333+TIME(2,30,0)", "=AJ334+TIME(2,0,0)",
+            "=AJ335+TIME(2,30,0)", "=AJ336+TIME(2,0,0)", "=AJ337+TIME(2,30,0)", "=AJ338+TIME(2,0,0)"
+)
+
+season <- c()
+
+if (firstday2 > as.Date(paste0(as.numeric(year)-1,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year),"-4-01"), format = "%Y-%m-%d")) {
+  temp <- winter
+  season <- "winter"
+} else {
+  temp <- summer
+  season <- "summer"
+}
+
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 39)
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+temp <- c()
+for (index in 3:46) {
+  temp <- c(temp, paste0("=AL", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AI51+1", startRow = 51, startCol = 41)
+writeFormula(mywb, CC, x = "=AI52+1", startRow = 52, startCol = 41)
+
+temp <- c()
+for (index in 53:95) {
+  temp <- c(temp, paste0("=AI", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL96", startRow = 96, startCol = 41)
+writeFormula(mywb, CC, x = "=AL97", startRow = 97, startCol = 41)
+writeFormula(mywb, CC, x = "=AL98", startRow = 98, startCol = 41)
+writeFormula(mywb, CC, x = "=AI99+1", startRow = 99, startCol = 41)
+writeFormula(mywb, CC, x = "=AI100+1", startRow = 100, startCol = 41)
+
+temp <- c()
+for (index in 101:143) {
+  temp <- c(temp, paste0("=AI", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 101, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL144", startRow = 144, startCol = 41)
+writeFormula(mywb, CC, x = "=AL145", startRow = 145, startCol = 41)
+writeFormula(mywb, CC, x = "=AL146", startRow = 146, startCol = 41)
+writeFormula(mywb, CC, x = "=AI147+1", startRow = 147, startCol = 41)
+writeFormula(mywb, CC, x = "=AI148+1", startRow = 148, startCol = 41)
+
+temp <- c()
+for (index in 149:191) {
+  temp <- c(temp, paste0("=AI", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 149, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL192", startRow = 192, startCol = 41)
+writeFormula(mywb, CC, x = "=AL193", startRow = 193, startCol = 41)
+writeFormula(mywb, CC, x = "=AL194", startRow = 194, startCol = 41)
+writeFormula(mywb, CC, x = "=AI195+1", startRow = 195, startCol = 41)
+writeFormula(mywb, CC, x = "=AI196+1", startRow = 196, startCol = 41)
+
+temp <- c()
+for (index in 197:239) {
+  temp <- c(temp, paste0("=AI", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 197, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL240", startRow = 240, startCol = 41)
+writeFormula(mywb, CC, x = "=AL241", startRow = 241, startCol = 41)
+writeFormula(mywb, CC, x = "=AL242", startRow = 242, startCol = 41)
+writeFormula(mywb, CC, x = "=AI243+1", startRow = 243, startCol = 41)
+writeFormula(mywb, CC, x = "=AI244+1", startRow = 244, startCol = 41)
+
+temp <- c()
+for (index in 245:287) {
+  temp <- c(temp, paste0("=AI", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 245, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL288", startRow = 288, startCol = 41)
+writeFormula(mywb, CC, x = "=AL289", startRow = 289, startCol = 41)
+writeFormula(mywb, CC, x = "=AL290", startRow = 290, startCol = 41)
+writeFormula(mywb, CC, x = "=AI291+1", startRow = 291, startCol = 41)
+writeFormula(mywb, CC, x = "=AI292+1", startRow = 292, startCol = 41)
+
+temp <- c()
+for (index in 293:335) {
+  temp <- c(temp, paste0("=AI", index))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 293, startCol = 41)
+
+writeFormula(mywb, CC, x = "=AL336", startRow = 336, startCol = 41)
+writeFormula(mywb, CC, x = "=AL337", startRow = 337, startCol = 41)
+writeFormula(mywb, CC, x = "=AL338", startRow = 338, startCol = 41)
+
+
+
+temp <- c()
+
+if (season == "winter") {
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=TEXT(AL", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AM", index, ",\"hh:mm:ss\")&\"+01:00\""))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 40)
+  }
+  temp <- c()
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=AJ", index, "+TIME(1,0,0)"))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 42)
+  }
+  temp <- c()
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+02:00\""))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
+  }
+  temp <- c()
+} else if (season == "summer") {
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=TEXT(AL", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AM", index, ",\"hh:mm:ss\")&\"+02:00\""))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 40)
+  }
+  temp <- c()
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=AJ", index, "+TIME(2,0,0)"))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 42)
+  }
+  temp <- c()
+  for (index in 3:338) {
+    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+01:00\""))
+    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
+  }
+  temp <- c()
+}
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$AK", index, ",REPORT!$P:$P,\"QEX\",REPORT!$O:$O,'Consumption Checks'!$AR$1)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AN", index, ",'EX-Ante Report'!$I:$I,'Consumption Checks'!$AS$2, 'EX-Ante Report'!$AK:$AK,'Consumption Checks'!$AS$1)/2"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 45)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AN", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,AT$2,'EX-Ante Report'!$AK:$AK,$AS$1)/2"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 46)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!$I:$I,'Consumption Checks'!$AU$2,'EX-Ante Report'!$AK:$AK,'Consumption Checks'!$AS$1)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 47)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!$I:$I,'Consumption Checks'!$AV$2,'EX-Ante Report'!$AK:$AK,'Consumption Checks'!$AS$1)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 48)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AN", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,AW$2,'EX-Ante Report'!$AK:$AK,$AS$1)/2"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 49)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUM(AS", index, ":AW", index, ")"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 50)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=AX", index, "-AR", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 51)
+
+
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=SUM(AY", total-47, ":AY", total, ")"))
+}
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 52)
+}
+
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=IF(AND(SUM(AY", total-47, ":AY", total, ")<0.01,SUM(AY", total-47, ":AY", total, ")>-0.01),\"TRUE\",\"FALSE\")"))
+}
+
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 53)
+}
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$AK", index, ",REPORT!$P:$P,\"QEX\",REPORT!$O:$O, \"AU_400131\")"))
+}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 54)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AN", index, "&'Consumption Checks'!$BC$1&$BC$2,'EX-Ante Report'!S:S&'EX-Ante Report'!AK:AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1),SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1))/2,0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 55)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AQ", index, "&'Consumption Checks'!$BC$1&$BD$2,'EX-Ante Report'!$S:$S&'EX-Ante Report'!$AK:$AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AQ", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,$BD$2,'EX-Ante Report'!$AK:$AK,$BC$1),SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,$BD$2,'EX-Ante Report'!$AK:$AK,$BC$1)),0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 56)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AQ", index, "&'Consumption Checks'!$BC$1&$BE$2,'EX-Ante Report'!$S:$S&'EX-Ante Report'!$AK:$AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AQ", index, ",'EX-Ante Report'!$K:$K, \"EGRD\",'EX-Ante Report'!$I:$I,$BE$2,'EX-Ante Report'!$AK:$AK,$BC$1),SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,$BE$2,'EX-Ante Report'!$AK:$AK,$BC$1)),0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 57)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AQ", index, "&'Consumption Checks'!$BC$1&$BF$2,'EX-Ante Report'!$S:$S&'EX-Ante Report'!$AK:$AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AQ", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,$BF$2,'EX-Ante Report'!$AK:$AK,$BC$1),SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,$BF$2,'EX-Ante Report'!$AK:$AK,$BC$1)),0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 58)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AQ", index, "&'Consumption Checks'!$BD$1&$BG$2,'EX-Ante Report'!$S:$S&'EX-Ante Report'!$AK:$AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AQ", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,$BG$2,'EX-Ante Report'!$AK:$AK,$BD$1),SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,$BG$2,'EX-Ante Report'!$AK:$AK,$BD$1)),0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 59)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUM(BC", index, ":BG", index, ")"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 60)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=BH", index, "-BB", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 61)
+
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=IF(AND(SUM(H", total-47, ":H", total, ")<0.01,SUM(H", total-47, ":H", total, ")>-0.01),\"TRUE\",\"FALSE\")"))
+}
+
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 10)
+  writeData(wb = mywb, sheet = CC, x = "", startRow = ROW, startCol = 9)
+  conditionalFormatting(wb = mywb, sheet = CC, cols = 10, rows = totals[i], rule = paste0("=I", totals[i], "=TRUE"), type = 'expression', style = posStyle)
+  conditionalFormatting(wb = mywb, sheet = CC, cols = 10, rows = totals[i], rule = paste0("=I", totals[i], "=FALSE"), style = negStyle)
+}
+
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=SUM(BI", total-47, ":BI", total, ")"))
+}
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 62)
+}
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=IF(AND(SUM(BI", total-47, ":BI", total, ")<0.01,SUM(BI", total-47, ":BI", total, ")>-0.01),\"TRUE\",\"FALSE\")"))
+}
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 63)
+}
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=AN", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 66)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=AQ", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 67)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=C", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 68)
+
+
+
+# Ex-ante Q Split
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(VLOOKUP($BO", index, ",'Ex-Ante Consumption'!$C$3:$AV$500,41,0),0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 69)
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(VLOOKUP($BO", index, ",'Ex-Ante Consumption'!$C$3:$AV$500,42,0),0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 70)
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(VLOOKUP($BO", index, ",'Ex-Ante Consumption'!$C$3:$AV$500,43,0),0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 71)
+
+
+
+# QEX-QM
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=(O", index, ")-BQ", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 72)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=(P", index, ")-BR", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 73)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-(Q", index, ")-BS", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 74)
+
+# SEMO Settlement - CIMB
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=BT", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMB\"))"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 75)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=BU", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMB\"))"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 76)
+ 
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=BV", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMB\"))"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 77)
+ 
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Ex-ante Consumption'!Y", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMB\"))"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 78)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("SUM(BW", index, ":BZ", index, ")"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 79)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=O", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMP\"))"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 80)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=P", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMP\"))"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 81)
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=Q", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMP\"))"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 82)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("SUM(CB", index, ":CD", index, ")"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 83)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=O", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'Consumption Checks'!$BM", index, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$BP", index, ",REPORT!$P:$P,\"FNIEP\")"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 84)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=P", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'Consumption Checks'!$BM", index, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$BP", index, ",REPORT!$P:$P,\"FNIEP\")"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 85)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'Consumption Checks'!$BM", index, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$BP", index, ",REPORT!$P:$P,\"FNIEP\")"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 86)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("SUM(CF", index, ":CH", index, ")"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 87)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUMIFS(F:F,C:C,BP", index, ")*'SHADOW SETTLED'!$P$4*SUMIFS(REPORT!M:M,REPORT!N:N,'Consumption Checks'!BP", index, ",REPORT!J:J,\"FCCA\")")) # SS:p not SS:T to be dynamic
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 88)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")<0),BW", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 90)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")<0),BX", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 91)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")<0),BY", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 92)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF(BH", index, "<0,BZ", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 93)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")>0),BW", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 94)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")>0),BX", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 95)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")>0),BY", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 96)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF(BH", index, ">0,BZ", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 97)
+
+addStyle(wb = mywb, sheet = CC, style = euro, rows = 1, cols = 75:97)
+
+for (col in c(69:88, 90:97)) {
+  addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#FFEB9C", fontColour = "#9C5700"), rows = 1, cols = col)
+}
+```
+
+
+```{r EAC}
+# Ex-Ante Consumption sheet
+
+EAC <- "Ex-Ante Consumption"
+
+headings1 <- c(rep.int("", times = 6),
+               "Forecasted Consumption", rep.int("", times = 3),
+               "Ratio", rep.int("", times = 2),
+               "Ex-Ante Q Results - SU_400173", rep.int("", times = 5),
+               "Ex-Ante Q Results - AU_400117", rep.int("", times = 5),
+               "Ex-Ante P Results", rep.int("", times = 4),
+               "Ex-Ante Settled Results - SU_400173", rep.int("", times = 5),
+               "Ex-Ante Settled Results - AU_400117", rep.int("", times = 5),
+               "Results Split", rep.int("", times = 2),
+               "Settlement Split", rep.int("", times = 12),
+
+
+headings2 <- c("Lookup", "DAM Date/Time", "IDA Date/Time", "Settlement Date", "Forecast Date", "Forecast %",
+               "HH", "NHH", "PPA", "Total", "HH", "NHH", "PPA", 
+               rep.int(c("Bought DAM", "Bought IDA1", "Bought IDA2", "Bought IDA3", "Bought IDC", "QEX"), times = 2),
+               "Price DAM", "Price IDA1", "Price IDA2", "Price IDA3", "Price IDC",
+               rep.int(c("DAM", "IDA1", "IDA2", "IDA3", "IDC", "Total"), times = 2),
+               rep.int(c("HH", "NHH", "PPA"), times = 2), "AU_5", rep.int("", times = 2),
+               "Summary", "HH", "NHH", "PPA", "AU_400117", "Total", rep.int("", times = 2),
+
+for (COL in 1:length(headings1)) {
+  writeData(wb = mywb, sheet = EAC, x = headings1[COL], startRow = 1, startCol = COL)
+}
+addStyle(wb = mywb, sheet = EAC, createStyle(halign = 'left'), rows = 1, cols = 1:50)
+
+for (COL in 1:length(headings2)) {
+  writeData(wb = mywb, sheet = EAC, x = headings2[COL], startRow = 2, startCol = COL)
+}
+
+writeData(wb = mywb, x = rep.int(c(1:48), times = 7), sheet = EAC, startRow = 3, startCol = 1)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("='Consumption Checks'!AN", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 2)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("='Consumption Checks'!AQ", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 3)
+
+temp <- c()
+for (index in 2:337) {
+  temp <- c(temp, paste0("='SHADOW SETTLED'!D", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 4)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=D", index, "-14"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 5)
+
+writeData(wb = mywb, sheet = EAC, x = rep.int("98%", times = 336), startRow = 3, startCol = 6)
+
+for (col in c(6,11:13)) {
+  addStyle(wb = mywb, sheet = EAC, style = PERCENT, rows = 3:338, cols = col)
+}
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=((INDEX('X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$B$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM595 LA'!$B$1:$AZ$1,0)))/1000)*F", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 7)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=(INDEX('X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$B$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM591 LA'!$B$1:$AX$1,0)))*F", index, "/1000"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 8)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=(-INDEX('X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$B$3:$AZ$1048576,MATCH(E", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$A$3:$A$1048576,0),MATCH(A", index, ",'X:/GeneralAccounts/Settlement/ESB MM/D+4 Initial 20 MM/[ESB MASTER MM Messages D+4.xlsx]MM598'!$B$1:$AZ$1,0)))*F", index, "/1000"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 9)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=G", index, "+H", index, "+I", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 10)
+
+for (col in c(7:10)) {
+  addStyle(wb = mywb, sheet = EAC, createStyle(numFmt = "#,####0.0000"), rows = 3:338, cols = col)
+}
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(G", index, "/$J", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 11)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(H", index, "/$J", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 12)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(I", index, "/$J", index, ",0)"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 13)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Consumption Checks'!AS", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 14)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Consumption Checks'!AT", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 15)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Consumption Checks'!AU", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 16)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Consumption Checks'!AV", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 17)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Consumption Checks'!AW", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 18)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUM(N", index, ":R", index, ")"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 19)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Consumption Checks'!BC", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 20)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Consumption Checks'!BD", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 21)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Consumption Checks'!BE", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 22)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Consumption Checks'!BF", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 23)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=-'Consumption Checks'!BG", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 24)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUM(T", index, ":X", index, ")"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 25)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$T:$T,'EX-Ante Report'!$S:$S,'Ex-ante Consumption'!B", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,\"ST\",'EX-Ante Report'!$AK:$AK,'Consumption Checks'!$AS$1)"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 26)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$T:$T,'EX-Ante Report'!$S:$S,'Ex-ante Consumption'!C", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,\"IT1\",'EX-Ante Report'!$AK:$AK,IF(O", index, "=0,\"AU_400131_&_AU_400131\",\"SU_400173_&_SU_400173\"))"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 27)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$V:$V,'EX-Ante Report'!$U:$U,'Ex-ante Consumption'!$C", index, ",'EX-Ante Report'!$M:$M,\"EGRD\",'EX-Ante Report'!$K:$K,\"IT2\",'EX-Ante Report'!$AM:$AM,IF(P", index, "=0,\"AU_400117_&_AU_400117\",\"SU_400173_&_SU_400173\"))"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 28)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$V:$V,'EX-Ante Report'!$U:$U,'Ex-ante Consumption'!$C", index, ",'EX-Ante Report'!$M:$M,\"EGRD\",'EX-Ante Report'!$K:$K,\"IT3\",'EX-Ante Report'!$AM:$AM,IF(Q", index, "=0,\"AU_400117_&_AU_400117\",\"SU_400173_&_SU_400173\"))"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 29)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IFERROR(AVERAGEIFS('EX-Ante Report'!$T:$T,'EX-Ante Report'!$S:$S,'Ex-ante Consumption'!$C", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,\"IT\",'EX-Ante Report'!$AK:$AK,IF(R", index, "=0,\"AU_400131_&_P\",\"SU_400173_&_P\")),0)"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 30)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=N", index, "*Z", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 31)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=O", index, "*AA", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 32)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=P", index, "*AB", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 33)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=Q", index, "*AC", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 34)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=R", index, "*AD", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 35)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUM(AE", index, ":AI", index, ")"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 36)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=T", index, "*Z", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 37)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=U", index, "*AA", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 38)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=V", index, "*AB", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 39)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=W", index, "*AC", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 40)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=X", index, "*AD", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 41)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=SUM(AK", index, ":AO", index, ")"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 42)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=$S", index, "*K", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 43)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=$S", index, "*L", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 44)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=$S", index, "*M", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 45)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=$AJ", index, "*K", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 46)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=$AJ", index, "*L", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 47)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=$AJ", index, "*M", index))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 48)
+
+temp <- c()
+for (index in 18:24) {
+  temp <- c(temp, paste0("=Summary!A", index))
+}; writeFormula(mywb, EAC, temp, startRow = 3, startCol = 52)
+
+temp <- c()
+for (index in 3:9) {
+  temp <- c(temp, paste0("=SUMIF($D:$D,$AY", index, ",AT:AT)"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 53)
+
+temp <- c()
+for (index in 3:9) {
+  temp <- c(temp, paste0("=SUMIF($D:$D,$AY", index, ",AY:AU)"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 54)
+
+temp <- c()
+for (index in 3:9) {
+  temp <- c(temp, paste0("=SUMIF($D:$D,$AY", index, ",AV:AV)"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 55)
+
+temp <- c()
+for (index in 3:9) {
+  temp <- c(temp, paste0("=SUMIF($D:$D,$AY", index, ",AP:AP)"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 56)
+
+temp <- c()
+for (index in 3:9) {
+  temp <- c(temp, paste0("=SUM(AZ", index, ":BC", index, ")"))
+}
+writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 56)
+
+writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(AZ3:AZ9)"), startRow = 11, startCol = 53)
+writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(BA3:BA9)"), startRow = 11, startCol = 54)
+writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(BB3:BB9)"), startRow = 11, startCol = 55)
+writeFormula(wb = mywb, sheet = EAC, x = paste0("=SUM(BC3:BC9)"), startRow = 11, startCol = 56)
+
+# FORMATTING
+for (col in c(7:13,20:30,37:49)) {
+  addStyle(wb = mywb, sheet = EAC, style = createStyle(fgFill = "#FFEB9C", fontColour = "#9C6500", halign = "center"), rows = 1, cols = col)
+}
+for (col in c(14:19,31:36)) {
+  addStyle(wb = mywb, sheet = EAC, style = createStyle(fgFill = "#D9E1F2", halign = "center"), rows = 1, cols = col)
+}
+for (col in c(4,5,51)) {
+  addStyle(wb = mywb, sheet = EAC, style = DATE, rows = 3:338, cols = col)
+}
+
+addStyle(wb = mywb, sheet = EAC, style = boldStyle, rows = 2, cols = 1:61)
+
+for (ROW in 3:11) {
+  for (col in 52:56) {
+    addStyle(mywb, EAC, euro, startRow = ROW, startCol = COL)
+  }
+}
+
+temp <- c()
+for (index in 3:338) {
+  writeFormula(mywb, EAC, x = paste0("=0*(T", index, "*Z", index, ")+(U", index, "*AA", index, ")+(V", index, "*AB", index, ")+(W", index, "*A", index, ")"), startRow = 3, startCol = 49)
+}
+
+```
+
+
+```{r EIS}
+# En & Imp Split sheet
+
+EIS <- "En & Imp Split"
+
+writeData(wb = mywb, sheet = EIS, x = "CIMB", startRow = 1, startCol = 1)
+writeData(wb = mywb, sheet = EIS, x = "CIMP", startRow = 1, startCol = 11)
+writeData(wb = mywb, sheet = EIS, x = "CREV", startRow = 1, startCol = 19)
+writeData(wb = mywb, sheet = EIS, x = "CDIFFPIMB", startRow = 1, startCol = 27)
+writeData(wb = mywb, sheet = EIS, x = "CSHORTSDIFFP", startRow = 1, startCol = 35)
+writeData(wb = mywb, sheet = EIS, x = "CCA", startRow = 1, startCol = 43)
+
+
+headings2 <- c("Settlement Date", "Trading Date",
+               rep.int("", times = 3), "HH", "NHH", "PPA Gen", "Total",
+               rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
+               rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
+               rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
+               rep.int("", times = 2), "HH", "NHH", "PPA Gen", "Total",
+               rep.int("", times = 4), "Total")
+
+for (COL in 1:length(headings2)) {
+  writeData(wb = mywb, sheet = EIS, x = headings2[COL], startRow = 3, startCol = COL)
+}
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("='Consumption Checks'!A", index))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 1)
+
+temp <- c()
+for (index in 4:49) {
+  temp <- c(temp, paste0("=A", index))
+}
+for (index in 50:51) {
+  temp <- c(temp, paste0("=A", index, "+1"))
+}
+for (index in 4:291) {
+  temp <- c(temp, paste0("+B", index, "+1"))
+}
+writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 2)
+
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("='Consumption Checks'!C", index))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 3)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("='Consumption Checks'!D", index))
+};
+writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 4)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("='Consumption Checks'!E", index))
+};
+writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 5)
+
+temp <- c()
+for (index in 4:339) {
+  temp <- c(temp, paste0("=A", index))
+}
+for (COL in c(11,19,27,43)) {
+  writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = COL)
+}
+
+temp <- c()
+for (index in 4:339) {
+  temp <- c(temp, paste0("=D", index))
+}
+for (COL in c(12,20,28,44)) {
+  writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = COL)
+}
+
+temp <- c()
+for (index in 4:339) {
+  temp <- c(temp, paste0("=E", index))
+}
+for (COL in c(13,21,29,45)) {
+  writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = COL)
+}
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF(SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!$C", index+1, ",REPORT!$P:$P,\"QEX\")=0,'Consumption Checks'!O", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\")*VLOOKUP($B", index+1, ",'Week Summary'!$U$2:$Y$9,4,0),'Consumption Checks'!AA", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\"))"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 6)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF(SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!$C", index+1, ",REPORT!$P:$P,\"QEX\")=0,'Consumption Checks'!P", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\")*VLOOKUP($B", index+1, ",'Week Summary'!$U$2:$Y$9,4,0),'Consumption Checks'!AB", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\"))"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 7)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=IF(SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!$C", index+1, ",REPORT!$P:$P,\"QEX\")=0,'Consumption Checks'!Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\")*VLOOKUP($B", index+1, ",'Week Summary'!$U$2:$Y$9,4,0),'Consumption Checks'!AC", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\"))"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 8)
+
+temp <- c()
+for (index in 4:339) {
+  temp <- c(temp, paste0("=F", index, "+G", index, "-H", index))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 9)
+
+
+
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("='Consumption Checks'!O", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!C", index+1, ",REPORT!$J:$J,\"PIMP\")"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 14)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("='Consumption Checks'!P", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!C", index+1, ",REPORT!$J:$J,\"PIMP\")"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 15)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("='Consumption Checks'!Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!C", index+1, ",REPORT!$J:$J,\"PIMP\")"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 16)
+
+temp <- c()
+for (index in 4:339) {
+  temp <- c(temp, paste0("=N", index, "+O", index, "-P", index))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 17)
+
+
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=('Consumption Checks'!O", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'En & Imp Split'!A", index+1, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!C", index+1, ",REPORT!$P:$P,\"FNIEP\"))"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 22)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=('Consumption Checks'!P", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'En & Imp Split'!A", index+1, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!C", index+1, ",REPORT!$P:$P,\"FNIEP\"))"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 23)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0("=('Consumption Checks'!Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'En & Imp Split'!A", index+1, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!C", index+1, ",REPORT!$P:$P,\"FNIEP\"))"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 24)
+
+temp <- c()
+for (index in 4:339) {
+  temp <- c(temp, paste0("=V", index, "+W", index, "-X", index))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 25)
+
+temp <- c()
+for (index in 4:339) {
+  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$S$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!O", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 30)
+
+temp <- c()
+for (index in 4:339) {
+  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$S$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!P", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 31)
+
+temp <- c()
+for (index in 4:339) {
+  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$S$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!Q", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 32)
+
+temp <- c()
+for (index in 4:339) {
+  temp <- c(temp, paste0("=AD", index, "+AE", index, "+AF", index))
+}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 33)
+
+for (ROW in c(4,17)) {
+  writeData(mywb, EIS, x = dates, startRow = ROW, startCol = 35)
+}
+
+writeData(mywb, EIS, "CREIMDIFFP", startRow = 14, startCol = 35)
+writeData(mywb, EIS, "HH", startRow = 16, startCol = 38)
+writeData(mywb, EIS, "NHH", startRow = 16, startCol = 39)
+writeData(mywb, EIS, "PPA Gen", startRow = 16, startCol = 40)
+writeData(mywb, EIS, "Total", startRow = 16, startCol = 41)
+
+writeData(mywb, EIS, c(2:8), startRow = 4, startCol = 36)
+writeData(mywb, EIS, c(2:8), startRow = 17, startCol = 36)
+
+
+temp <- c()
+for (index in c(4:10)) {
+  temp <- c(temp, paste0("=AC", index))
+}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 37)
+writeFormula(mywb, EIS, temp, startRow = 17, startCol = 37)
+
+temp <- c()
+for (index in c(3:9)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", index+1, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!O", index, "/'Consumption Checks'!$R", index, ")"))
+}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 38)
+
+temp <- c()
+for (index in c(3:9)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", index+1, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!P", index, "/'Consumption Checks'!$R", index, ")"))}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 39)
+
+temp <- c()
+for (index in c(3:9)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", index+1, ",'SHADOW SETTLED'!$L:$L)*('Consumption Checks'!Q", index, "/'Consumption Checks'!$R", index, ")"))}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 40)
+
+temp <- c()
+for (index in c(4:10)) {
+  temp <- c(temp, paste0("=AL", index, "+AM", index, "-AN", index))
+}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 41)
+
+
+
+temp <- c()
+for (index in c(17:23)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", index, ",'SHADOW SETTLED'!$K:$K)*('Consumption Checks'!O", index-1, "/'Consumption Checks'!$R", index-1, ")"))
+}; writeFormula(mywb, EIS, temp, startRow = 17, startCol = 38)
+
+temp <- c()
+for (index in c(17:23)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", index, ",'SHADOW SETTLED'!$K:$K)*('Consumption Checks'!P", index-1, "/'Consumption Checks'!$R", index-1, ")"))}; writeFormula(mywb, EIS, temp, startRow = 17, startCol = 39)
+
+temp <- c()
+for (index in c(17:23)) {
+  temp <- c(temp, paste0("=SUMIF('SHADOW SETTLED'!$D:$D,'En & Imp Split'!$AI", index, ",'SHADOW SETTLED'!$K:$K)*('Consumption Checks'!Q", index-1, "/'Consumption Checks'!$R", index-1, ")"))}; writeFormula(mywb, EIS, temp, startRow = 17, startCol = 40)
+
+temp <- c()
+for (index in c(17:23)) {
+  temp <- c(temp, paste0("=AL", index, "+AM", index, "-AN", index))
+}; writeFormula(mywb, EIS, temp, startRow = 17, startCol = 41)
+
+temp <- c()
+for (index in c(2:337)) {
+  temp <- c(temp, paste0("='SHADOW SETTLED'!E", index))
+}; writeFormula(mywb, EIS, temp, startRow = 4, startCol = 46)
+
+
+
+
+
+# FORMATTING
+for (col in c(1,2,11,19,27,35,43)) {
+  addStyle(wb = mywb, sheet = EIS, style = DATE, rows = 4:339, cols = col)
+}
+for (col in c(5,13,21,29,37,45)) {
+  addStyle(wb = mywb, sheet = EIS, style = TIME, rows = 4:339, cols = col)
+}
+for (col in c(6:9,14:17,22:25,30:33,38:41,46)) {
+  addStyle(wb = mywb, sheet = EIS, style = euro, rows = 4:339, cols = col)
+}
+
+
+
+saveWorkbook(mywb, outputfile, TRUE)
+
+
+```
+
