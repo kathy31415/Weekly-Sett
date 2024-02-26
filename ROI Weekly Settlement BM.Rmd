@@ -1181,7 +1181,7 @@ writeData(wb = mywb, sheet = "Summary", x = "Check", xy = c(10,12))
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUMIFS(DOCUMENT!AK:AK,DOCUMENT!AF:AF,Summary!A1,DOCUMENT!AE:AE,\"BALIMB\")-Summary!I13", xy = c(10,13))
 
-for (ROW in c(18,31,43,55,67,79,91)) {
+for (ROW in c(18,31,43,55,67,79,92)) {
   writeData(wb = mywb, sheet = "Summary", x = dates, startCol = 1, startRow = ROW)
 }
 
@@ -1583,9 +1583,9 @@ startingrow <- 92
 
 writeData(wb = mywb, sheet = "Summary", x = "CCA", startCol = 1, startRow = (startingrow-2))
 
-writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 2, startRow = startingrow)
-writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 3, startRow = startingrow)
-writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 4, startRow = startingrow)
+writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 2, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 3, startRow = startingrow-1)
+writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 4, startRow = startingrow-1)
 addStyle(wb = mywb, sheet = "Summary", style = bluegrey, rows = startingrow-1, cols = 2:4)
 
 for (col in 2:4) {
@@ -1644,9 +1644,9 @@ for (row in 15:21) {
 }
 
 addStyle(wb = mywb, sheet = "Summary", style = thicktl, rows = 14, cols = 11)
-addStyle(wb = mywb, sheet = "Summary", style = thicktr, borderStyle= "thick"), rows = 14, cols = 20)
-addStyle(wb = mywb, sheet = "Summary", style = thickbottoml, rows = 22, cols = 11)
-addStyle(wb = mywb, sheet = "Summary", style = thickbottomr, rows = 22, cols = 20)
+addStyle(wb = mywb, sheet = "Summary", style = thicktr, , rows = 14, cols = 20)
+addStyle(wb = mywb, sheet = "Summary", style = thickbl, rows = 22, cols = 11)
+addStyle(wb = mywb, sheet = "Summary", style = thickbr, rows = 22, cols = 20)
 
 writeFormula(wb = mywb, sheet = "Summary", xy = c(12,16), x = "=B17")
 writeFormula(wb = mywb, sheet = "Summary", xy = c(13,16), x = "=C17")
@@ -3841,23 +3841,25 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 EMS <- "ECC Monthly Settlement"
 
-headings = c("Sales at positive prices", rep.int("", times = 3),
-                           "Purchases at negative prices", rep.int("", times = 3),
-                           "Sales at negative Prices", rep.int("", times = 3),
-                           "Purchases at positive prices")
+writeData(mywb, EMS, "Sales at positive prices", startCol = 2, startRow = 1)
+writeData(mywb, EMS, "Purchases at negative prices", startCol = 6, startRow = 1)
+writeData(mywb, EMS, "Sales at negative prices", startCol = 10, startRow = 1)
+writeData(mywb, EMS, "Purchases at positive prices", startCol = 14, startRow = 1)
 
-for (COL in 1:length(headings1)) {
-  writeData(mywb, EMS, headings[COL], startRow = 1, startCol = 2)
+for (COL in c(2,6,10,14)) {
+  writeData(mywb, EMS, "Quantity", startCol = COL, startRow = 2)
 }
 
-headings <- rep.int(c("Quantity", "", "Commodity", ""), times = 4)
-for (COL in 1:length(headings1)) {
-  writeData(mywb, EMS, headings[COL], startRow = 2, startCol = 2)
+for (COL in c(4,8,12,16)) {
+  writeData(mywb, EMS, "Commodity", startCol = COL, startRow = 2)
 }
 
-headings <- rep.int(c("SU", "AU"), times = 8)
-for (COL in 1:length(headings1)) {
-  writeData(mywb, EMS, headings[COL], startRow = 3, startCol = 2)
+for (COL in c(2,4,6,8,10,12,14,16)) {
+  writeData(mywb, EMS, "SU", startCol = COL, startRow = 3)
+}
+
+for (COL in c(3,5,7,9,11,13,15,17)) {
+  writeData(mywb, EMS, "AU", startCol = COL, startRow = 3)
 }
 
 writeData(mywb, EMS, dates, startRow = 4, startCol = 1)
@@ -3941,6 +3943,15 @@ temp <- c()
 for (index in c(4:10)) {
   temp = c(temp, paste0("=SUMIF('Ex-ante Consumption'!$D:$D,$A", index, ",'Ex-ante Consumption'!$DZ:$DZ)+SUMIF('Ex-ante Consumption'!$D:$D,$A", index, ",'Ex-ante Consumption'!$EA:$EA)+SUMIF('Ex-ante Consumption'!$D:$D,$A", index, ",'Ex-ante Consumption'!$EB:$EB)+SUMIF('Ex-ante Consumption'!$D:$D,$A", index, ",'Ex-ante Consumption'!$EC:$EC)+SUMIF('Ex-ante Consumption'!$D:$D,$A", index, ",'Ex-ante Consumption'!$ED:$ED)"))
 }; writeFormula(mywb, EMS, x = temp, startRow = 4, startCol = 17)
+
+for (ROW in 4:10) {
+  for (COL in c(4,5,8,9,12,13,16,17)) {
+    addStyle(mywb, EMS, euro, rows = ROW, cols = COL)
+  }
+  for (COL in c(2,3,6,7,10,11,14,15)) {
+    addStyle(mywb, EMS, NUMBER, rows = ROW, cols = COL)
+  }
+}
 
 
 saveWorkbook(mywb, outputfile, TRUE)
