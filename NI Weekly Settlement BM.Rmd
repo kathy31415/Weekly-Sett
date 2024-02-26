@@ -447,8 +447,9 @@ if (un == "kathy.callan") {
   accdrive <- "X"
   edrive <- "Z"
   e2drive <- "Y"
+} else {
+  stop("Unexpected user. Stopping...")
 }
-
 
 # *Styles*
 negStyle <- createStyle(fontColour = "#9C0006", bgFill = "#FFC7CE")
