@@ -708,6 +708,7 @@ for (f in 1:7) {
 # combine statements
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*STATEMENT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Statements for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
 
 dfstatements <- data.frame()
@@ -3777,6 +3778,7 @@ for (f in 1:7) {
 # combine statements
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*STATEMENT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Statements for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
 
 dfstatements <- data.frame()
@@ -7012,6 +7014,7 @@ for (f in 1:7) {
 # combine statements
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*STATEMENT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Statements for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
 
 dfstatements <- data.frame()
