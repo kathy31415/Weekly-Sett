@@ -8418,7 +8418,7 @@ writeData(wb = mywb, x = rep(2:49, times = 7), sheet = CC, startRow = 3, startCo
 writeData(wb = mywb, x = rep(2:49, times = 7), sheet = CC, startRow = 3, startCol = 25)
 
 temp <- c()
-for (index in 4:51) {
+for (index in 50:97) {
   temp <- c(temp, paste0("=B", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 5)
@@ -8500,7 +8500,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 18)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUM(O", index, ":Q", index, ")+R", index))
+  temp <- c(temp, paste0("O", index, "+P", index, "-Q", index, "+R", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 19)
 
@@ -8591,14 +8591,20 @@ for (index in 47:50) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 47, startCol = 38)
 
 temp <- c()
-for (index in 51:94) {
-  temp <- c(temp, paste0("=AI", index))
+for (index in 3:4) {
+  temp <- c(temp, paste0("=AL", index, "+1"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 38)
 
 temp <- c()
-for (index in 47:290) {
-  temp <- c(temp, paste0("=AI", index, "+1"))
+for (index in 52:53) {
+  temp <- c(temp, paste0("=AL", index))
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 38)
+
+temp <- c()
+for (index in 7:290) {
+  temp <- c(temp, paste0("=AL", index, "+1"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 95, startCol = 38)
 
@@ -8913,31 +8919,31 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AN", index, ",'EX-Ante Report'!$I:$I,'Consumption Checks'!$AS$2, 'EX-Ante Report'!$AK:$AK,'Consumption Checks'!$AS$1)/2"))
+  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AN", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,AS$2,'EX-Ante Report'!$AK:$AK,$AS$1)/2"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 45)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AN", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,AT$2,'EX-Ante Report'!$AK:$AK,$AS$1)/2"))
+  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$R:$R,'EX-Ante Report'!$U:$U,'Consumption Checks'!$AQ", index, ",'EX-Ante Report'!$M:$M,\"EGRD\",'EX-Ante Report'!$K:$K,\"IT1\",'EX-Ante Report'!AM:AM,\"SU_400173_&_SU_400173\")"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 46)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!$I:$I,'Consumption Checks'!$AU$2,'EX-Ante Report'!$AK:$AK,'Consumption Checks'!$AS$1)"))
+  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$R:$R,'EX-Ante Report'!$U:$U,'Consumption Checks'!$AQ", index, ",'EX-Ante Report'!$M:$M,\"EGRD\",'EX-Ante Report'!$K:$K,\"IT2\",'EX-Ante Report'!AM:AM,\"SU_400173_&_SU_400173\")"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 47)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!$I:$I,'Consumption Checks'!$AV$2,'EX-Ante Report'!$AK:$AK,'Consumption Checks'!$AS$1)"))
+  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$R:$R,'EX-Ante Report'!$U:$U,'Consumption Checks'!$AQ", index, ",'EX-Ante Report'!$M:$M,\"EGRD\",'EX-Ante Report'!$K:$K,\"IT3\",'EX-Ante Report'!AM:AM,\"SU_400173_&_SU_400173\")"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 48)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AN", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,AW$2,'EX-Ante Report'!$AK:$AK,$AS$1)/2"))
+  temp <- c(temp, paste0("=-SUMIFS('EX-Ante Report'!$R:$R,'EX-Ante Report'!$U:$U,'Consumption Checks'!$AQ", index, ",'EX-Ante Report'!$M:$M,\"EGRD\",'EX-Ante Report'!$K:$K,\"IT\",'EX-Ante Report'!AM:AM,\"SU_400173_&_SU_400173\")"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 49)
 
@@ -8952,7 +8958,6 @@ for (index in 3:338) {
   temp <- c(temp, paste0("=AX", index, "-AR", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 51)
-
 
 temp <- c()
 for (total in totals) {
@@ -8973,12 +8978,12 @@ for (i in 1:7) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$AK", index, ",REPORT!$P:$P,\"QEX\",REPORT!$O:$O, \"AU_400131\")"))
+  temp <- c(temp, paste0("=SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$AK", index, ",REPORT!$P:$P,$BB$2,REPORT!$O:$O,$BB$1)"))
 }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 54)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AN", index, "&'Consumption Checks'!$BC$1&$BC$2,'EX-Ante Report'!S:S&'EX-Ante Report'!AK:AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1),SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1))/2,0)"))
+  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AN", index, "&'Consumption Checks'!$BC$1&$BC$2,'EX-Ante Report'!S:S&'EX-Ante Report'!AK:AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!$AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1),SUMIFS('EX-Ante Report'!P:P,'EX-Ante Report'!S:S,'Consumption Checks'!AN", index, ",'EX-Ante Report'!K:K,\"EGRD\",'EX-Ante Report'!I:I,$BC$2,'EX-Ante Report'!AK:AK,$BC$1))/2,0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 55)
 
@@ -8996,7 +9001,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 57)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!$N:$N,MATCH('Consumption Checks'!AQ", index, "&'Consumption Checks'!$BC$1&$BF$2,'EX-Ante Report'!$S:$S&'EX-Ante Report'!$AK:$AK&'EX-Ante Report'!$I:$I,0))=\"B\",-SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!$AQ", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,$BF$2,'EX-Ante Report'!$AK:$AK,$BC$1),SUMIFS('EX-Ante Report'!$P:$P,'EX-Ante Report'!$S:$S,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,$BF$2,'EX-Ante Report'!$AK:$AK,$BC$1)),0)"))
+  temp <- c(temp, paste0("=IFERROR(IF(INDEX('EX-Ante Report'!P:P,MATCH('Consumption Checks'!AQ", index, "&'Consumption Checks'!$BB$1&$BF$2,'EX-Ante Report'!U:U&'EX-Ante Report'!AM:AM&'EX-Ante Report'!K:K,0))=\"B\",-SUMIFS('EX-Ante Report'!R:R,'EX-Ante Report'!U:U,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!M:M,\"EGRD\",'EX-Ante Report'!K:K,\"IT3\",'EX-Ante Report'!AM:AM,\"AU_400117_&_AU_400117\"),SUMIFS('EX-Ante Report'!R:R,'EX-Ante Report'!U:U,'Consumption Checks'!AQ", index, ",'EX-Ante Report'!M:M,\"EGRD\",'EX-Ante Report'!K:K,\"IT3\",'EX-Ante Report'!AM:AM,\"AU_400117_&_AU_400117\")),0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 58)
 
@@ -9068,7 +9073,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 68)
 # Ex-ante Q Split
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IFERROR(VLOOKUP($BO", index, ",'Ex-Ante Consumption'!$C$3:$AV$500,41,0),0)"))
+  temp <- c(temp, paste0("=IFERROR(VLOOKUP($BO", index, ",'Ex-Ante Consumption'!$C$3:$AX$500,41,0),0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 69)
 temp <- c()
@@ -9183,7 +9188,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 87)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUMIFS(F:F,C:C,BP", index, ")*'SHADOW SETTLED'!$P$4*SUMIFS(REPORT!M:M,REPORT!N:N,'Consumption Checks'!BP", index, ",REPORT!J:J,\"FCCA\")")) # SS:p not SS:T to be dynamic
+  temp <- c(temp, paste0("=SUMIFS(F:F,C:C,BP", index, ")*'SHADOW SETTLED'!$P$4*SUMIFS(REPORT!M:M,REPORT!N:N,'Consumption Checks'!BP", index, ",REPORT!J:J,\"FCCA\")")) # SS:p not SS:T to be dynamic?
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 88)
 
@@ -9288,7 +9293,7 @@ writeData(wb = mywb, x = rep.int(c(1:48), times = 7), sheet = EAC, startRow = 3,
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("='Consumption Checks'!AN", index))
+  temp <- c(temp, paste0("='Consumption Checks'!BN", index))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 2)
 
@@ -9726,17 +9731,17 @@ for (COL in c(13,21,29,45)) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF(SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!$C", index+1, ",REPORT!$P:$P,\"QEX\")=0,'Consumption Checks'!O", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\")*VLOOKUP($B", index+1, ",Summary!$U$2:$Y$9,4,0),'Consumption Checks'!AA", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\"))"))
+  temp <- c(temp, paste0("=IF(SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!$C", index+1, ",REPORT!$P:$P,\"QEX\")=0,'Consumption Checks'!O", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\")*VLOOKUP($B", index+1, ",'Week Summary'!$U$2:$Y$9,4,0),'Consumption Checks'!AA", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\"))"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 6)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF(SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!$C", index+1, ",REPORT!$P:$P,\"QEX\")=0,'Consumption Checks'!P", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\")*VLOOKUP($B", index+1, ",Summary!$U$2:$Y$9,4,0),'Consumption Checks'!AB", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\"))"))
+  temp <- c(temp, paste0("=IF(SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!$C", index+1, ",REPORT!$P:$P,\"QEX\")=0,'Consumption Checks'!P", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\")*VLOOKUP($B", index+1, ",'Week Summary'!$U$2:$Y$9,4,0),'Consumption Checks'!AB", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\"))"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 7)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF(SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!$C", index+1, ",REPORT!$P:$P,\"QEX\")=0,'Consumption Checks'!Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\")*VLOOKUP($B", index+1, ",Summary!$U$2:$Y$9,4,0),'Consumption Checks'!AC", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\"))"))
+  temp <- c(temp, paste0("=IF(SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'En & Imp Split'!$C", index+1, ",REPORT!$P:$P,\"QEX\")=0,'Consumption Checks'!Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\")*VLOOKUP($B", index+1, ",'Week Summary'!$U$2:$Y$9,4,0),'Consumption Checks'!AC", index, "*SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index+1, ",REPORT!$J:$J,\"PIMB\"))"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 8)
 
 temp <- c()
@@ -9789,19 +9794,22 @@ for (index in 4:339) {
   temp <- c(temp, paste0("=V", index, "+W", index, "-X", index))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 25)
 
+
+
+
 temp <- c()
 for (index in 4:339) {
-  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$S$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!O", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
+  temp <- c(temp, paste0("=IFERROR(SUMIF('Consumption Checks'!$C:$C,'En & Imp Split'!$C", index, ",'Consumption Checks'!BT:BT)*MIN(0,('SHADOW SETTLED'!$P$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C," index, ",REPORT!$J:$J,\"PIMB\"))),0)"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 30)
 
 temp <- c()
 for (index in 4:339) {
-  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$S$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!P", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
+  temp <- c(temp, paste0("=IFERROR(SUMIF('Consumption Checks'!$C:$C,'En & Imp Split'!$C", index, ",'Consumption Checks'!BU:BU)*MIN(0,('SHADOW SETTLED'!$P$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))),0)"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 31)
 
 temp <- c()
 for (index in 4:339) {
-  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$S$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!Q", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
+  temp <- c(temp, paste0("=IFERROR(SUMIF('Consumption Checks'!$C:$C,'En & Imp Split'!$C", index, ",'Consumption Checks'!BV:BV)*MIN(0,('SHADOW SETTLED'!$P$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))),0)"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 32)
 
 temp <- c()
@@ -9904,13 +9912,13 @@ writeData(mywb, RS, x = dates[7], startRow = 1, startCol = 8)
 addStyle(wb = mywb, sheet = RS, style = bb, rows = 1, cols = 2:8)
 
 # TOP TABLE (PURCHASES)
-writeData(mywb, RS, x = "D+4 Purchases", startRow = 3, startCol = 2)
-writeData(mywb, RS, x = "M+4 Purchases", startRow = 6, startCol = 2)
+writeData(mywb, RS, x = "M+4 Purchases", startRow = 3, startCol = 2)
+writeData(mywb, RS, x = "M+13 Purchases", startRow = 6, startCol = 2)
 writeData(mywb, RS, x = "Purchases Resettlement", startRow = 9, startCol = 2)
 
 # BOTTOM TABLE (SALES)
-writeData(mywb, RS, x = "D+4 Sales", startRow = 13, startCol = 2)
-writeData(mywb, RS, x = "M+4 Sales", startRow = 16, startCol = 2)
+writeData(mywb, RS, x = "M+4 Sales", startRow = 13, startCol = 2)
+writeData(mywb, RS, x = "M+13 Sales", startRow = 16, startCol = 2)
 writeData(mywb, RS, x = "Sales Resettlement", startRow = 19, startCol = 2)
 
 # TOTAL TABLE
@@ -9931,86 +9939,87 @@ for (ROW in c(10,20,24)) {
 
 
 # Formulas for Tables
-temp2 <- paste0(PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx")
+temp2 <- paste0(PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx")
 
-if (temp2 %in% list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement")) == FALSE) {
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!L18")
+if (temp2 %in% list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement")) == FALSE) {
+  
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!L18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 2)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!M18")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!M18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 3)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!N18")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!N18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 4)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!O18")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!O18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 5)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!P18")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!P18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 6)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!L19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!L19")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 15, startCol = 2)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!M19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!M19")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 15, startCol = 3)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!N19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!N19")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 15, startCol = 4)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!O19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!O19")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 15, startCol = 5)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!P19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!P19")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 15, startCol = 6)
   
 } else {
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!L18")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!L18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 2)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!M18")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!M18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 3)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!N18")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!N18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 4)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!O18")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!O18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 5)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!P18")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!P18")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 5, startCol = 6)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!L19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!L19")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 15, startCol = 2)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!M19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!M19")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 15, startCol = 3)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!N19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!N19")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 15, startCol = 4)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!O19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!O19")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 15, startCol = 5)
   
   temp <- c()
-  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+4.xlsx]Summary'!P19")
+  temp <- paste0("='X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+13 Resettlement/[", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement M+13.xlsx]Summary'!P19")
   writeFormula(wb = mywb, sheet = RS, x = temp, startRow = 15, startCol = 6)
   
 }
