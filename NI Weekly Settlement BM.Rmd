@@ -5,7 +5,7 @@
 
 rm(list = ls())
 
-requiredpackages <- c("berryFunctions", "dplyr", "lubridate", "ggsci", "pivottabler", "purrr", "readxl", "openxlsx", "tidyr", "XML", "xml2")
+requiredpackages <- c("berryFunctions", "dplyr", "lubridate", "ggsci", "insight", "pivottabler", "purrr", "readxl", "openxlsx", "tidyr", "XML", "xml2")
 
 install_load <- function(packages) {
   for (p in packages) {
@@ -410,8 +410,6 @@ data.frame.na <- function (..., row.names = NULL, check.rows = FALSE, check.name
 ################################################################################################################################################################################################
 ############################################################################## D+4 settlement section ##########################################################################################
 ################################################################################################################################################################################################
-
-
 
 # DEFINE VARIABLES
 
@@ -10339,5 +10337,7 @@ for (index in c(1:7)) {
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
+
+print_colour("Script has finished executing.", colour = "green")
 
 ```
