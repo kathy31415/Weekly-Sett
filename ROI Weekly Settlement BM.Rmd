@@ -888,12 +888,12 @@ suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
 
 
 
-
 # CREATE EXCEL FILE - SETUP
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
 inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
+inputfiles <- inputfiles[grepl(receiveddate3, x = inputfiles)]
 
 # Get file path for output file
 outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - ", initials, ".xlsx")
@@ -2024,7 +2024,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 18)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("SUM(O", index, ":R", index, ")"))
+  temp <- c(temp, paste0("=P", index, "+O", index, "-Q", index, "+R", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 19)
 
@@ -2086,16 +2086,10 @@ for (index in 3:338) {
 }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 31)
 
 temp <- c()
-for (index in 3:6) {
+for (index in 3:338) {
   temp <- c(temp, paste0("=A",index))
 };
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 35)
-
-temp <- c()
-for (index in 5:336) {
-  temp <- c(temp, paste0("=A",index))
-};
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 7, startCol = 35)
 
 temp <- c()
 for (index in 3:338) {
@@ -3538,7 +3532,7 @@ headings2 <- c("Settlement Date", "Trading Date",
                rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
                rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
                rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
-               rep.int("", times = 6), "HH", "NHH", "PPA Gen", "Total",
+               rep.int("", times = 4), "HH", "NHH", "PPA Gen", "Total",
                rep.int("", times = 4), "Total")
 
 for (COL in 1:length(headings2)) {
@@ -4314,6 +4308,7 @@ suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
 inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
+inputfiles <- inputfiles[grepl(receiveddate3, x = inputfiles)]
 
 # Get file path for output file
 outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - ", initials, ".xlsx")
@@ -5637,80 +5632,122 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 39)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# temp <- c()
+# for (index in 3:50) {
+#   temp <- c(temp, paste0("=AL", index))
+# }
+# writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 41)
+# 
+# writeFormula(mywb, CC, x = "=AI51+1", startRow = 51, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI52+1", startRow = 52, startCol = 41)
+# 
+# temp <- c()
+# for (index in 53:95) {
+#   temp <- c(temp, paste0("=AI", index))
+# }
+# writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 41)
+# 
+# writeFormula(mywb, CC, x = "=AL96", startRow = 96, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL97", startRow = 97, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL98", startRow = 98, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI99+1", startRow = 99, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI100+1", startRow = 100, startCol = 41)
+# 
+# temp <- c()
+# for (index in 101:143) {
+#   temp <- c(temp, paste0("=AI", index))
+# }
+# writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 101, startCol = 41)
+# 
+# writeFormula(mywb, CC, x = "=AL144", startRow = 144, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL145", startRow = 145, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL146", startRow = 146, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI147+1", startRow = 147, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI148+1", startRow = 148, startCol = 41)
+# 
+# temp <- c()
+# for (index in 149:191) {
+#   temp <- c(temp, paste0("=AI", index))
+# }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 149, startCol = 41)
+# 
+# writeFormula(mywb, CC, x = "=AL192", startRow = 192, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL193", startRow = 193, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL194", startRow = 194, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI195+1", startRow = 195, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI196+1", startRow = 196, startCol = 41)
+# 
+# temp <- c()
+# for (index in 197:239) {
+#   temp <- c(temp, paste0("=AI", index))
+# }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 197, startCol = 41)
+# 
+# writeFormula(mywb, CC, x = "=AL240", startRow = 240, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL241", startRow = 241, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL242", startRow = 242, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI243+1", startRow = 243, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI244+1", startRow = 244, startCol = 41)
+# 
+# temp <- c()
+# for (index in 245:287) {
+#   temp <- c(temp, paste0("=AI", index))
+# }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 245, startCol = 41)
+# 
+# writeFormula(mywb, CC, x = "=AL288", startRow = 288, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL289", startRow = 289, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL290", startRow = 290, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI291+1", startRow = 291, startCol = 41)
+# writeFormula(mywb, CC, x = "=AI292+1", startRow = 292, startCol = 41)
+# 
+# temp <- c()
+# for (index in 293:335) {
+#   temp <- c(temp, paste0("=AI", index))
+# }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 293, startCol = 41)
+# 
+# writeFormula(mywb, CC, x = "=AL336", startRow = 336, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL337", startRow = 337, startCol = 41)
+# writeFormula(mywb, CC, x = "=AL338", startRow = 338, startCol = 41)
+
+
+
+
+
+
+writeFormula(wb = mywb, sheet = CC, x = "=AL3", startRow = 3, startCol = 41)
+
 temp <- c()
-for (index in 3:46) {
-  temp <- c(temp, paste0("=AL", index))
+for (index in 3:94) {
+  temp <- c(temp, paste0("=AO", index))
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 41)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 4, startCol = 41)
 
-writeFormula(mywb, CC, x = "=AI51+1", startRow = 51, startCol = 41)
-writeFormula(mywb, CC, x = "=AI52+1", startRow = 52, startCol = 41)
+writeFormula(wb = mywb, sheet = CC, x = "=AO3+1", startRow = 48, startCol = 41)
+
 
 temp <- c()
-for (index in 53:95) {
-  temp <- c(temp, paste0("=AI", index))
+for (index in 48:290) {
+  temp <- c(temp, paste0("=AO", index, "+1"))
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 41)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 96, startCol = 41)
 
-writeFormula(mywb, CC, x = "=AL96", startRow = 96, startCol = 41)
-writeFormula(mywb, CC, x = "=AL97", startRow = 97, startCol = 41)
-writeFormula(mywb, CC, x = "=AL98", startRow = 98, startCol = 41)
-writeFormula(mywb, CC, x = "=AI99+1", startRow = 99, startCol = 41)
-writeFormula(mywb, CC, x = "=AI100+1", startRow = 100, startCol = 41)
 
-temp <- c()
-for (index in 101:143) {
-  temp <- c(temp, paste0("=AI", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 101, startCol = 41)
 
-writeFormula(mywb, CC, x = "=AL144", startRow = 144, startCol = 41)
-writeFormula(mywb, CC, x = "=AL145", startRow = 145, startCol = 41)
-writeFormula(mywb, CC, x = "=AL146", startRow = 146, startCol = 41)
-writeFormula(mywb, CC, x = "=AI147+1", startRow = 147, startCol = 41)
-writeFormula(mywb, CC, x = "=AI148+1", startRow = 148, startCol = 41)
 
-temp <- c()
-for (index in 149:191) {
-  temp <- c(temp, paste0("=AI", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 149, startCol = 41)
 
-writeFormula(mywb, CC, x = "=AL192", startRow = 192, startCol = 41)
-writeFormula(mywb, CC, x = "=AL193", startRow = 193, startCol = 41)
-writeFormula(mywb, CC, x = "=AL194", startRow = 194, startCol = 41)
-writeFormula(mywb, CC, x = "=AI195+1", startRow = 195, startCol = 41)
-writeFormula(mywb, CC, x = "=AI196+1", startRow = 196, startCol = 41)
 
-temp <- c()
-for (index in 197:239) {
-  temp <- c(temp, paste0("=AI", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 197, startCol = 41)
 
-writeFormula(mywb, CC, x = "=AL240", startRow = 240, startCol = 41)
-writeFormula(mywb, CC, x = "=AL241", startRow = 241, startCol = 41)
-writeFormula(mywb, CC, x = "=AL242", startRow = 242, startCol = 41)
-writeFormula(mywb, CC, x = "=AI243+1", startRow = 243, startCol = 41)
-writeFormula(mywb, CC, x = "=AI244+1", startRow = 244, startCol = 41)
 
-temp <- c()
-for (index in 245:287) {
-  temp <- c(temp, paste0("=AI", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 245, startCol = 41)
 
-writeFormula(mywb, CC, x = "=AL288", startRow = 288, startCol = 41)
-writeFormula(mywb, CC, x = "=AL289", startRow = 289, startCol = 41)
-writeFormula(mywb, CC, x = "=AL290", startRow = 290, startCol = 41)
-writeFormula(mywb, CC, x = "=AI291+1", startRow = 291, startCol = 41)
-writeFormula(mywb, CC, x = "=AI292+1", startRow = 292, startCol = 41)
 
-temp <- c()
-for (index in 293:335) {
-  temp <- c(temp, paste0("=AI", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 293, startCol = 41)
 
-writeFormula(mywb, CC, x = "=AL336", startRow = 336, startCol = 41)
-writeFormula(mywb, CC, x = "=AL337", startRow = 337, startCol = 41)
-writeFormula(mywb, CC, x = "=AL338", startRow = 338, startCol = 41)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7467,6 +7504,7 @@ suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
 inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
+inputfiles <- inputfiles[grepl(receiveddate3, x = inputfiles)]
 
 # Get file path for output file
 outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - ", initials, ".xlsx")
