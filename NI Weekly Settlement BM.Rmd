@@ -7193,6 +7193,7 @@ suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
+inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
 inputfiles <- inputfiles[grepl(pattern = paste0("Document|Week ", as.character(weekno)), x = inputfiles)]
 
 if (length(inputfiles) > 3 | length(inputfiles) < 3) {
