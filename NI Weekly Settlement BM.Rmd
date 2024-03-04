@@ -10342,3 +10342,314 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 print_colour("Script has finished executing.", colour = "green")
 
 ```
+
+
+```{r Capacity}
+
+# determine if capacity settlement is needed 
+
+Caps <- subset(documentdata, subset = market2 == "CRM")$run_type %>% unique()
+
+if (length(Caps != 0)) {
+  InitCaps <- "INIT" %in% Caps
+  M4Caps <- "M4" %in% Caps
+  M13Caps <- "M13" %in% Caps
+}
+
+
+# M4 Capacity settlement
+settype <- "M+4"
+settype2 <- "M+4 Resettlement" 
+settype3 <- "M4"
+settype4 <- "M4"
+mm <- 30
+
+
+startdate <- documentdata %>% filter(market2 == "CRM" & run_type == "M4")
+startdate <- startdate$bp_start_date %>% unique() %>% as.Date(format = "%Y-%m-%d")
+enddate <- documentdata %>% filter(market2 == "CRM" & run_type == "M4")
+enddate <- enddate$bp_end_date %>% unique() %>% as.Date(format = "%Y-%m-%d")
+
+month <- format(startdate, "%b")
+year <- format(startdate, "%Y") %>% substr(start = 3, stop = 4)
+
+capacityfilepath <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/")
+capacityfiles <- list.files(capacityfilepath, full.names = TRUE)
+capacityfiles <- capacityfiles[grepl(pattern = month, x = capacityfiles)]
+capacityfiles <- capacityfiles[grepl(pattern = year, x = capacityfiles)]
+
+```
+
+```{r read in xml statements for Capacity}
+
+### STATEMENT
+
+# read in xmlfiles
+for (f in 1:days_in_month(startdate)) {
+
+  xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SS_", PTunit, "_\\d{8}_\\d{8}_CRM_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+  
+  if (length(xmlfile) != days_in_month(startdate)) {
+    stop("Ensure the correct number of statements exist in SEMODownloads folder before rerunning. Stopping...")
+  }
+  
+  xmlfile <- xmlfile[[f]]
+  doc <- read_xml(xmlfile)
+  
+  # Get statement document number
+  v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
+  statementnumber <- sapply(v5, function(x) ifelse("statement_id" %in% names(x), x["statement_id"], NA))[1]
+  rm(v5)
+  
+  nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
+  df1 <- bind_rows(lapply(nodes1, xml_attrs)) # this will need repeats the lenght of the statement
+  df1$settlement_date <- as.Date(df1$settlement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1 <- df1[rep(1:nrow(df1), each = 98), ] # each report has report_header repeated 98 times
+
+  
+  
+  # ================================================================= report summary section ================================================================= #
+  # Extract attributes from REPORT_SUMMARY nodes
+  nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_SUMMARY/*")
+  df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
+  
+  
+  # Access the Sales and Purchases sections in REPORT_SUMMARY
+  details <- xml_find_all(doc, "//REPORT_SUMMARY/*")
+  
+  # Create an empty data frame to store the results
+  result_df <- data.frame(
+    name = character(),
+    date = character(),
+    amount = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Loop through each DETAIL section
+  for (detail in details) {
+    # Access the market attribute of DETAIL
+    name <- xml_attr(detail, "name", default = NA)
+    date <- xml_attr(detail, "date", default = NA)
+    amount <- xml_attr(detail, "amount", default = NA)
+    
+    # Append the results to the data frame
+    result_df <- rbind.na(result_df, c(name, date, amount))
+  }
+  
+  # Set column names
+  colnames(result_df) <- c("name", "date", "amount")
+    
+  result_df$date <- as.Date(result_df$date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  # =============================================================== report summary section end =============================================================== #
+  
+  
+  # ================================================================= report detail section ================================================================= #
+  # Extract attributes from REPORT_DETAIL nodes
+  nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+  df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
+  
+  # Access the RESOURCE sections in REPORT_DETAIL
+  resources <- xml_find_all(doc, "//REPORT_DETAIL/RESOURCE")
+  
+  # Create an empty data frame to store the results
+  result_df2 <- data.frame(
+    Resource = character(),
+    Charge = character(),
+    datetime = character(),
+    amount = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Loop through each RESOURCE section
+  for (i in seq_along(resources)) {
+    # Get the 'name' attribute of the RESOURCE
+    resource_name <- xml_attr(resources[[i]], "name", default = NA)
+    
+    # Access the CHARGE sections within RESOURCE
+    charges <- xml_find_all(resources[[i]], ".//CHARGE")
+    
+    # Loop through each CHARGE section
+    for (j in seq_along(charges)) {
+      # Get the 'name' attribute of the CHARGE
+      charge_name <- xml_attr(charges[[j]], "name", default = NA)
+      
+      # Access the VALUE elements within CHARGE
+      values <- xml_find_all(charges[[j]], ".//VALUE")
+      
+      # Loop through each VALUE element
+      for (k in seq_along(values)) {
+        # Access the attributes of VALUE
+        datetime <- xml_attr(values[[k]], "datetime", default = NA)
+        amount <- xml_attr(values[[k]], "amount", default = NA)
+        
+        # Append the results to the data frame
+        result_df2 <- rbind.na(result_df2, c(resource_name, charge_name, datetime, amount))
+      }
+    }
+  }
+  
+  # Set column names
+  colnames(result_df2) <- c("name2", "name3", "datetime", "amount4")
+  # =============================================================== report detail section end =============================================================== #
+  
+  # Offset start of result_df2 by nrows in result_df
+  result_df2 <- insertRows(df = result_df2, r = 1:nrow(result_df))
+  
+  df <- cbind.na(df1, result_df, result_df2)
+  
+  writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads//", f, " STATEMENT ", statementnumber, " for ", PTunit, ".xlsx"))
+    
+}
+
+# combine statements
+inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*STATEMENT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
+outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All ", month, " ", year, " ", settype, " Capacity Statements for ", PTunit, ".xlsx")
+
+dfstatements <- data.frame()
+
+for (file in inputfiles) {
+  df <- read_excel(file)
+  dfstatements <- rbind(dfstatements, df)
+  file.remove(file)
+}
+
+writexl::write_xlsx(dfstatements, outputfile)
+
+
+```
+
+```{r reports}
+
+### REPORT
+
+for (f in 1:days_in_month(startdate)) {
+  
+  # read in XML file
+  xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SR_", PTunit, "_\\d{8}_\\d{8}_CRM_", settype3, "_\\d{8}T\\d{6}\\.XML$")))
+
+  if (length(xmlfile) != days_in_month(startdate)) {
+    stop("Ensure the correct number of reports exist in SEMODownloads folder before rerunning. Stopping...")
+  }
+  
+  xmlfile <- xmlfile[[f]]
+  doc <- read_xml(xmlfile)
+  
+  # Get report id number
+  v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
+  reportnumber <- sapply(v5, function(x) ifelse("statement_id" %in% names(x), x["statement_id"], NA))[1]
+  rm(v5)
+
+# Read in report header node
+  nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
+  df1 <- bind_rows(lapply(nodes1, xml_attrs))
+  df1$settlement_date <- as.Date(df1$settlement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  df1 <- df1[rep(1:nrow(df1), each = 50), ] # each report has report_header repeated 50 times
+  
+  # ========================================================== report detail - determinant section ========================================================== #
+  # Extract attributes from REPORT_DETAIL nodes
+  nodes_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+  df_report_detail <- bind_rows(lapply(nodes_detail, xml_attrs))
+  
+  # Access the DETERMINANT sections in REPORT_DETAIL
+  determinants <- xml_find_all(doc, "//REPORT_DETAIL/DETERMINANT")
+  
+  # Create an empty data frame to store the results
+  result_df <- data.frame(
+    name = character(),
+    unit = character(),
+    datetime = character(),
+    amount = character(),
+    date = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Loop through each DETERMINANT section
+  for (i in seq_along(determinants)) {
+    # Get the 'name' attribute of the RESOURCE
+    name <- xml_attr(determinants[[i]], "name")
+    unit <- xml_attr(determinants[[i]], "unit")
+    
+    # Access the VALUE sections within DETERMINANT
+    values <- xml_find_all(determinants[[i]], ".//VALUE")
+    
+    # Loop through each VALUE section
+    for (j in seq_along(values)) {
+      # Get the attributes of the VALUE
+      datetime <- xml_attr(values[[j]], "datetime")
+      date <- xml_attr(values[[j]], 'date', default = NA)
+      amount <- xml_attr(values[[j]], "amount")
+      
+      # Append the results to the data frame
+      result_df <- rbind.na(result_df, c(name, unit, datetime, amount, date))
+    }
+  }
+  
+  result_df$date <- as.Date(result_df$date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
+  
+  # ======================================================== report detail - determinant section end ======================================================== #
+  
+  
+  
+  
+  # =========================================================== report detail - resource section =========================================================== #
+# Extract attributes from REPORT_DETAIL nodes
+  nodes_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
+  df_report_detail <- bind_rows(lapply(nodes_detail, xml_attrs))
+  
+  # Access the RESOURCE sections in REPORT_DETAIL
+  resources <- xml_find_all(doc, "//REPORT_DETAIL/RESOURCE")
+  
+  # Create an empty data frame to store the results
+  result_df2 <- data.frame(
+    name2 = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Loop through each RESOURCE section
+  for (i in seq_along(resources)) {
+    # Get the 'name' attribute of the RESOURCE
+    name2 <- xml_attr(resources[[i]], "name")
+  }
+  
+  name2 <- rep.int(name2, 50) %>% as.data.frame() # each report has name2 repeated 50 times
+  colnames(name2) <- "name2"
+  
+  
+  
+  # ========================================================= report detail - resource section end ========================================================= #
+  
+  
+  # Create one df
+  df <- cbind.na(df1, result_df, name2)
+  
+  # Create excel file
+  writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads//", f, " REPORT ", reportnumber, " for ", PTunit, ".xlsx"))
+}
+
+# combine reports
+inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*REPORT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
+outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All ", month, " ", year, " ", settype," Capacity Reports for ", PTunit, ".xlsx")
+
+dfreports <- data.frame()
+
+for (file in inputfiles) {
+  df <- read_excel(file)
+  dfreports <- rbind(dfreports, df)
+  file.remove(file)
+}
+
+writexl::write_xlsx(dfreports, outputfile)
+
+# housekeeping
+rm(list = ls(pattern = "amount|[Cc]harge|datetime|[Dd]elivery|detail|determ|name|node||p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
+suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
+
+
+```
+
