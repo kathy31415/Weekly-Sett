@@ -10356,9 +10356,7 @@ capacityfiles <- list.files(capacityfilepath, full.names = TRUE)
 capacityfiles <- capacityfiles[grepl(pattern = month, x = capacityfiles)]
 capacityfiles <- capacityfiles[grepl(pattern = year, x = capacityfiles)]
 
-```
 
-```{r statements for Capacity}
 
 ### STATEMENT
 
@@ -10497,9 +10495,6 @@ for (file in inputfiles) {
 writexl::write_xlsx(dfstatements, outputfile)
 
 
-```
-
-```{r reports}
 
 ### REPORT
 
@@ -10626,9 +10621,7 @@ writexl::write_xlsx(dfreports, outputfile)
 
 
 
-```
-
-```{r create excel file - setup}
+# create excel file - setup
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
@@ -10689,9 +10682,83 @@ addWorksheet(wb = mywb, sheetName = "En & Imp Split")
 addWorksheet(wb = mywb, sheetName = "SHADOW SETTLED")
 addWorksheet(wb = mywb, sheetName = "Ex-Ante Consumption")
 
-
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
+```
+
+```{r RS}
+RS <- "Resettlement Summary"
+```
+
+
+```{r CRM Summary}
+
+CRMS <- "CRM Summary"
+
+writeData(mywb, CRMS, c(settype3, "CCC", "CSOCDIFFP", "", "Total"), xy = c(1,1))
+
+writeData(mywb, CRMS, "CCC", xy = c(1,8))
+writeData(mywb, CRMS, "CSOCDIFFP", xy = c(9,8))
+
+headings <- c("HH", "NHH", "PPA Gen", "Total", "Statement Total", "Check")
+for (i in 1:length(headings)) {
+  writeData(mywb, CRMS, headings[i], startRow = 9, startCol = i+1)
+  writeData(mywb, CRMS, headings[i], startRow = 9, startCol = i+9)
+}
+
+
+dates <- seq(from = as.Date(startdate, format = "%Y-%m-%d"), by = 1, length.out = days_in_month(startdate))
+dates <- format(dates, "%d/%m/%Y")
+
+writeData(mywb, CRMS, dates, startRow = 10, startCol = 1)
+writeData(mywb, CRMS, dates, startRow = 10, startCol = 9)
+writeData(mywb, CRMS, dates, startRow = 11, startCol = 24)
+
+for (i in 1:length(dates)) {
+  writeData(mywb, CRMS, dates[i], startRow = 1, startCol = i+1)
+}
+
+writeData(mywb, CRMS, rep("E", times = (length(dates)+1)), startRow = 11, startCol = 25)
+writeData(mywb, CRMS, rep("P", times = (length(dates)+1)), startRow = 11, startCol = 26)
+
+headings <- c("TRADE DATE", "FROM CURRENCY", 	"TO CURRENCY", "EXCHANGE RATE",	"CMS TIME STAMP")
+
+for (i in 1:length(headings)) {
+  writeData(mywb, CRMS, headings[i], startRow = 10, startCol = i+24)
+}
+
+myletters <- c(LETTERS, sapply(LETTERS, function(x) paste0("A", x)))
+
+for (i in 1:length(dates)) {
+  writeFormula(mywb, CRMS, paste0("=SUMIFS(INDEX('CRM DOCUMENT'!$A:$BX,0,MATCH(\"charge_amount\",'CRM DOCUMENT'!$A$1:$BR$1,0)),INDEX('CRM DOCUMENT'!$A:$BX,0,MATCH(\"statement_date\",'CRM DOCUMENT'!$A$1:$BR$1,0)),'CRM Summary'!$", myletters[i+1], "1,INDEX('CRM DOCUMENT'!$A:$BX,0,MATCH(\"charge_name14\",'CRM DOCUMENT'!$A$1:$BR$1,0)),'CRM Summary'!$A2)"), startRow = 2, startCol = i+1)
+  
+  writeFormula(mywb, CRMS, paste0("=SUMIFS(INDEX('CRM DOCUMENT'!$A:$BX,0,MATCH(\"charge_amount\",'CRM DOCUMENT'!$A$1:$BR$1,0)),INDEX('CRM DOCUMENT'!$A:$BX,0,MATCH(\"statement_date\",'CRM DOCUMENT'!$A$1:$BR$1,0)),'CRM Summary'!", myletters[i+1], "1,INDEX('CRM DOCUMENT'!$A:$BX,0,MATCH(\"charge_name14\",'CRM DOCUMENT'!$A$1:$BR$1,0)),'CRM Summary'!$A3)"), startRow = 3, startCol = i+1)
+  
+  writeFormula(mywb, CRMS, paste0("=", myletters[i+1], "2+", myletters[i+1], "3"), startRow = 5, startCol = i+1)
+  writeFormula(mywb, CRMS, paste0("=SUMIF('En & Imp Split'!$A:$A,'CRM Summary'!$A", i+9, ",'En & Imp Split'!F:F)"), startRow = i+9, startCol = 2)
+  writeFormula(mywb, CRMS, paste0("=SUMIF('En & Imp Split'!$A:$A,'CRM Summary'!$A", i+9, ",'En & Imp Split'!G:G)"), startRow = i+9, startCol = 3)
+  writeFormula(mywb, CRMS, paste0("=-SUMIF('En & Imp Split'!$A:$A,'CRM Summary'!$A", i+9, ",'En & Imp Split'!H:H)"), startRow = i+9, startCol = 4)
+  writeFormula(mywb, CRMS, paste0("=SUMIF('En & Imp Split'!$A:$A,'CRM Summary'!$A", i+9, ",'En & Imp Split'!I:I)"), startRow = i+9, startCol = 5)
+  writeFormula(mywb, CRMS, paste0("=SUMIFS('CRM STATEMENT'!L:L,'CRM STATEMENT'!K:K,'CRM Summary'!A", i+9, ",'CRM STATEMENT'!J:J,\"CCC\")"), startRow = i+9, startCol = 6)
+  writeFormula(mywb, CRMS, paste0("=E", i+9, "+F", i+9), startRow = i+9, startCol = 7)
+  
+  writeFormula(mywb, CRMS, paste0("=SUMIF('En & Imp Split'!$A:$A,'CRM Summary'!$A", i+9, ",'En & Imp Split'!N:N)"), startRow = i+9, startCol = 10)
+  writeFormula(mywb, CRMS, paste0("=SUMIF('En & Imp Split'!$A:$A,'CRM Summary'!$A", i+9, ",'En & Imp Split'!O:O)"), startRow = i+9, startCol = 11)
+  writeFormula(mywb, CRMS, paste0("=SUMIF('En & Imp Split'!$A:$A,'CRM Summary'!$A", i+9, ",'En & Imp Split'!P:P)"), startRow = i+9, startCol = 12)
+  writeFormula(mywb, CRMS, paste0("=SUMIF('En & Imp Split'!$A:$A,'CRM Summary'!$A", i+9, ",'En & Imp Split'!Q:Q)"), startRow = i+9, startCol = 13)
+  writeFormula(mywb, CRMS, paste0("=SUMIFS('CRM STATEMENT'!P:P,'CRM STATEMENT'!D:D,'CRM Summary'!A", i+9, ",'CRM STATEMENT'!N:N,\"CSOCDIFFP\")"), startRow = i+9, startCol = 14)
+  writeFormula(mywb, CRMS, paste0("=M", i+9, "+N", i+9), startRow = i+9, startCol = 15)
+
+}
+
+# formatting
+for (ROW in c(2:5, 10:42)) {
+  for (COL in c(2:32)) {
+    addStyle(mywb, CRMS, style = sterling, rows = ROW, cols = COL)
+  }
+}
+
+saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 ```
 
