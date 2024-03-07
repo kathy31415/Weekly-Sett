@@ -872,9 +872,6 @@ for (file in inputfiles) {
 
 writexl::write_xlsx(dfreports, outputfile)
 
-# housekeeping
-rm(list = ls(pattern = "accept|amount|band|[Cc]harge|datetime|delivery|detail|determ|ECC|[Ee]xchange|max|name|node|order|output|p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
-suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
 
 
 
@@ -914,10 +911,6 @@ writeData(mywb, sheet = "DOCUMENT", x = documentdata)
 
 delete <- inputfiles[grepl(x = inputfiles, pattern = "All*")]
 
-for (file in delete) {
- file.remove(file)
-}
-rm(delete)
 
 addWorksheet(wb = mywb, sheetName = "EX-Ante Report", tabColour = '#F4B084')
 addWorksheet(wb = mywb, sheetName = "Consumption Checks")
@@ -3943,12 +3936,6 @@ for (file in inputfiles) {
 
 writexl::write_xlsx(dfreports, outputfile)
 
-# housekeeping
-rm(list = ls(pattern = "accept|amount|band|[Cc]harge|datetime|delivery|detail|determ|ECC|[Ee]xchange|max|name|node|order|output|p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
-suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
-
-
-
 
 
 
@@ -3999,10 +3986,7 @@ writeData(mywb, sheet = "DOCUMENT", x = documentdata)
 
 delete <- inputfiles[grepl(x = inputfiles, pattern = "All*")]
 
-for (file in delete) {
-  file.remove(file)
-}
-rm(delete)
+
 
 addWorksheet(wb = mywb, sheetName = "EX-Ante Report", tabColour = '#F4B084')
 addWorksheet(wb = mywb, sheetName = "CHECKS", tabColour = '#9BC2E6')
@@ -7179,10 +7163,6 @@ for (file in inputfiles) {
 
 writexl::write_xlsx(dfreports, outputfile)
 
-# housekeeping
-rm(list = ls(pattern = "accept|amount|band|[Cc]harge|datetime|delivery|detail|determ|ECC|[Ee]xchange|max|name|node|order|output|p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
-suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
-
 
 
 
@@ -7239,10 +7219,6 @@ writeData(mywb, sheet = "DOCUMENT", x = documentdata)
 
 delete <- inputfiles[grepl(x = inputfiles, pattern = "All*")]
 
-for (file in delete) {
- file.remove(file)
-}
-rm(delete)
 
 addWorksheet(wb = mywb, sheetName = "EX-Ante Report", tabColour = '#F4B084')
 addWorksheet(wb = mywb, sheetName = "CHECKS", tabColour = '#9BC2E6')
@@ -10363,6 +10339,8 @@ settype2 <- "M+4 Resettlement"
 settype3 <- "M4"
 settype4 <- "M4"
 mm <- 30
+prevsettype <- "D+4"
+prevsettype2 <- "D+4 INITIAL"
 
 
 startdate <- documentdata %>% filter(market2 == "CRM" & run_type == "M4")
@@ -10380,7 +10358,7 @@ capacityfiles <- capacityfiles[grepl(pattern = year, x = capacityfiles)]
 
 ```
 
-```{r read in xml statements for Capacity}
+```{r statements for Capacity}
 
 ### STATEMENT
 
@@ -10646,9 +10624,73 @@ for (file in inputfiles) {
 
 writexl::write_xlsx(dfreports, outputfile)
 
-# housekeeping
-rm(list = ls(pattern = "amount|[Cc]harge|datetime|[Dd]elivery|detail|determ|name|node||p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
-suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
+
+
+```
+
+```{r create excel file - setup}
+
+inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
+inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
+inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
+inputfiles <- inputfiles[grepl(pattern = "Document|Capacity", x = inputfiles)]
+
+# Get previous week's file
+prevfile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", prevsettype2, "/"), full.names = TRUE)
+prevfile <- prevfile[grepl(x = prevfile, pattern = paste(month, year))]
+
+# ensure file isnt currently open
+if (length(prevfile[grepl(x = prevfile, pattern = "$")]) > 1) {
+  prevfile <- prevfile[-grepl(x = prevfile, pattern = "$")]
+}
+
+month.as.number <- lubridate::month(startdate)
+
+# Get file path for output file
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/20", year, " ", month.as.number, ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx")
+if (file.exists(outputfile)) {
+  file.remove(outputfile)
+}
+
+options(openxlsx.dateFormat = "dd/mm/yyyy")
+
+
+# create excel file
+mywb <- createWorkbook()
+
+# add sheets
+addWorksheet(wb = mywb, sheetName = "Resettlement Summary", tabColour = '#F4B084')
+
+addWorksheet(wb = mywb, sheetName = "CRM Summary", tabColour = '#F4B084')
+
+temp <- read_excel(path = inputfiles[2], sheet = 1)
+addWorksheet(mywb, sheet = "CRM STATEMENT", tabColour = '#F4B084')
+writeData(mywb, sheet = "CRM STATEMENT", x = temp)
+
+temp <- read_excel(path = inputfiles[1], sheet = 1)
+addWorksheet(mywb, sheet = "CRM REPORT", tabColour = '#F4B084')
+writeData(mywb, sheet = "CRM REPORT", x = temp)
+
+temp <- read_excel(path = inputfiles[3], sheet = 1)
+addWorksheet(mywb, sheet = "CRM DOCUMENT", tabColour = '#F4B084')
+writeData(mywb, sheet = "CRM DOCUMENT", x = documentdata)
+
+delete <- inputfiles[grepl(x = inputfiles, pattern = "All*")]
+for (file in delete) {
+  file.remove(file)
+}
+rm(delete)
+
+addWorksheet(wb = mywb, sheetName = "MO Summary", tabColour = '#F4B084')
+addWorksheet(wb = mywb, sheetName = "MO STATEMENT", tabColour = '#F4B084')
+addWorksheet(wb = mywb, sheetName = "MO DOCUMENT")
+addWorksheet(wb = mywb, sheetName = "Consumption Checks")
+addWorksheet(wb = mywb, sheetName = "En & Imp Split")
+addWorksheet(wb = mywb, sheetName = "SHADOW SETTLED")
+addWorksheet(wb = mywb, sheetName = "Ex-Ante Consumption")
+
+
+saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 
 ```
