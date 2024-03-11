@@ -10901,19 +10901,19 @@ writeFormula(mywb, EIS, temp, startRow = 4, startCol = 5)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!P", index, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", index+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*VLOOKUP($A", index+2, ",'CRM Summary'!$X$11:$AA$41,4,0)", ROW))
+  temp <- c(temp, paste0("=('Consumption Checks'!P", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*VLOOKUP($A", ROW+2, ",'CRM Summary'!$X$11:$AA$41,4,0)"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 6)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!Q", index, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", index+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*VLOOKUP($A", index+2, ",'CRM Summary'!$X$11:$AA$41,4,0)", ROW))
+  temp <- c(temp, paste0("=('Consumption Checks'!Q", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*VLOOKUP($A", ROW+2, ",'CRM Summary'!$X$11:$AA$41,4,0)"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 7)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!R", index, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", index+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*VLOOKUP($A", index+2, ",'CRM Summary'!$X$11:$AA$41,4,0)", ROW))
+  temp <- c(temp, paste0("=('Consumption Checks'!R", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*VLOOKUP($A", ROW+2, ",'CRM Summary'!$X$11:$AA$41,4,0)"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 8)
 
@@ -11025,7 +11025,7 @@ headings <- c("Settlement Date", "Time P.E", "Date/Time", rep(x = "", times = 2)
 
 temp <- c()
 for (i in 1:length(headings)) {
-  writeData(mywb, CC, temp[i], startRow = 1, startCol = 1)
+  writeData(mywb, CC, headings[i], startRow = 1, startCol = i)
 }
 
 writeFormula(mywb, CC, "='SHADOW SETTLED'!A4", startRow = 2, startCol = 1)
@@ -11049,7 +11049,7 @@ for (ROW in 4:51) {
 writeFormula(mywb, CC, temp, startRow = 2, startCol = 2)
 
 temp <- c()
-for (ROW in 50:1393) {
+for (ROW in 2:1345) {
   temp <- c(temp, paste0("=B", ROW))
 }
 writeFormula(mywb, CC, temp, startRow = 50, startCol = 2)
@@ -11061,20 +11061,31 @@ for (ROW in 2:1393) {
 writeFormula(mywb, CC, temp, startRow = 2, startCol = 3)
 
 temp <- c()
-for (ROW in 2:1393) {
-  temp <- c(temp, paste0("='En & Imp Split'!D", ROW+2))
+temp <- seq(from = 3, by = 1, length.out = 48)
+writeData(mywb, CC, temp, startRow = 2, startCol = 4)
+
+temp <- c()
+for (ROW in 2:1345) {
+  temp <- c(temp, paste0("=D", ROW))
 }
-writeFormula(mywb, CC, temp, startRow = 2, startCol = 4)
+writeFormula(mywb, CC, temp, startRow = 50, startCol = 4)
+
+time_vector <- c("00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30",
+                 "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+                 "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30",
+                 "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30")
+
+writeData(mywb, CC, time_vector, startRow = 2, startCol = 5)
+
+temp <- c()
+for (ROW in 2:1345) {
+  temp <- c(temp, paste0("=E", ROW))
+}
+writeFormula(mywb, CC, temp, startRow = 50, startCol = 5)
 
 temp <- c()
 for (ROW in 2:1393) {
-  temp <- c(temp, paste0("='En & Imp Split'!E", ROW+2))
-}
-writeFormula(mywb, CC, temp, startRow = 2, startCol = 5)
-
-temp <- c()
-for (ROW in 2:1393) {
-  temp <- c(temp, paste0("=VLOOKUP(A", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM596'!$A:$AY,D2,0)"))
+  temp <- c(temp, paste0("=VLOOKUP(A", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/NIE MM/D+4 Initial 20 MM/[NI MASTER MM Messages D+4.xlsx]MM596'!$A:$AY,D", ROW, ",0)"))
 }
 writeFormula(mywb, CC, temp, startRow = 2, startCol = 6)
 
@@ -11125,38 +11136,49 @@ for (ROW in 2:1393) {
   temp <- c(temp, paste0("=F", ROW))
 }
 writeFormula(mywb, CC, temp, startRow = 2, startCol = 19)
-
+ 
 temp <- c()
 for (ROW in 2:1393) {
-  temp <- c(temp, paste0("=Q", ROW, "+P", ROW, ")-R", ROW, "+S", ROW))
+  temp <- c(temp, paste0("=Q", ROW, "+P", ROW, "-R", ROW, "+S", ROW))
 }
 writeFormula(mywb, CC, temp, startRow = 2, startCol = 20)
-
-
-
 
 totals <- seq(from = 49, by = 48, length.out = days_in_month(startdate))
 
 temp <- c()
 for (total in totals) {
-  temp <- c(temp, paste0("=IFERROR(MIN(MAX(SUMIFS(REPORT!M:M,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!J:J,\"CBSOC\"),0),-SUMIFS(REPORT!S:S,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!P:P,\"CSHORTDIFFPTRACK\"))*(SUMIFS(REPORT!S:S,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!P:P,\"CSHORTDIFFPTRACK\")/SUMIFS(REPORT!S:S,REPORT!D:D,'SHADOW SETTLED'!D", index, ",REPORT!P:P,\"CSHORTDIFFPTRACK\")),0)"))
+  temp <- c(temp, paste0("=IFERROR(MIN(MAX(SUMIFS('CRM REPORT'!M:M,'CRM REPORT'!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!J:J,\"CBSOC\"),0),-SUMIFS('CRM REPORT'!S:S,'CRM REPORT'!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!P:P,\"CSHORTDIFFPTRACK\"))*(SUMIFS('CRM REPORT'!S:S,'CRM REPORT'!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!P:P,\"CSHORTDIFFPTRACK\")/SUMIFS('CRM REPORT'!S:S,REPORT!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!P:P,\"CSHORTDIFFPTRACK\")),0)"))
 }
 for (i in 1:7) {
-  writeFormula(wb = mywb, sheet = SS, x = temp[i], startRow = totals[i], startCol = 11)
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 22)
+}
+
+temp <- c()
+for (total in totals) {
+  temp <- c(temp, paste0("=IF(AND(SUM(U", total-47, ":U", total, ")<0.01,SUM(U", total-47, ":U", total, ")>-0.01),\"TRUE\",\"FALSE\")"))
+}
+for (i in 1:7) {
+  writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 23)
 }
 
 
-
+saveWorkbook(mywb, outputfile, TRUE)
 
 
 ```
 
 
 
-
+```{r}
+stop("end of D4")
+```
 
 
 ```{r M4 Capacity}
+
+
+
+
 # M4 Capacity settlement
 settype <- "M+4"
 settype2 <- "M+4 Resettlement" 
