@@ -10658,8 +10658,6 @@ options(openxlsx.dateFormat = "dd/mm/yyyy")
 mywb <- createWorkbook()
 
 # add sheets
-addWorksheet(wb = mywb, sheetName = "Resettlement Summary", tabColour = '#F4B084')
-
 addWorksheet(wb = mywb, sheetName = "CRM Summary", tabColour = '#F4B084')
 
 temp <- read_excel(path = inputfiles[2], sheet = 1)
@@ -10680,9 +10678,7 @@ addWorksheet(wb = mywb, sheetName = "MO DOCUMENT")
 addWorksheet(wb = mywb, sheetName = "Consumption Checks")
 addWorksheet(wb = mywb, sheetName = "En & Imp Split")
 addWorksheet(wb = mywb, sheetName = "SHADOW SETTLED")
-addWorksheet(wb = mywb, sheetName = "Ex-Ante Consumption")
 
-saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 ```
 
@@ -10723,11 +10719,7 @@ for (i in 1:length(headings)) {
   writeData(mywb, CRMS, headings[i], startRow = 10, startCol = i+23)
 }
 
-temp <- c()
-for (i in 1:32) {
-  temp <- c(temp, paste0("=VLOOKUP(X", i+10, ",'", accdrive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"))
-}
-writeFormula(mywb, CRMS, temp, startRow = 11, startCol = 27)
+writeData(mywb, CRMS, rep(0.8745, time = 32), startRow = 11, startCol = 27)
 
 myletters <- c(LETTERS, sapply(LETTERS, function(x) paste0("A", x)))
 
@@ -10836,14 +10828,14 @@ addStyle(mywb, CRMS, createStyle(textDecoration = c('bold', 'italic'), border = 
 addStyle(mywb, CRMS, createStyle(textDecoration = 'bold', border = 'Right', borderStyle = 'thick'), rows = c(12:14), cols = 22)
 addStyle(mywb, CRMS, createStyle(textDecoration = 'bold', border = 'Right', borderStyle = 'thick', fontColour = 'red', fgFill = 'yellow'), rows = 10, cols = 22)
 
-addStyle(mywb, CRMS, createStyle(numFmt = "[$€]#,##0.00"), rows = 11, cols = c(18:21))
-addStyle(mywb, CRMS, createStyle(numFmt = "[$€]#,##0.00"), rows = 12, cols = c(18:21))
+addStyle(mywb, CRMS, createStyle(numFmt = "[$£]#,##0.00"), rows = 11, cols = c(18:21))
+addStyle(mywb, CRMS, createStyle(numFmt = "[$£]#,##0.00"), rows = 12, cols = c(18:21))
 
 addStyle(mywb, CRMS, createStyle(border = 'BottomLeft', borderStyle = 'thick'), rows = 15, cols = 17)
-addStyle(mywb, CRMS, createStyle(numFmt = "[$€]#,##0.00", border = 'Bottom', borderStyle = 'thick'), rows = 15, cols = 18:21)
+addStyle(mywb, CRMS, createStyle(numFmt = "[$£]#,##0.00", border = 'Bottom', borderStyle = 'thick'), rows = 15, cols = 18:21)
 addStyle(mywb, CRMS, createStyle(border = 'BottomRight', borderStyle = 'thick'), rows = 15, cols = 22)
 
-addStyle(mywb, CRMS, createStyle(numFmt = "[$€]#,##0.00", border = 'Right', borderStyle = 'thick'), rows = c(11,8), cols = 22)
+addStyle(mywb, CRMS, createStyle(numFmt = "[$£]#,##0.00", border = 'Right', borderStyle = 'thick'), rows = c(11,8), cols = 22)
 
 
 # CONDITIONAL FORMATTING
@@ -10860,7 +10852,6 @@ for (ROW in 10:40) {
   openxlsx::conditionalFormatting(mywb, CRMS, cols = 15, rows = ROW, rule = paste0("=AND(O", ROW, "<=1, O", ROW, ">=-1)"), type = 'expression', style = posStyle)
 }
 
-saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 ```
 
@@ -10968,8 +10959,16 @@ for (i in 1:length(headings)) {
   writeData(mywb, SS, headings[i], startRow = 1, startCol = i+15)
 }
 
-saveWorkbook(mywb, outputfile, TRUE)
-
+# FORMATTING
+for (ROW in 1:1492) {
+  for (COL in c(1,4)) {
+    addStyle(mywb, SS, DATE, rows = ROW, cols = COL)
+  }
+  addStyle(mywb, CRMS, TIME, rows = ROW, cols = 2)
+  for (COL in 5:7) {
+    addStyle(mywb, SS, sterling, rows = ROW, cols = 2)
+  }
+}
 
 ```
 
@@ -11008,19 +11007,19 @@ writeFormula(mywb, EIS, temp, startRow = 4, startCol = 5)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!P", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*VLOOKUP($A", ROW+2, ",'CRM Summary'!$X$11:$AA$41,4,0)"))
+  temp <- c(temp, paste0("=('Consumption Checks'!P", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*0.8745"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 6)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!Q", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*VLOOKUP($A", ROW+2, ",'CRM Summary'!$X$11:$AA$41,4,0)"))
+  temp <- c(temp, paste0("=('Consumption Checks'!Q", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*0.8745"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 7)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!R", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*VLOOKUP($A", ROW+2, ",'CRM Summary'!$X$11:$AA$41,4,0)"))
+  temp <- c(temp, paste0("=('Consumption Checks'!R", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*0.8745"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 8)
 
@@ -11050,25 +11049,25 @@ writeFormula(mywb, EIS, temp, startRow = 4, startCol = 13)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=F", index+2, "*'SHADOW SETTLED'!$U$3"))
+  temp <- c(temp, paste0("=F", ROW+2, "*'SHADOW SETTLED'!$U$3"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 14)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=G", index+2, "*'SHADOW SETTLED'!$U$3"))
+  temp <- c(temp, paste0("=G", ROW+2, "*'SHADOW SETTLED'!$U$3"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 15)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=H", index+2, "*'SHADOW SETTLED'!$U$3"))
+  temp <- c(temp, paste0("=H", ROW+2, "*'SHADOW SETTLED'!$U$3"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 16)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=N", index+2, "+O", index+2, "-P", index+2))
+  temp <- c(temp, paste0("=N", ROW+2, "+O", ROW+2, "-P", ROW+2))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 17)
 
@@ -11122,6 +11121,16 @@ writeData(mywb, EIS, "CVMO", xy = c(19,1))
 headings <- c("Settlement Date", "Trading Date", rep(x = "", times = 3), "HH", "NHH", "PPA Gen", "Total", rep(x = "", times = 4), "HH", "NHH", "PPA Gen", "Total", rep(x = "", times = 4), "HH", "NHH", "PPA Gen", "Total")
 for (i in 1:length(headings1)) {
   writeData(mywb, EIS, headings[i], startCol = i, startRow = 3)
+}
+
+# FORMATTING
+for (ROW in 4:1492) {
+  for (COL in c(1,2,11,19)) {
+    addStyle(mywb, EIS, DATE, rows = ROW, cols = COL)
+  }
+  for (COL in c(6:9, 14:17, 22:25)) {
+    addStyle(mywb, EIS, sterling, rows = ROW, cols = COL)
+  }
 }
 
 ```
@@ -11269,15 +11278,21 @@ for (i in 1:7) {
   writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 23)
 }
 
+saveWorkbook(mywb, outputfile, TRUE)
+
+# FORMATTING
+for (ROW in c(2:1393)) {
+  for (COL in c(1, 12)) {
+    addStyle(mywb, CC, DATE, rows = ROW, cols = COL)
+  }
+  addStyle(mywb, CC, TIME, rows = ROW, cols = 2)
+  for (COL in c(6,16:20)) {
+    addStyle(mywb, CC, NUMBER, rows = ROW, cols = COL)
+  }
+}
 
 saveWorkbook(mywb, outputfile, TRUE)
 
-
-```
-
-
-
-```{r}
 stop("end of D4")
 ```
 
