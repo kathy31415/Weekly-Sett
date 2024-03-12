@@ -466,7 +466,16 @@ NUMBER <- createStyle(numFmt = "NUMBER")
 TIME <- createStyle(numFmt = "hh:mm:ss")
 PERCENT <- createStyle(numFmt = "0%")
 redStyle <- createStyle(fontColour = 'red', textDecoration = 'bold')
-
+bluestyle <- createStyle(fgFill = "#B4C6E7")
+redStyle <- createStyle(fontColour = 'red', textDecoration = 'bold')
+thicktop <- createStyle(border = 'Top', borderStyle = 'thick')
+thickbottom <- createStyle(border = 'Bottom', borderStyle = 'thick')
+thickleft <- createStyle(border = 'Left', borderStyle = 'thick')
+thickright <- createStyle(border = 'Right', borderStyle = 'thick')
+thicktl <- createStyle(border = 'TopLeft', borderStyle = 'thick')
+thicktr <- createStyle(border = 'TopRight', borderStyle = 'thick')
+thickbl <- createStyle(border = 'BottomLeft', borderStyle = 'thick')
+thickbr <- createStyle(border = 'BottomRight', borderStyle = 'thick')
 
 # DOCUMENT
 
@@ -1906,27 +1915,27 @@ for (row in c(44:50)) {
 }
 
 for (row in c(2:10, 13)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 10, rows = row, rule = paste0("=AND(J", row, "<=-15, J", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 10, rows = row, rule = paste0("=OR(J", row, "<=-15, J", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 10, rows = row, rule = paste0("=AND(J", row, "<15, J", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(18:24, 26)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 8, rows = row, rule = paste0("=AND(H", row, "<=-15, H", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 8, rows = row, rule = paste0("=OR(H", row, "<=-15, H", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 8, rows = row, rule = paste0("=AND(H", row, "<15, H", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(31:37,39,43:49, 51, 55:61, 63, 67:73, 75, 79:85, 87)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 7, rows = row, rule = paste0("=AND(G", row, "<=-15, G", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 7, rows = row, rule = paste0("=OR(G", row, "<=-15, G", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 7, rows = row, rule = paste0("=AND(G", row, "<15, G", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(91:97,99)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 4, rows = row, rule = paste0("=AND(D", row, "<=-15, D", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 4, rows = row, rule = paste0("=OR(D", row, "<=-15, D", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 4, rows = row, rule = paste0("=AND(D", row, "<15, D", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(18:20)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 18, rows = row, rule = paste0("=AND(R", row, "<=-15, R", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 18, rows = row, rule = paste0("=OR(R", row, "<=-15, R", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 18, rows = row, rule = paste0("=AND(R", row, "<15, R", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
@@ -4915,27 +4924,27 @@ for (row in c(44:50)) {
 }
 
 for (row in c(2:10, 13)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 10, rows = row, rule = paste0("=AND(J", row, "<=-15, J", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 10, rows = row, rule = paste0("=OR(J", row, "<=-15, J", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 10, rows = row, rule = paste0("=AND(J", row, "<15, J", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(18:24, 26)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 8, rows = row, rule = paste0("=AND(H", row, "<=-15, H", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 8, rows = row, rule = paste0("=OR(H", row, "<=-15, H", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 8, rows = row, rule = paste0("=AND(H", row, "<15, H", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(31:37,39,43:49, 51, 55:61, 63, 67:73, 75, 79:85, 87)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 7, rows = row, rule = paste0("=AND(G", row, "<=-15, G", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 7, rows = row, rule = paste0("=OR(G", row, "<=-15, G", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 7, rows = row, rule = paste0("=AND(G", row, "<15, G", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(91:97,99)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 4, rows = row, rule = paste0("=AND(D", row, "<=-15, D", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 4, rows = row, rule = paste0("=OR(D", row, "<=-15, D", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 4, rows = row, rule = paste0("=AND(D", row, "<15, D", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(18:20)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 18, rows = row, rule = paste0("=AND(R", row, "<=-15, R", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 18, rows = row, rule = paste0("=OR(R", row, "<=-15, R", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 18, rows = row, rule = paste0("=AND(R", row, "<15, R", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
@@ -8143,27 +8152,27 @@ for (row in c(44:50)) {
 }
 
 for (row in c(2:10, 13)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 10, rows = row, rule = paste0("=AND(J", row, "<=-15, J", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 10, rows = row, rule = paste0("=OR(J", row, "<=-15, J", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 10, rows = row, rule = paste0("=AND(J", row, "<15, J", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(18:24, 26)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 8, rows = row, rule = paste0("=AND(H", row, "<=-15, H", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 8, rows = row, rule = paste0("=OR(H", row, "<=-15, H", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 8, rows = row, rule = paste0("=AND(H", row, "<15, H", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(31:37,39,43:49, 51, 55:61, 63, 67:73, 75, 79:85, 87)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 7, rows = row, rule = paste0("=AND(G", row, "<=-15, G", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 7, rows = row, rule = paste0("=OR(G", row, "<=-15, G", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 7, rows = row, rule = paste0("=AND(G", row, "<15, G", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(91:97,99)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 4, rows = row, rule = paste0("=AND(D", row, "<=-15, D", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 4, rows = row, rule = paste0("=OR(D", row, "<=-15, D", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 4, rows = row, rule = paste0("=AND(D", row, "<15, D", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
 for (row in c(18:20)) {
-  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 18, rows = row, rule = paste0("=AND(R", row, "<=-15, R", row, ">=15)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(wb = mywb, sheet = "Summary", cols = 18, rows = row, rule = paste0("=OR(R", row, "<=-15, R", row, ">=15)"), type = 'expression', style = negStyle)
   openxlsx::conditionalFormatting(mywb, "Summary", cols = 18, rows = row, rule = paste0("=AND(R", row, "<15, R", row, ">-15)"), type = 'expression', style = posStyle)
 }
 
@@ -10711,8 +10720,14 @@ writeData(mywb, CRMS, rep("P", times = (length(dates)+1)), startRow = 11, startC
 headings <- c("TRADE DATE", "FROM CURRENCY", 	"TO CURRENCY", "EXCHANGE RATE",	"CMS TIME STAMP")
 
 for (i in 1:length(headings)) {
-  writeData(mywb, CRMS, headings[i], startRow = 10, startCol = i+24)
+  writeData(mywb, CRMS, headings[i], startRow = 10, startCol = i+23)
 }
+
+temp <- c()
+for (i in 1:32) {
+  temp <- c(temp, paste0("=VLOOKUP(X", i+10, ",'", accdrive, ":/I-SEM/[I-SEM Day Ahead vs Imbal Prices.xlsx]DailyFX'!$A:$B,2,0)"))
+}
+writeFormula(mywb, CRMS, temp, startRow = 11, startCol = 27)
 
 myletters <- c(LETTERS, sapply(LETTERS, function(x) paste0("A", x)))
 
@@ -10739,17 +10754,110 @@ for (i in 1:length(dates)) {
 }
 
 
+# MAIN TABLE
+writeData(mywb, CRMS, "INITIAL CAPACITY", xy = c(17,7))
+writeData(mywb, CRMS, paste0(month, "-", year), xy = c(19,7))
+writeData(mywb, CRMS, "Totals", xy = c(18,8))
+
+headings <- c("HH", "NHH", "PPA Gen", "Total", "Check against Doc Total")
+for (i in 1:length(headings)) {
+  writeData(mywb, CRMS, headings[i], startRow = 9, startCol = i+17)
+}
+
+headings <- c("NOMINAL CODE", "200005.2", "200005.3", "200005.4")
+for (i in 1:length(headings)) {
+  writeData(mywb, CRMS, headings[i], startRow = 10, startCol = i+16)
+}
+
+writeData(mywb, CRMS, c("Purchases", "Sales"), xy = c(17, 11))
+
+writeFormula(mywb, CRMS, "=B42", startRow = 11, startCol = 18)
+writeFormula(mywb, CRMS, "=C42", startRow = 11, startCol = 19)
+writeFormula(mywb, CRMS, "=D42", startRow = 11, startCol = 20)
+writeFormula(mywb, CRMS, "=SUM(R11:T11)", startRow = 11, startCol = 21)
+writeFormula(mywb, CRMS, "U11+U12+S15", startRow = 11, startCol = 22)
+
+writeFormula(mywb, CRMS, "=J42", startRow = 12, startCol = 18)
+writeFormula(mywb, CRMS, "=K42", startRow = 12, startCol = 19)
+writeFormula(mywb, CRMS, "=-L42", startRow = 12, startCol = 20)
+writeFormula(mywb, CRMS, "=SUM(R12:T12)", startRow = 12, startCol = 21)
+
+writeData(mywb, CRMS, "CRM", xy = c(18,15))
+writeData(mywb, CRMS, "Invoice Total", xy = c(19,14))
+writeData(mywb, CRMS, "Check", xy = c(20,14))
+writeFormula(mywb, CRMS, "=SUM(B5:AF5)",  startRow = 15, startCol = 19)
+writeFormula(mywb, CRMS, "U11+U12+S15",  startRow = 15, startCol = 20)
+
+writeFormula(mywb, CRMS, "=SUM(B10:B40)",  startRow = 42, startCol = 2)
+writeFormula(mywb, CRMS, "=SUM(C10:C40)",  startRow = 42, startCol = 3)
+writeFormula(mywb, CRMS, "=SUM(D10:D40)",  startRow = 42, startCol = 4)
+writeFormula(mywb, CRMS, "=SUM(E10:E40)",  startRow = 42, startCol = 5)
+writeFormula(mywb, CRMS, "=SUM(F10:F40)",  startRow = 42, startCol = 6)
+writeFormula(mywb, CRMS, "=E42+F42",  startRow = 42, startCol = 7)
+
+writeFormula(mywb, CRMS, "=SUM(J10:J40)",  startRow = 42, startCol = 10)
+writeFormula(mywb, CRMS, "=SUM(K10:K40)",  startRow = 42, startCol = 11)
+writeFormula(mywb, CRMS, "=SUM(L10:L40)",  startRow = 42, startCol = 12)
+writeFormula(mywb, CRMS, "=SUM(M10:M40)",  startRow = 42, startCol = 13)
+writeFormula(mywb, CRMS, "=SUM(N10:N40)",  startRow = 42, startCol = 14)
+writeFormula(mywb, CRMS, "=M42+N42",  startRow = 42, startCol = 15)
 
 
-# add main table here
-
-
-
-# formatting
+# FORMATTING
 for (ROW in c(2:5, 10:42)) {
   for (COL in c(2:32)) {
     addStyle(mywb, CRMS, style = sterling, rows = ROW, cols = COL)
   }
+}
+
+for (ROW in 10:40) {
+  for (COL in c(1,9,24)) {
+    addStyle(mywb, CRMS, style = DATE, rows = ROW, cols = COL)
+  }
+}
+
+for (COL in c(2:7, 10:15, 18:22)) {
+  addStyle(mywb, CRMS, bluestyle, rows = 9, cols = COL)
+}
+
+for (COL in 17:22) {
+  addStyle(mywb, CRMS, yellowStyle, rows = 10, cols = COL)
+}
+
+addStyle(mywb, CRMS, createStyle(fontSize = 14, textDecoration = 'bold', border = 'TopLeft', borderStyle = 'thick'), rows = 7, cols = 17)
+addStyle(mywb, CRMS, createStyle(fontSize = 14, textDecoration = 'bold', border = 'Top', borderStyle = 'thick'), rows = 7, cols = 18:21)
+addStyle(mywb, CRMS, createStyle(textDecoration = 'bold', border = 'TopRight', borderStyle = 'thick'), rows = 7, cols = 22)
+
+addStyle(mywb, CRMS, createStyle(textDecoration = 'bold', border = 'Left', borderStyle = 'thick'), rows = c(8,9,13,14), cols = 17)
+addStyle(mywb, CRMS, createStyle(textDecoration = 'bold', border = 'Left', borderStyle = 'thick', fontColour = 'red', fgFill = 'yellow'), rows = 10, cols = 17)
+addStyle(mywb, CRMS, createStyle(textDecoration = 'bold', fontColour = 'red', fgFill = 'yellow'), rows = 10, cols = 18:21)
+addStyle(mywb, CRMS, createStyle(textDecoration = c('bold', 'italic'), border = "Left", borderStyle = "thick"), rows = c(11,12), cols = 17)
+
+addStyle(mywb, CRMS, createStyle(textDecoration = 'bold', border = 'Right', borderStyle = 'thick'), rows = c(12:14), cols = 22)
+addStyle(mywb, CRMS, createStyle(textDecoration = 'bold', border = 'Right', borderStyle = 'thick', fontColour = 'red', fgFill = 'yellow'), rows = 10, cols = 22)
+
+addStyle(mywb, CRMS, createStyle(numFmt = "[$€]#,##0.00"), rows = 11, cols = c(18:21))
+addStyle(mywb, CRMS, createStyle(numFmt = "[$€]#,##0.00"), rows = 12, cols = c(18:21))
+
+addStyle(mywb, CRMS, createStyle(border = 'BottomLeft', borderStyle = 'thick'), rows = 15, cols = 17)
+addStyle(mywb, CRMS, createStyle(numFmt = "[$€]#,##0.00", border = 'Bottom', borderStyle = 'thick'), rows = 15, cols = 18:21)
+addStyle(mywb, CRMS, createStyle(border = 'BottomRight', borderStyle = 'thick'), rows = 15, cols = 22)
+
+addStyle(mywb, CRMS, createStyle(numFmt = "[$€]#,##0.00", border = 'Right', borderStyle = 'thick'), rows = c(11,8), cols = 22)
+
+
+# CONDITIONAL FORMATTING
+openxlsx::conditionalFormatting(mywb, CRMS, cols = 22, rows = 11, rule = paste0("=OR(V11<-1, V11>1)"), type = 'expression', style = negStyle)
+openxlsx::conditionalFormatting(mywb, CRMS, cols = 22, rows = 11, rule = paste0("=AND(V11>=-1, V11<=1)"), type = 'expression', style = posStyle)
+
+openxlsx::conditionalFormatting(mywb, CRMS, cols = 20, rows = 15, rule = paste0("=OR(T15<-1, T15>1)"), type = 'expression', style = negStyle)
+openxlsx::conditionalFormatting(mywb, CRMS, cols = 20, rows = 15, rule = paste0("=AND(T15>=-1, T15<=1)"), type = 'expression', style = posStyle)
+
+for (ROW in 10:40) {
+  openxlsx::conditionalFormatting(mywb, CRMS, cols = 7, rows = ROW, rule = paste0("=OR(G", ROW, "<-1, G", ROW, ">1)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(mywb, CRMS, cols = 7, rows = ROW, rule = paste0("=AND(G", ROW, "<=1, G", ROW, ">=-1)"), type = 'expression', style = posStyle)
+  openxlsx::conditionalFormatting(mywb, CRMS, cols = 15, rows = ROW, rule = paste0("=OR(O", ROW, "<-1, O", ROW, ">1)"), type = 'expression', style = negStyle)
+  openxlsx::conditionalFormatting(mywb, CRMS, cols = 15, rows = ROW, rule = paste0("=AND(O", ROW, "<=1, O", ROW, ">=-1)"), type = 'expression', style = posStyle)
 }
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
@@ -10866,7 +10974,6 @@ saveWorkbook(mywb, outputfile, TRUE)
 ```
 
 
-
 ```{r D+4 EIS}
 
 temp <- c()
@@ -10919,7 +11026,7 @@ writeFormula(mywb, EIS, temp, startRow = 4, startCol = 8)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=F", index+2, "+G", index+2, "-H", index+2))
+  temp <- c(temp, paste0("=F", ROW+2, "+G", ROW+2, "-H", ROW+2))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 9)
 
@@ -11018,6 +11125,7 @@ for (i in 1:length(headings1)) {
 }
 
 ```
+
 
 ```{r D+4 CC}
 
@@ -11147,7 +11255,7 @@ totals <- seq(from = 49, by = 48, length.out = days_in_month(startdate))
 
 temp <- c()
 for (total in totals) {
-  temp <- c(temp, paste0("=IFERROR(MIN(MAX(SUMIFS('CRM REPORT'!M:M,'CRM REPORT'!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!J:J,\"CBSOC\"),0),-SUMIFS('CRM REPORT'!S:S,'CRM REPORT'!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!P:P,\"CSHORTDIFFPTRACK\"))*(SUMIFS('CRM REPORT'!S:S,'CRM REPORT'!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!P:P,\"CSHORTDIFFPTRACK\")/SUMIFS('CRM REPORT'!S:S,REPORT!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!P:P,\"CSHORTDIFFPTRACK\")),0)"))
+  temp <- c(temp, paste0("=IFERROR(MIN(MAX(SUMIFS('CRM REPORT'!M:M,'CRM REPORT'!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!J:J,\"CBSOC\"),0),-SUMIFS('CRM REPORT'!S:S,'CRM REPORT'!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!P:P,\"CSHORTDIFFPTRACK\"))*(SUMIFS('CRM REPORT'!S:S,'CRM REPORT'!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!P:P,\"CSHORTDIFFPTRACK\")/SUMIFS('CRM REPORT'!S:S,'CRM REPORT'!D:D,'SHADOW SETTLED'!D", index, ",'CRM REPORT'!P:P,\"CSHORTDIFFPTRACK\")),0)"))
 }
 for (i in 1:7) {
   writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 22)
