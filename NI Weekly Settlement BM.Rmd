@@ -7184,7 +7184,7 @@ writexl::write_xlsx(dfreports, outputfile)
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
 inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
-inputfiles <- inputfiles[grepl(pattern = paste0("Document|Week ", as.character(weekno)), x = inputfiles)]
+inputfiles <- inputfiles[grepl(pattern = paste0(documentidnumber, "|Week ", as.character(weekno)), x = inputfiles)]
 
 if (length(inputfiles) > 3 | length(inputfiles) < 3) {
   stop("Check files in your downloads folder is as expected before rerunning script. Stopping...")
@@ -10323,15 +10323,18 @@ for (index in c(1:7)) {
   addStyle(wb = mywb, sheet = BU, style = createStyle(textDecoration = 'bold', numFmt = '[$£]#,##0.00', border = "TopBottom"), rows = 50, cols = index+8)
 }
 
+ivbu <- mywb
+
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
-print_colour("Script has finished executing.", colour = "green")
+# print_colour("Script has finished executing.", colour = "green")
 
 ```
 
 
 
-```{r Capacity}
+```{r determine if Capacity sett needed}
+
 # determine if capacity settlement is needed 
 
 Caps <- subset(documentdata, subset = market2 == "CRM")$run_type %>% unique()
@@ -10346,16 +10349,19 @@ if (length(Caps != 0)) {
 
 ```{r D+4 Capacity script}
 
-if (InitCaps == TRUE) {
-  print("Building D+4 Capacity file")
-  source("NI Capacity D+4 Script.R")
-  print_colour("D+4 Capacity file created.", colour = "green"))
-}
+# uncomment when script complete
+
+# if (InitCaps == TRUE) {
+#   print("Building D+4 Capacity file")
+#   source("NI Capacity D+4 Script.R")
+#   print_colour("D+4 Capacity file created.", colour = "green"))
+# }
 
 ```
 
 
-```{r}
+```{r D+4 Capacity code}
+
 settype <- "D+4"
 settype2 <- "D+4 Initial" 
 settype3 <- "INIT"
@@ -11300,14 +11306,36 @@ saveWorkbook(mywb, outputfile, TRUE)
 
 # add to Invoice Backup
 
-backupfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/Invoice Backups/", documentidnumber, " BACKUP - ", initials, ".xlsx")
+ivbuoutput <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/Invoice Backups/", documentidnumber, " BACKUP - ", initials, ".xlsx")
 
-writeFormula(backupfile, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/Capacity/D+4 Initial/", outputfile, "CRM Summary'!R12"), startRow = 23, startCol = 9)
+# sales
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!R12"), startRow = 23, startCol = 9)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!S12"), startRow = 23, startCol = 10)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!T12"), startRow = 23, startCol = 11)
+
+# purchases
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!R11"), startRow = 45, startCol = 9)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!S11"), startRow = 45, startCol = 10)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!T11"), startRow = 45, startCol = 11)
+
+
+saveWorkbook(ivbu, ivbuoutput, TRUE)
 
 ```
 
 
 
+```{r M+4 Capacity script}
+
+# uncomment when script complete
+
+# if (M4Caps == TRUE) {
+#   print("Building M+4 Capacity file")
+#   source("NI Capacity M+4 Script.R")
+#   print_colour("M+4 Capacity file created.", colour = "green"))
+# }
+
+```
 
 
 
