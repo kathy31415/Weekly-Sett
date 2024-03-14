@@ -10,13 +10,16 @@ enddate <- documentdata %>% filter(market2 == "CRM" & run_type == "INIT")
 enddate <- enddate$bp_end_date %>% unique() %>% as.Date(format = "%Y-%m-%d")
 
 month <- format(startdate, "%b")
+month2 <- format(startdate, "%B") %>%  substr(start = 1, stop = 4)
 year <- format(startdate, "%Y") %>% substr(start = 3, stop = 4)
 
 capacityfilepath <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/")
 capacityfiles <- list.files(capacityfilepath, full.names = TRUE)
 capacityfiles <- capacityfiles[grepl(pattern = month, x = capacityfiles)]
 capacityfiles <- capacityfiles[grepl(pattern = year, x = capacityfiles)]
-capacityfiles <- capacityfiles[-grepl(pattern = initials, x = capacityfiles)]
+if (length(capacityfiles) != 1) {
+  capacityfiles <- capacityfiles[-grepl(pattern = initials, x = capacityfiles)]
+}
 
 ### STATEMENT
 
@@ -560,19 +563,19 @@ writeFormula(mywb, SS, temp, startRow = 50, startCol = 4)
 
 temp <- c()
 for (i in 2:1492) {
-  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", i, ")*$U$2*SUMIFS('CRM REPORT'!M:M,'CRM REPORT'!L:L,'SHADOW SETTLED'!C", i, ",'CRM REPORT'!J:J,\"FQMCC\")"))
+  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", i, ")*$P$2*SUMIFS('CRM REPORT'!M:M,'CRM REPORT'!L:L,'SHADOW SETTLED'!C", i, ",'CRM REPORT'!J:J,\"FQMCC\")"))
 }
 writeFormula(mywb, SS, temp, startRow = 2, startCol = 5)
 
 temp <- c()
 for (i in 2:1492) {
-  temp <- c(temp, paste0("=E", i, "*$U$3"))
+  temp <- c(temp, paste0("=E", i, "*$P$3"))
 }
 writeFormula(mywb, SS, temp, startRow = 2, startCol = 6)
 
 temp <- c()
 for (i in 2:1492) {
-  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", i, ")*$U$4"))
+  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", i, ")*$P$4"))
 }
 writeFormula(mywb, SS, temp, startRow = 2, startCol = 7)
 
@@ -589,35 +592,33 @@ year <- substr(year, 3, 4)
 
 writeData(mywb, SS, c("PCCSUP", "FSOCDIFFP", "PVMO"), startRow = 2, startCol = 15)
 
-temp <- c(11.52, 1.76, 0.029); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 16, x = temp)                                     # these may need amended
-temp <- c(21.85, -0.67, 0.029); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 17, x = temp)                                    # review figures with NI
-temp <- c(9.19, 0.70, 0); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 18, x = temp)
-temp <- c(8.96, 1.61, 0.015); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 19, x = temp)
-temp <- c(10.4, 1.25, 0.015); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 20, x = temp)
-temp <- c(5.22, 1.3, 0.015); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 21, x = temp)
+pt1 <- c(16.17, -0.013, 0.599)  #23/24
+pt2 <- c(11.97, 0, 0.422)       #22/23
+pt3 <- c(14.01, 0, 0.547)       #21/22
+pt4 <- c(14.91, 0.001, 0.466)   #20/21
+pt5 <- c(13.29, 0.011, 0.388)   #19/20
+pt6 <- c(12.45, 0.023, 0.498)   #18/19
 
-if (month.as.number < 10) {
+passthrus <- list(pt1, pt2, pt3, pt4, pt5, pt6)
+
+calendar.tab <- c()
+if (as.numeric(month.as.number) < 10) {
+  calendar.tab <- paste0("20", as.numeric(year)-1, ".", as.numeric(year))
+} else {
+  calendar.tab <- paste0("20", as.numeric(year), ".", as.numeric(year)+1)
+}
+
+if (as.numeric(month.as.number) < 10) {
   headings <- c(then, then2, then3, then4, then5)
+  passthrus <- passthrus[2:length(passthrus)]
 } else {
   headings <- c(when, then, then2, then3, then4, then5)
 }
 
 for (i in 1:length(headings)) {
   writeData(mywb, SS, headings[i], startRow = 1, startCol = i+15)
+  writeData(mywb, SS, passthrus[i], startRow = 2, startCol = i+15)
 }
-
-# # FORMATTING
-# for (ROW in 1:1492) {
-#   for (COL in c(1,4)) {
-#     addStyle(mywb, SS, DATE, rows = ROW, cols = COL)
-#   }
-#   addStyle(mywb, CRMS, TIME, rows = ROW, cols = 2)
-#   for (COL in 5:7) {
-#     addStyle(mywb, SS, sterling, rows = ROW, cols = 2)
-#   }
-# }
-
-
 
 
 
@@ -655,19 +656,19 @@ writeFormula(mywb, EIS, temp, startRow = 4, startCol = 5)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!P", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*0.8745"))
+  temp <- c(temp, paste0("=('Consumption Checks'!P", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$P$2)*0.8745"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 6)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!Q", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*0.8745"))
+  temp <- c(temp, paste0("=('Consumption Checks'!Q", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$P$2)*0.8745"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 7)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!R", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$U$2)*0.8745"))
+  temp <- c(temp, paste0("=('Consumption Checks'!R", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$P$2)*0.8745"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 8)
 
@@ -697,19 +698,19 @@ writeFormula(mywb, EIS, temp, startRow = 4, startCol = 13)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=F", ROW+2, "*'SHADOW SETTLED'!$U$3"))
+  temp <- c(temp, paste0("=F", ROW+2, "*'SHADOW SETTLED'!$P$3"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 14)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=G", ROW+2, "*'SHADOW SETTLED'!$U$3"))
+  temp <- c(temp, paste0("=G", ROW+2, "*'SHADOW SETTLED'!$P$3"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 15)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=H", ROW+2, "*'SHADOW SETTLED'!$U$3"))
+  temp <- c(temp, paste0("=H", ROW+2, "*'SHADOW SETTLED'!$P$3"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 16)
 
@@ -739,19 +740,19 @@ writeFormula(mywb, EIS, temp, startRow = 4, startCol = 21)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("='Consumption Checks'!P", index, "*'SHADOW SETTLED'!$U$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
+  temp <- c(temp, paste0("='Consumption Checks'!P", index, "*'SHADOW SETTLED'!$P$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 22)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("='Consumption Checks'!Q", index, "*'SHADOW SETTLED'!$U$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
+  temp <- c(temp, paste0("='Consumption Checks'!Q", index, "*'SHADOW SETTLED'!$P$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 23)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("='Consumption Checks'!R", index, "*'SHADOW SETTLED'!$U$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
+  temp <- c(temp, paste0("='Consumption Checks'!R", index, "*'SHADOW SETTLED'!$P$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 24)
 
@@ -770,18 +771,6 @@ headings <- c("Settlement Date", "Trading Date", rep(x = "", times = 3), "HH", "
 for (i in 1:length(headings1)) {
   writeData(mywb, EIS, headings[i], startCol = i, startRow = 3)
 }
-
-# # FORMATTING
-# for (ROW in 4:1492) {
-#   for (COL in c(1,2,11,19)) {
-#     addStyle(mywb, EIS, DATE, rows = ROW, cols = COL)
-#   }
-#   for (COL in c(6:9, 14:17, 22:25)) {
-#     addStyle(mywb, EIS, sterling, rows = ROW, cols = COL)
-#   }
-# }
-
-
 
 
 
