@@ -10327,7 +10327,7 @@ ivbu <- mywb
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
-# print_colour("Script has finished executing.", colour = "green")
+print_colour("Invoice backup file created.", colour = "green")
 
 ```
 
@@ -10353,11 +10353,11 @@ if (length(Caps != 0)) {
 ```{r D+4 Capacity script}
 
 if (InitCaps == TRUE) {
-  print_colour("Building D+4 Capacity file", colour = 'black')
+  print_colour("Building D+4 Capacity file. ", colour = 'black')
   source("NI Capacity D+4 Script.R")
-  print_colour("D+4 Capacity file created.", colour = "green")
+  print_colour("\nD+4 Capacity file created.", colour = "green")
 } else {
-  print_colour("No D+4 Capacity settlement required.", colour = "cyan")
+  print_colour("\nNo D+4 Capacity settlement required.", colour = "cyan")
 }
 
 ```
@@ -10384,6 +10384,7 @@ capacityfilepath <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " 
 capacityfiles <- list.files(capacityfilepath, full.names = TRUE)
 capacityfiles <- capacityfiles[grepl(pattern = month, x = capacityfiles)]
 capacityfiles <- capacityfiles[grepl(pattern = year, x = capacityfiles)]
+capacityfiles <- capacityfiles[-grepl(pattern = initials, x = capacityfiles)]
 
 ### STATEMENT
 
@@ -11335,9 +11336,9 @@ saveWorkbook(ivbu, ivbuoutput, TRUE)
 if (M4Caps == TRUE) {
   print_colour("Building M+4 Capacity file", colour = 'black')
   source("NI Capacity M+4 Script.R")
-  print_colour("M+4 Capacity file created.", colour = "green")
+  print_colour("\nM+4 Capacity file created.", colour = "green")
 } else {
-  print_colour("No M+4 Capacity settlement required.", colour = "cyan")
+  print_colour("\nNo M+4 Capacity settlement required.", colour = "cyan")
 }
 
 ```
@@ -11363,6 +11364,7 @@ capacityfilepath <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " 
 capacityfiles <- list.files(capacityfilepath, full.names = TRUE)
 capacityfiles <- capacityfiles[grepl(pattern = month, x = capacityfiles)]
 capacityfiles <- capacityfiles[grepl(pattern = year, x = capacityfiles)]
+capacityfiles <- capacityfiles[-grepl(pattern = initials, x = capacityfiles)]
 
 ### STATEMENT
 
@@ -12511,9 +12513,9 @@ saveWorkbook(wb = ivbu, file = ivbuoutput, TRUE)
 if (M13Caps == TRUE) {
   print_colour("Building M+13 Capacity file", colour = 'black')
   source("NI Capacity M+13 Script.R")
-  print_colour("M+13 Capacity file created.", colour = "green")
+  print_colour("\nM+13 Capacity file created.", colour = "green")
 } else {
-  print_colour("No M+13 Capacity settlement required.", colour = "cyan")
+  print_colour("\nNo M+13 Capacity settlement required.", colour = "cyan")
 }
 
 ```
@@ -12539,6 +12541,7 @@ capacityfilepath <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " 
 capacityfiles <- list.files(capacityfilepath, full.names = TRUE)
 capacityfiles <- capacityfiles[grepl(pattern = paste0(month, "|", toupper(month)), x = capacityfiles)]
 capacityfiles <- capacityfiles[grepl(pattern = year, x = capacityfiles)]
+capacityfiles <- capacityfiles[-grepl(pattern = initials, x = capacityfiles)]
 
 ### STATEMENT
 
@@ -13675,5 +13678,9 @@ writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", P
 
 saveWorkbook(wb = ivbu, file = ivbuoutput, TRUE)
 
+```
+
+```{r}
+print_color("\nScript has finished executing.", color = 'green')
 ```
 
