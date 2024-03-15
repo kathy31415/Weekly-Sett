@@ -405,29 +405,12 @@ data.frame.na <- function (..., row.names = NULL, check.rows = FALSE, check.name
 }
 ```
 
-
-
 ```{r D+4}
 ################################################################################################################################################################################################
 ############################################################################## D+4 settlement section ##########################################################################################
 ################################################################################################################################################################################################
 
-
 # DEFINE VARIABLES
-
-# USERNAME & DRIVES
-un <- Sys.getenv("USERNAME")
-if (un == "kathy.callan") {
-  accdrive <- "X"
-  edrive <- "Y"
-  e2drive <- "Z"
-} else if (un == "emma.mullan") {
-  accdrive <- "X"
-  edrive <- "Z"
-  e2drive <- "Y"
-} else {
-  stop("Unexpected user. Stopping...")
-}
 
 receiveddate <- readline(prompt = "Enter the DATE the document was RECEIVED in the format YYYYMMDD: ")
 
@@ -451,6 +434,19 @@ settype3 <- "INIT"
 settype4 <- "D4"
 mm <- 20
 
+# USERNAME & DRIVES
+un <- Sys.getenv("USERNAME")
+if (un == "kathy.callan") {
+  accdrive <- "X"
+  edrive <- "Y"
+  e2drive <- "Z"
+} else if (un == "emma.mullan") {
+  accdrive <- "X"
+  edrive <- "Z"
+  e2drive <- "Y"
+} else {
+  stop("Unexpected user. Stopping...")
+}
 
 initials <- strsplit(un, "\\.")
 initials <- sapply(initials, function(x) substr(x, 1, 1))
@@ -469,6 +465,7 @@ NUMBER <- createStyle(numFmt = "NUMBER")
 TIME <- createStyle(numFmt = "hh:mm:ss")
 PERCENT <- createStyle(numFmt = "0%")
 redStyle <- createStyle(fontColour = 'red', textDecoration = 'bold')
+bluestyle <- createStyle(fgFill = "#B4C6E7")
 thicktop <- createStyle(border = 'Top', borderStyle = 'thick')
 thickbottom <- createStyle(border = 'Bottom', borderStyle = 'thick')
 thickleft <- createStyle(border = 'Left', borderStyle = 'thick')
@@ -477,7 +474,7 @@ thicktl <- createStyle(border = 'TopLeft', borderStyle = 'thick')
 thicktr <- createStyle(border = 'TopRight', borderStyle = 'thick')
 thickbl <- createStyle(border = 'BottomLeft', borderStyle = 'thick')
 thickbr <- createStyle(border = 'BottomRight', borderStyle = 'thick')
-bluegrey <- createStyle(fgFill = "#B4C6E7")
+bluegrey <- bluegrey <- createStyle(fgFill = "#B4C6E7")
 
 # DOCUMENT
 
@@ -870,6 +867,7 @@ for (f in 1:7) {
 # combine reports
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*REPORT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Reports for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
 
 dfreports <- data.frame()
@@ -882,9 +880,8 @@ for (file in inputfiles) {
 
 writexl::write_xlsx(dfreports, outputfile)
 
-# housekeeping
-rm(list = ls(pattern = "accept|amount|band|[Cc]harge|datetime|delivery|detail|determ|ECC|[Ee]xchange|max|name|node|order|output|p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
-suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
+
+
 
 
 
@@ -893,7 +890,7 @@ suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
 inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
-inputfiles <- inputfiles[grepl(receiveddate3, x = inputfiles)]
+inputfiles <- inputfiles[grepl(pattern = paste0("Document|",weeknod4), x = inputfiles)]
 
 # Get file path for output file
 outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - ", initials, ".xlsx")
@@ -922,11 +919,6 @@ addWorksheet(mywb, sheet = "DOCUMENT", tabColour = '#F4B084')
 writeData(mywb, sheet = "DOCUMENT", x = documentdata)
 
 delete <- inputfiles[grepl(x = inputfiles, pattern = "All*")]
-
-for (file in delete) {
- file.remove(file)
-}
-rm(delete)
 
 addWorksheet(wb = mywb, sheetName = "EX-Ante Report", tabColour = '#F4B084')
 addWorksheet(wb = mywb, sheetName = "Consumption Checks")
@@ -964,11 +956,6 @@ addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = DATE, rows = 2:194, c
 for (col in c(4,15,16,20,26:28,30:35,41)) {
   addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = NUMBER, rows = 2:194, cols = col)
 }
-
-
-
-
-
 
 # ECC Ex-Ante Report sheet
 
@@ -1102,15 +1089,11 @@ writeData(mywb, sheet = "EX-Ante Report", x = df)
 
 
 
-
-
-
 # Summary sheet
 
 activesheet <- "Summary"
 dates <- seq(from = as.Date(firstday, format = "%Y%m%d"), by = "1 day", length.out = 7) %>% format("%d/%m/%Y")
 charges <- c('CCA', 'CDIFFPDA', 'CDIFFPID', 'CDIFFPIMB', 'CIMB', 'CIMP', 'CREIMDIFFP', 'CREV', 'CSHORTDIFFP')
-
 
 
 # ==============================================================================================================================================================================
@@ -1194,9 +1177,6 @@ for (ROW in c(18,31,43,55,67,79,92)) {
 for (ROW in c(26,39,51,63,75,87,100)) {
   writeData(wb = mywb, sheet = "Summary", x = "Weekly Total", startCol = 1, startRow = ROW)
 }
-
-
-
 
 
 # ==============================================================================================================================================================================
@@ -1637,11 +1617,9 @@ addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 18)
 addStyle(wb = mywb, sheet = "Summary", style = boldStyle, rows = 14, cols = 11:13)
 
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 15, x = "FROM")
-writeFormula(wb = mywb, sheet = "Summary", x = "=B1", xy = c(16,14))
-addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 16)
+writeFormula(wb = mywb, sheet = "Summary", x = "=U2", xy = c(16,14))
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol =, 17, x = "TO")
-writeFormula(wb = mywb, sheet = "Summary", x = "=H1", xy = c(18,14))
-addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 18)
+writeFormula(wb = mywb, sheet = "Summary", x = "=U8", xy = c(18,14))
 writeData(wb = mywb, sheet = "Summary", startRow = 15, startCol = 12, x = "Totals")
 
 for (row in 15:21) {
@@ -1650,7 +1628,7 @@ for (row in 15:21) {
 }
 
 addStyle(wb = mywb, sheet = "Summary", style = thicktl, rows = 14, cols = 11)
-addStyle(wb = mywb, sheet = "Summary", style = thicktr, , rows = 14, cols = 20)
+addStyle(wb = mywb, sheet = "Summary", style = thicktr, rows = 14, cols = 20)
 addStyle(wb = mywb, sheet = "Summary", style = thickbl, rows = 22, cols = 11)
 addStyle(wb = mywb, sheet = "Summary", style = thickbr, rows = 22, cols = 20)
 
@@ -1669,27 +1647,43 @@ writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 13, x = "20000
 writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 14, x = "200001.4")
 writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 15, x = "200008.1")
 writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 16, x = "200001.6")
-addStyle(wb = mywb, sheet = "Summary", style = yellowStyle, rows = 17, cols = 11)
-addStyle(wb = mywb, sheet = "Summary", style = yellowStyle, rows = 17, cols = 12:16)
+addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#FFFF00", textDecoration = 'bold', halign = 'center'), rows = 17, cols = 11)
+addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#FFFF00", textDecoration = 'bold', halign = 'center', fontColour = 'red'), rows = 17, cols = 12:16)
 
 writeData(wb = mywb, sheet = "Summary", startRow = 18, startCol = 11, x = "SEMO Purchases")
 writeData(wb = mywb, sheet = "Summary", startRow = 19, startCol = 11, x = "SEMO Sales")
 writeData(wb = mywb, sheet = "Summary", startRow = 20, startCol = 11, x = "Ex-Ante")
 writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total")
 
-# purchases
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+B39+B63+B75+B87-H26-G39+B51", xy = c(12,18))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+C39+C63+C75+C87+C51", xy = c(13,18))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CR3:CR338)+D39+D63+D75+D87+D51", xy = c(14,18))
+# formulas for sales and purchases depend on date
+if (as.Date(firstday, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
+  # purchases
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87+D51", xy = c(14,18))
+
+
+  # sales
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)", xy = c(14,19))
+
+} else {
+  # purchases
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87", xy = c(14,18))
+
+
+  # sales
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)+B51", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+C51", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+D51", xy = c(14,19))
+}
+
 writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CS3:CS338)", xy = c(15,18))
 writeFormula(wb = mywb, sheet = "Summary", x = "=-B100", xy = c(16,18))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L18:P18)", xy = c(17,18))
-
-# sales
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CL3:CL338)", xy = c(12,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CM3:CM338)", xy = c(13,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CN3:CN338)", xy = c(14,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(15,19))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L19:P19)", xy = c(17,19))
 
 # ex ante
@@ -1722,11 +1716,6 @@ for (row in c(18:22)) {
   addStyle(wb = mywb, sheet = "Summary", style = euro, rows = row, cols = 12:19)
 }
 
-for (ROW in c(14,23)) {
-  for (COL in 12:18) {
-    addStyle(wb = mywb, sheet = "Summary", style = thicktop, rows = ROW, cols = COL)
-  }
-}
 
 
 
@@ -2102,8 +2091,6 @@ for (index in 3:338) {
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 37)
 
-
-
 temp <- c()
 for (index in 3:46) {
   temp <- c(temp, paste0("=AI", index))
@@ -2121,10 +2108,6 @@ for (index in 3:290) {
   temp <- c(temp, paste0("=AL", index, "+1"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 38)
-
-
-
-
 
 temp <- c()
 
@@ -2315,21 +2298,21 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 39)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+writeFormula(mywb, CC, x = "=AL3", startRow = 3, startCol = 41)
+
 temp <- c()
 for (index in 3:46) {
-  temp <- c(temp, paste0("=AL", index))
+  temp <- c(temp, paste0("=AO", index))
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 41)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 4, startCol = 41)
 
-writeFormula(mywb, CC, x = "=AO46", startRow = 47, startCol = 41)
+writeFormula(mywb, CC, x = "=AO3+1", startRow = 48, startCol = 41)
 
 temp <- c()
 for (index in 48:94) {
-  temp <- c(temp, paste0("=AL", index))
+  temp <- c(temp, paste0("=AO", index))
 }
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 48, startCol = 41)
-
-writeFormula(mywb, CC, x = "=AO94", startRow = 95, startCol = 41)
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 49, startCol = 41)
 
 temp <- c()
 for (index in 48:290) {
@@ -2442,7 +2425,7 @@ for (i in 1:7) {
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$AK", index, ",REPORT!$P:$P,\"QEX\",REPORT!$O:$O, \"AU_400131\")"))
+  temp <- c(temp, paste0("=SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$AK", index, ",REPORT!$P:$P,\"QEX\",REPORT!$O:$O, $BB$1)"))
 }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 54)
 
 temp <- c()
@@ -3742,8 +3725,6 @@ for (col in c(5:8,13:16,21:24,29:32,37:40,45)) {
   addStyle(wb = mywb, sheet = EIS, style = euro, rows = 4:339, cols = col)
 }
 
-saveWorkbook(mywb, outputfile, overwrite = TRUE)
-
 
 
 EMS <- "ECC Monthly Settlement"
@@ -3895,120 +3876,6 @@ settype3 <- "M4"
 settype4 <- "M4"
 mm <- 30
 
-# DOCUMENT
-
-# read in XML file
-xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SD_", PTunit, "_\\d{8}_\\d{8}_BMCRM_REPT_\\d{8}T\\d{6}\\.XML$")))
-
-# Get invoice document number
-v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
-invoicenumber <- sapply(v5, function(x) ifelse("document_id" %in% names(x), x["document_id"], NA))[1]
-rm(v5)
-documentidnumber <- invoicenumber
-
-doc <- read_xml(xmlfile)
-
-nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
-df1 <- bind_rows(lapply(nodes1, xml_attrs))
-df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-df1$due_date <- as.Date(df1$due_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-
-nodes2 <- xml_find_all(doc, xpath = "//CONTACT")
-df2 <- bind_rows(lapply(nodes2, xml_attrs))
-
-nodes3 <- xml_find_all(doc, xpath = "//REPORT_SUMMARY")
-df3 <- bind_rows(lapply(nodes3, xml_attrs))
-
-nodes4 <- xml_find_all(doc, xpath="//REPORT_DETAIL/*")
-df4 <- bind_rows(lapply(nodes4, xml_attrs))
-df4 <- rename(.data = df4, 'market2' = 'market', 'interest3' = 'interest')
-df4$bp_start_date <- as.Date(df4$bp_start_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-df4$bp_end_date <- as.Date(df4$bp_end_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-
-# ============================================================== sales and purchases section ============================================================== #
-# Extract attributes from REPORT_DETAIL nodes
-nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
-df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
-
-# Access the Sales and Purchases sections in REPORT_DETAIL
-details <- xml_find_all(doc, "//REPORT_DETAIL/DETAIL")
-
-# Create an empty data frame to store the results
-result_df <- data.frame(
-  s_total4 = character(),
-  s_local5 = character(),
-  s_eu6 = character(),
-  s_neu7 = character(),
-  s_total_prev = character(),
-  s_local_prev = character(),
-  s_eu_prev = character(),
-  s_neu_prev = character(),
-  p_total8 = character(),
-  p_local9 = character(),
-  p_eu10 = character(),
-  p_neu11 = character(),
-  p_total_prev = character(),
-  p_local_prev = character(),
-  p_eu_prev = character(),
-  p_neu_prev = character(),
-  stringsAsFactors = FALSE
-)
-
-# Loop through each DETAIL section
-for (detail in details) {
-  # Access the SALES section
-  sales <- xml_find_first(detail, ".//SALES")
-  s_total4 <- xml_attr(sales, "s_total")
-  s_local5 <- xml_attr(sales, "s_local")
-  s_eu6 <- xml_attr(sales, "s_eu")
-  s_neu7 <- xml_attr(sales, "s_neu")
-  s_total_prev <- xml_attr(sales, "s_total_prev")
-  s_local_prev <- xml_attr(sales, "s_local_prev")
-  s_eu_prev <- xml_attr(sales, "s_eu_prev")
-  s_neu_prev <- xml_attr(sales, "s_neu_prev")
-  
-  # Access the PURCHASES section
-  purchases <- xml_find_first(detail, ".//PURCHASES")
-  p_total8 <- xml_attr(purchases, "p_total")
-  p_local9 <- xml_attr(purchases, "p_local")
-  p_eu10 <- xml_attr(purchases, "p_eu")
-  p_neu11 <- xml_attr(purchases, "p_neu")
-  p_total_prev <- xml_attr(purchases, "p_total_prev")
-  p_local_prev <- xml_attr(purchases, "p_local_prev")
-  p_eu_prev <- xml_attr(purchases, "p_eu_prev")
-  p_neu_prev <- xml_attr(purchases, "p_neu_prev")
-  
-  # Append the results to the data frame
-  result_df <- rbind(result_df, c(s_total4, s_local5, s_eu6, s_neu7, s_total_prev, s_local_prev, s_eu_prev, s_neu_prev, p_total8, p_local9, p_eu10, p_neu11, p_total_prev, p_local_prev, p_eu_prev, p_neu_prev))
-}
-
-# Set column names
-colnames(result_df) <- c('s_total4', 's_local5', 's_eu6', 's_neu7', 's_total_prev', 's_local_prev', 's_eu_prev', 's_neu_prev', 'p_total8', 'p_local9', 'p_eu10', 'p_neu11', 'p_total_prev', 'p_local_prev', 'p_eu_prev', 'p_neu_prev')
-# ============================================================ sales and purchases section end ============================================================ #
-
-nodes5 <- xml_find_all(doc, xpath = "//REPORT_TRACKING/*")
-df5 <- bind_rows(lapply(nodes5, xml_attrs))
-df5$statement_date <- as.Date(df5$statement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-colnames(df5) <- c("statement_date", "run_type12", "market13", "charge_name14", "charge_amount", "statement_id")
-
-# offset df5 by 56 rows
-df5 <- insertRows(df = df5, r = 1:56)
-
-nodes6 <- xml_find_all(doc, xpath = "//VAT_INFORMATION/STANDARD_INFORMATION/*")
-df6 <- bind_rows(lapply(nodes6, xml_attrs))
-
-# repeat certain lines
-max_row_count <- max(c(nrow(df1), nrow(df2), nrow(df3), nrow(df4), nrow(df5), nrow(df6)))
-df1 <- df1[rep(1:nrow(df1), each = max_row_count), ]
-df2 <- df2[rep(1:nrow(df2), each = max_row_count), ]
-df3 <- df3[rep(1:nrow(df3), each = max_row_count), ]
-
-df <- cbind.na(df1, df2, df3, df4, result_df, df5, df6)
-
-receiveddate3 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d-%m-%Y")
-
-writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/Document ", invoicenumber, " for ", PTunit, " received ", receiveddate3, ".xlsx"))
-
 
 ### STATEMENT
 
@@ -4133,6 +4000,7 @@ for (f in 1:7) {
 # combine statements
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*STATEMENT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Statements for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
 
 dfstatements <- data.frame()
@@ -4286,6 +4154,7 @@ for (f in 1:7) {
 # combine reports
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*REPORT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Reports for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
 
 dfreports <- data.frame()
@@ -4298,17 +4167,21 @@ for (file in inputfiles) {
 
 writexl::write_xlsx(dfreports, outputfile)
 
-# housekeeping
-rm(list = ls(pattern = "accept|amount|band|[Cc]harge|datetime|delivery|detail|determ|ECC|[Ee]xchange|max|name|node|order|output|p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
-suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
-
 
 # CREATE EXCEL FILE - SETUP
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
-inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
-inputfiles <- inputfiles[grepl(receiveddate3, x = inputfiles)]
+inputfiles <- inputfiles[grepl(pattern = paste0("Document|Week ", as.character(weekno)), x = inputfiles)]
+
+# Get previous week's file
+prevfile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/"), full.names = TRUE)
+prevfile <- prevfile[grepl(x = prevfile, pattern = as.character(prevweekno))]
+prevfile <- prevfile[grepl(x = prevfile, pattern = as.character(year))]
+
+if (length(prevfile[grepl(x = prevfile, pattern = "$")]) > 1) {
+  prevfile <- prevfile[-grepl(x = prevfile, pattern = "$")]
+}
 
 # Get file path for output file
 outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - ", initials, ".xlsx")
@@ -5442,7 +5315,6 @@ for (index in 47:290) {
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 95, startCol = 38)
 
-
 temp <- c()
 
 winter <- c("=AJ3+TIME(1,30,0)", "=AJ4+TIME(1,0,0)", "=AJ5+TIME(1,30,0)", "=AJ6+TIME(1,0,0)",
@@ -5628,128 +5500,6 @@ if (firstday2 > as.Date(paste0(as.numeric(year)-1,"-10-01"), format = "%Y-%m-%d"
 }
 
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 39)
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# temp <- c()
-# for (index in 3:50) {
-#   temp <- c(temp, paste0("=AL", index))
-# }
-# writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 41)
-# 
-# writeFormula(mywb, CC, x = "=AI51+1", startRow = 51, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI52+1", startRow = 52, startCol = 41)
-# 
-# temp <- c()
-# for (index in 53:95) {
-#   temp <- c(temp, paste0("=AI", index))
-# }
-# writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 53, startCol = 41)
-# 
-# writeFormula(mywb, CC, x = "=AL96", startRow = 96, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL97", startRow = 97, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL98", startRow = 98, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI99+1", startRow = 99, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI100+1", startRow = 100, startCol = 41)
-# 
-# temp <- c()
-# for (index in 101:143) {
-#   temp <- c(temp, paste0("=AI", index))
-# }
-# writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 101, startCol = 41)
-# 
-# writeFormula(mywb, CC, x = "=AL144", startRow = 144, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL145", startRow = 145, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL146", startRow = 146, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI147+1", startRow = 147, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI148+1", startRow = 148, startCol = 41)
-# 
-# temp <- c()
-# for (index in 149:191) {
-#   temp <- c(temp, paste0("=AI", index))
-# }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 149, startCol = 41)
-# 
-# writeFormula(mywb, CC, x = "=AL192", startRow = 192, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL193", startRow = 193, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL194", startRow = 194, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI195+1", startRow = 195, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI196+1", startRow = 196, startCol = 41)
-# 
-# temp <- c()
-# for (index in 197:239) {
-#   temp <- c(temp, paste0("=AI", index))
-# }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 197, startCol = 41)
-# 
-# writeFormula(mywb, CC, x = "=AL240", startRow = 240, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL241", startRow = 241, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL242", startRow = 242, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI243+1", startRow = 243, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI244+1", startRow = 244, startCol = 41)
-# 
-# temp <- c()
-# for (index in 245:287) {
-#   temp <- c(temp, paste0("=AI", index))
-# }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 245, startCol = 41)
-# 
-# writeFormula(mywb, CC, x = "=AL288", startRow = 288, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL289", startRow = 289, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL290", startRow = 290, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI291+1", startRow = 291, startCol = 41)
-# writeFormula(mywb, CC, x = "=AI292+1", startRow = 292, startCol = 41)
-# 
-# temp <- c()
-# for (index in 293:335) {
-#   temp <- c(temp, paste0("=AI", index))
-# }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 293, startCol = 41)
-# 
-# writeFormula(mywb, CC, x = "=AL336", startRow = 336, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL337", startRow = 337, startCol = 41)
-# writeFormula(mywb, CC, x = "=AL338", startRow = 338, startCol = 41)
-
-
-
-
-
-
-writeFormula(wb = mywb, sheet = CC, x = "=AL3", startRow = 3, startCol = 41)
-
-temp <- c()
-for (index in 3:94) {
-  temp <- c(temp, paste0("=AO", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 4, startCol = 41)
-
-writeFormula(wb = mywb, sheet = CC, x = "=AO3+1", startRow = 48, startCol = 41)
-
-
-temp <- c()
-for (index in 48:290) {
-  temp <- c(temp, paste0("=AO", index, "+1"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 96, startCol = 41)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 temp <- c()
 
@@ -6768,41 +6518,55 @@ for (col in c(6:9,14:17,22:25,30:33,38:41,46)) {
 
 RS <- "Resettlement Summary"
 
-bb <- createStyle(textDecoration = 'bold', fontSize = 14, border = 'bottom')
+mybold <- boldStyle
+bb <- createStyle(textDecoration = 'bold', fontSize = 18)
 
-writeData(mywb, RS, x = paste0(PTunit, " ", settype, " ENERGY"), startRow = 1, startCol = 2)
-writeData(mywb, RS, x = paste0("WK", weekno, " ", year), startRow = 1, startCol = 4)
+writeData(mywb, RS, x = paste0(PTunit, " ", settype3, " ENERGY"), startRow = 1, startCol = 2)
+writeData(mywb, RS, x = paste0("WK ", weekno, " ", year), startRow = 1, startCol = 4)
 writeData(mywb, RS, x = paste0(dates[1], " to ", dates[7]), startRow = 1, startCol = 6)
-writeData(mywb, RS, x = dates[1], startRow = 1, startCol = 6)
-writeData(mywb, RS, x = 'to', startRow = 1, startCol = 7)
-writeData(mywb, RS, x = dates[7], startRow = 1, startCol = 8)
-addStyle(wb = mywb, sheet = RS, style = bb, rows = 1, cols = 2:8)
+addStyle(wb = mywb, sheet = RS, style = bb, rows = 1, cols = 2:4)
+addStyle(wb = mywb, sheet = RS, style = mybold, rows = 1, cols = 6)
 
 # TOP TABLE (PURCHASES)
-writeData(mywb, RS, x = "D+4 Purchases", startRow = 3, startCol = 2)
-writeData(mywb, RS, x = "M+4 Purchases", startRow = 6, startCol = 2)
-writeData(mywb, RS, x = "Purchases Resettlement", startRow = 9, startCol = 2)
+writeData(mywb, RS, x = "D+4 Purchases", startRow = 3, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 3, cols = 2)
+writeData(mywb, RS, x = "M+4 Purchases", startRow = 6, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 6, cols = 2)
+writeData(mywb, RS, x = "Purchases Resettlement", startRow = 9, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 9, cols = 2)
+
 
 # BOTTOM TABLE (SALES)
-writeData(mywb, RS, x = "D+4 Sales", startRow = 13, startCol = 2)
-writeData(mywb, RS, x = "M+4 Sales", startRow = 16, startCol = 2)
-writeData(mywb, RS, x = "Sales Resettlement", startRow = 19, startCol = 2)
+writeData(mywb, RS, x = "D+4 Sales", startRow = 13, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 13, cols = 2)
+writeData(mywb, RS, x = "M+4 Sales", startRow = 16, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 16, cols = 2)
+writeData(mywb, RS, x = "Sales Resettlement", startRow = 19, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 19, cols = 2)
+
 
 # TOTAL TABLE
-writeData(mywb, RS, x = "Total Resettlement", startRow = 23, startCol = 2)
+writeData(mywb, RS, x = "Total Resettlement", startRow = 23, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 23, cols = 2)
 
-headings <- c("HH", "NHH", "PPA Gen", "AU_400117", "CCA", "", "Total")
+temp <- c()
 
-for (i in 1:length(headings)) {
-  for (ROW in c(4,7,10,14,17,20,24)) {
-    writeData(mywb, RS, headings[i], startRow = ROW, startCol = 1+i)
-  }
+ROWS <- c(4,7,10,14,17,20,24)
+
+for (ROW in ROWS) {
+  writeData(mywb, RS, "HH", startRow = ROW, startCol = 2)
+  writeData(mywb, RS, "NHH", startRow = ROW, startCol = 3)
+  writeData(mywb, RS, "PPA Gen", startRow = ROW, startCol = 4)
+  writeData(mywb, RS, "GU_503310", startRow = ROW, startCol = 5)
+  writeData(mywb, RS, "CCA", startRow = ROW, startCol = 6)
+  writeData(mywb, RS, "Total", startRow = ROW, startCol = 8)
 }
 
-for (ROW in c(10,20,24)) {
-  writeData(mywb, RS, "Adjustment", startRow = ROW, startCol = 7)
-  writeData(mywb, RS, "Invoice", startRow = ROW, startCol = 9)
-}
+writeData(mywb, RS, "Adjustment", startRow = 10, startCol = 7)
+writeData(mywb, RS, "Adjustment", startRow = 20, startCol = 7)
+writeData(mywb, RS, "Adjustment", startRow = 24, startCol = 7)
+
+writeData(mywb, RS, "Invoice/Document Total", startRow = 10, startCol = 9)
+writeData(mywb, RS, "Invoice/Document Total", startRow = 20, startCol = 9)
+
+writeData(mywb, RS, "Invoice", startRow = 24, startCol = 9)
+
+
+temp <- c()
+
 
 
 # Formulas for Tables
@@ -7090,119 +6854,6 @@ settype3 <- "M13"
 settype4 <- "M13"
 mm <- 40
 
-# DOCUMENT
-
-# read in XML file
-xmlfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate,"/", list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/SEMODownloads/", receiveddate, "/"), pattern = paste0("^SD_", PTunit, "_\\d{8}_\\d{8}_BMCRM_REPT_\\d{8}T\\d{6}\\.XML$")))
-
-# Get invoice document number
-v5 <- sapply(getNodeSet(xmlParse(xmlfile), "/REPORT/*"), xmlAttrs)
-invoicenumber <- sapply(v5, function(x) ifelse("document_id" %in% names(x), x["document_id"], NA))[1]
-rm(v5)
-documentidnumber <- invoicenumber
-
-doc <- read_xml(xmlfile)
-
-nodes1 <- xml_find_all(doc, xpath = "//REPORT_HEADER")
-df1 <- bind_rows(lapply(nodes1, xml_attrs))
-df1$publication_date <- as.Date(df1$publication_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-df1$due_date <- as.Date(df1$due_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-
-nodes2 <- xml_find_all(doc, xpath = "//CONTACT")
-df2 <- bind_rows(lapply(nodes2, xml_attrs))
-
-nodes3 <- xml_find_all(doc, xpath = "//REPORT_SUMMARY")
-df3 <- bind_rows(lapply(nodes3, xml_attrs))
-
-nodes4 <- xml_find_all(doc, xpath="//REPORT_DETAIL/*")
-df4 <- bind_rows(lapply(nodes4, xml_attrs))
-df4 <- rename(.data = df4, 'market2' = 'market', 'interest3' = 'interest')
-df4$bp_start_date <- as.Date(df4$bp_start_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-df4$bp_end_date <- as.Date(df4$bp_end_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-
-# ============================================================== sales and purchases section ============================================================== #
-# Extract attributes from REPORT_DETAIL nodes
-nodes_report_detail <- xml_find_all(doc, xpath = "//REPORT_DETAIL/*")
-df_report_detail <- bind_rows(lapply(nodes_report_detail, xml_attrs))
-
-# Access the Sales and Purchases sections in REPORT_DETAIL
-details <- xml_find_all(doc, "//REPORT_DETAIL/DETAIL")
-
-# Create an empty data frame to store the results
-result_df <- data.frame(
-  s_total4 = character(),
-  s_local5 = character(),
-  s_eu6 = character(),
-  s_neu7 = character(),
-  s_total_prev = character(),
-  s_local_prev = character(),
-  s_eu_prev = character(),
-  s_neu_prev = character(),
-  p_total8 = character(),
-  p_local9 = character(),
-  p_eu10 = character(),
-  p_neu11 = character(),
-  p_total_prev = character(),
-  p_local_prev = character(),
-  p_eu_prev = character(),
-  p_neu_prev = character(),
-  stringsAsFactors = FALSE
-)
-
-# Loop through each DETAIL section
-for (detail in details) {
-  # Access the SALES section
-  sales <- xml_find_first(detail, ".//SALES")
-  s_total4 <- xml_attr(sales, "s_total")
-  s_local5 <- xml_attr(sales, "s_local")
-  s_eu6 <- xml_attr(sales, "s_eu")
-  s_neu7 <- xml_attr(sales, "s_neu")
-  s_total_prev <- xml_attr(sales, "s_total_prev")
-  s_local_prev <- xml_attr(sales, "s_local_prev")
-  s_eu_prev <- xml_attr(sales, "s_eu_prev")
-  s_neu_prev <- xml_attr(sales, "s_neu_prev")
-  
-  # Access the PURCHASES section
-  purchases <- xml_find_first(detail, ".//PURCHASES")
-  p_total8 <- xml_attr(purchases, "p_total")
-  p_local9 <- xml_attr(purchases, "p_local")
-  p_eu10 <- xml_attr(purchases, "p_eu")
-  p_neu11 <- xml_attr(purchases, "p_neu")
-  p_total_prev <- xml_attr(purchases, "p_total_prev")
-  p_local_prev <- xml_attr(purchases, "p_local_prev")
-  p_eu_prev <- xml_attr(purchases, "p_eu_prev")
-  p_neu_prev <- xml_attr(purchases, "p_neu_prev")
-  
-  # Append the results to the data frame
-  result_df <- rbind(result_df, c(s_total4, s_local5, s_eu6, s_neu7, s_total_prev, s_local_prev, s_eu_prev, s_neu_prev, p_total8, p_local9, p_eu10, p_neu11, p_total_prev, p_local_prev, p_eu_prev, p_neu_prev))
-}
-
-# Set column names
-colnames(result_df) <- c('s_total4', 's_local5', 's_eu6', 's_neu7', 's_total_prev', 's_local_prev', 's_eu_prev', 's_neu_prev', 'p_total8', 'p_local9', 'p_eu10', 'p_neu11', 'p_total_prev', 'p_local_prev', 'p_eu_prev', 'p_neu_prev')
-# ============================================================ sales and purchases section end ============================================================ #
-
-nodes5 <- xml_find_all(doc, xpath = "//REPORT_TRACKING/*")
-df5 <- bind_rows(lapply(nodes5, xml_attrs))
-df5$statement_date <- as.Date(df5$statement_date, format = "%Y-%m-%d") %>% format("%d/%m/%Y") %>% as.Date(format = "%d/%m/%Y")
-colnames(df5) <- c("statement_date", "run_type12", "market13", "charge_name14", "charge_amount", "statement_id")
-
-# offset df5 by 56 rows
-df5 <- insertRows(df = df5, r = 1:56)
-
-nodes6 <- xml_find_all(doc, xpath = "//VAT_INFORMATION/STANDARD_INFORMATION/*")
-df6 <- bind_rows(lapply(nodes6, xml_attrs))
-
-# repeat certain lines
-max_row_count <- max(c(nrow(df1), nrow(df2), nrow(df3), nrow(df4), nrow(df5), nrow(df6)))
-df1 <- df1[rep(1:nrow(df1), each = max_row_count), ]
-df2 <- df2[rep(1:nrow(df2), each = max_row_count), ]
-df3 <- df3[rep(1:nrow(df3), each = max_row_count), ]
-
-df <- cbind.na(df1, df2, df3, df4, result_df, df5, df6)
-
-receiveddate3 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d-%m-%Y")
-
-writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/Document ", invoicenumber, " for ", PTunit, " received ", receiveddate3, ".xlsx"))
 
 
 ### STATEMENT
@@ -7328,6 +6979,7 @@ for (f in 1:7) {
 # combine statements
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "*STATEMENT*")]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 outputfile <- paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/All Statements for ", PTunit, " SEMO Week ", weekno, " ", year, " ", settype, ".xlsx")
 
 dfstatements <- data.frame()
@@ -7493,9 +7145,6 @@ for (file in inputfiles) {
 
 writexl::write_xlsx(dfreports, outputfile)
 
-# housekeeping
-rm(list = ls(pattern = "accept|amount|band|[Cc]harge|datetime|delivery|detail|determ|ECC|[Ee]xchange|max|name|node|order|output|p_|Payment|purchase|rank|report|resource|result|s_|sale|statementnumber|[Tt]otal|[Tt]ra|valu|xml"))
-suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
 
 
 
@@ -7503,8 +7152,17 @@ suppressWarnings(rm(f, file, i, j, k, q, unit, unit4, UoM))
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
-inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
 inputfiles <- inputfiles[grepl(receiveddate3, x = inputfiles)]
+
+# Get previous week's file
+prevfile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/"), full.names = TRUE)
+prevfile <- prevfile[grepl(x = prevfile, pattern = as.character(prevweekno))]
+prevfile <- prevfile[grepl(x = prevfile, pattern = as.character(year))]
+
+if (length(prevfile[grepl(x = prevfile, pattern = "$")]) > 1) {
+  prevfile <- prevfile[-grepl(x = prevfile, pattern = "$")]
+}
 
 # Get file path for output file
 outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/", PTunit, " SEMO Wk ", weekno, " ", year, " Shadow Settlement ", settype, " - ", initials, ".xlsx")
@@ -7583,14 +7241,11 @@ for (col in c(4,15,16,20,26:28,30:35,41)) {
 EAR <- "EX-Ante Report"
 
 prevtypefile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/M+4 Resettlement/"), full.names = TRUE)
-if (length(prevtypefile[grepl(x = prevtypefile, pattern = paste0(" ", as.character(weekno)))]) == 0) {
-  prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = as.character(weekno))]
-} else {
-  prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = paste0(" ", as.character(weekno)))]
-}
+prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = paste0(" ", as.character(weekno)))]
 prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = as.character(year))]
 
 ecc <- read_excel(path = prevtypefile, sheet = EAR)
+writeData(wb = mywb, sheet = "EX-Ante Report", x = ecc, startRow = 1, startCol = 1)
 
 
 # Summary sheet
@@ -7746,7 +7401,7 @@ writeData(wb = mywb, sheet = "Summary", x = "PPA Gen", startCol = 4, startRow = 
 writeData(wb = mywb, sheet = "Summary", x = "Total", startCol = 5, startRow = 30)
 writeData(wb = mywb, sheet = "Summary", x = "Statement Total", startCol = 6, startRow = 30)
 writeData(wb = mywb, sheet = "Summary", x = "Check", startCol = 7, startRow = 30)
-addStyle(wb = mywb, sheet = "Summary", style = bluegrey, rows = 30, cols = 2:7)
+addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#B4C6E7"), rows = 30, cols = 2:7)
 
 
 temp <- c("=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A31,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A32,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A33,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A34,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A35,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A36,'Consumption Checks'!CB:CB)", "=SUMIF('Consumption Checks'!$BM:$BM,Summary!$A37,'Consumption Checks'!CB:CB)")
@@ -9943,17 +9598,17 @@ writeData(mywb, RS, x = dates[7], startRow = 1, startCol = 8)
 addStyle(wb = mywb, sheet = RS, style = bb, rows = 1, cols = 2:8)
 
 # TOP TABLE (PURCHASES)
-writeData(mywb, RS, x = "M+4 Purchases", startRow = 3, startCol = 2)
-writeData(mywb, RS, x = "M+13 Purchases", startRow = 6, startCol = 2)
-writeData(mywb, RS, x = "Purchases Resettlement", startRow = 9, startCol = 2)
+writeData(mywb, RS, x = "M+4 Purchases", startRow = 3, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 3, cols = 2)
+writeData(mywb, RS, x = "M+13 Purchases", startRow = 6, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 6, cols = 2)
+writeData(mywb, RS, x = "Purchases Resettlement", startRow = 9, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 9, cols = 2)
 
 # BOTTOM TABLE (SALES)
-writeData(mywb, RS, x = "M+4 Sales", startRow = 13, startCol = 2)
-writeData(mywb, RS, x = "M+13 Sales", startRow = 16, startCol = 2)
-writeData(mywb, RS, x = "Sales Resettlement", startRow = 19, startCol = 2)
+writeData(mywb, RS, x = "M+4 Sales", startRow = 13, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 13, cols = 2)
+writeData(mywb, RS, x = "M+13 Sales", startRow = 16, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 16, cols = 2)
+writeData(mywb, RS, x = "Sales Resettlement", startRow = 19, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 19, cols = 2)
 
 # TOTAL TABLE
-writeData(mywb, RS, x = "Total Resettlement", startRow = 23, startCol = 2)
+writeData(mywb, RS, x = "Total Resettlement", startRow = 23, startCol = 2); addStyle(mywb, RS, style = createStyle(fgFill = "#F2F2F2", fontColour = "#FA7D00", halign = "center"), rows = 23, cols = 2)
 
 headings <- c("HH", "NHH", "PPA Gen", "AU_400117", "CCA", "", "Total")
 
@@ -10219,8 +9874,6 @@ for (ROW in 25:26) {
   }
 }
 
-
-
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 ```
@@ -10472,6 +10125,8 @@ for (index in c(1:7)) {
   writeFormula(wb = mywb, sheet = BU, x = temp, startCol = index+8, startRow = 50)
   addStyle(wb = mywb, sheet = BU, style = createStyle(textDecoration = 'bold', numFmt = '[$£]#,##0.00', border = "TopBottom"), rows = 50, cols = index+8)
 }
+
+ivbu <- mywb
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
