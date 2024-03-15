@@ -405,34 +405,7 @@ data.frame.na <- function (..., row.names = NULL, check.rows = FALSE, check.name
 }
 ```
 
-```{r D+4}
-################################################################################################################################################################################################
-############################################################################## D+4 settlement section ##########################################################################################
-################################################################################################################################################################################################
-
-# DEFINE VARIABLES
-
-receiveddate <- readline(prompt = "Enter the DATE the document was RECEIVED in the format YYYYMMDD: ")
-
-weekno <- readline(prompt = "State WEEK NUMBER of D4 settlement week: ")
-if (nchar(weekno) == 1) {
-  weekno <- paste0("0", weekno)
-}
-
-weeknod4 <- weekno
-prevweekno <- as.numeric(weekno) - 1
-
-firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
-firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
-
-year <- substring(text = firstday, first = 1, last = 4)
-yeard4 <- year
-
-settype <- "D+4"
-settype2 <- "D+4 Initial"
-settype3 <- "INIT"
-settype4 <- "D4"
-mm <- 20
+```{r Setup}
 
 # USERNAME & DRIVES
 un <- Sys.getenv("USERNAME")
@@ -466,7 +439,6 @@ TIME <- createStyle(numFmt = "hh:mm:ss")
 PERCENT <- createStyle(numFmt = "0%")
 redStyle <- createStyle(fontColour = 'red', textDecoration = 'bold')
 bluestyle <- createStyle(fgFill = "#B4C6E7")
-redStyle <- createStyle(fontColour = 'red', textDecoration = 'bold')
 thicktop <- createStyle(border = 'Top', borderStyle = 'thick')
 thickbottom <- createStyle(border = 'Bottom', borderStyle = 'thick')
 thickleft <- createStyle(border = 'Left', borderStyle = 'thick')
@@ -476,6 +448,118 @@ thicktr <- createStyle(border = 'TopRight', borderStyle = 'thick')
 thickbl <- createStyle(border = 'BottomLeft', borderStyle = 'thick')
 thickbr <- createStyle(border = 'BottomRight', borderStyle = 'thick')
 
+```
+
+
+```{r D+4}
+################################################################################################################################################################################################
+############################################################################## D+4 settlement section ##########################################################################################
+################################################################################################################################################################################################
+
+# DEFINE VARIABLES
+
+receiveddate <- readline(prompt = "Enter the DATE the document was RECEIVED in the format YYYYMMDD: ")
+
+weekno <- readline(prompt = "State WEEK NUMBER of D4 settlement week: ")
+if (nchar(weekno) == 1) {
+  weekno <- paste0("0", weekno)
+}
+
+weeknod4 <- weekno
+prevweekno <- as.numeric(weekno) - 1
+
+firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
+firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+
+year <- substring(text = firstday, first = 1, last = 4)
+yeard4 <- year
+
+settype <- "D+4"
+settype2 <- "D+4 Initial"
+settype3 <- "INIT"
+settype4 <- "D4"
+mm <- 20
+
+
+```
+
+# add MM here??
+
+```{r D4 Market Messages}
+
+MMtype <- "NIE"
+MMtype2 <- "NI"
+
+
+# ----------------------------------------------------------------------------------- MASTER FILE FOR MMS - SETUP -----------------------------------------------------------------------------------
+
+# read in relevant MM csv files
+receiveddate2 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d%m%Y")
+csvfile <- list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate), full.names = TRUE)
+csvfile <- csvfile[grepl(x = csvfile, pattern = paste0("*LCCPowerLimited_\\d{3}LA_", mm, "_\\d{8}-\\d{8}"))]
+
+if (length(csvfile) < 1) {
+  stop("No Adhoc Market Messages found. Stopping...")
+}
+
+Masterfilepath <- paste0("X:/GeneralAccounts/Settlement/", MMtype, " MM/", settype2, " ", mm, " MM/", list.files(paste0("X:/GeneralAccounts/Settlement/", MMtype, " MM/", settype2, " ", mm, " MM"), pattern = "Copy.xlsx"))
+
+if (length(Masterfilepath) > 1) {
+  stop("Close file before continuing. Stopping...")
+} else if (grepl(x = Masterfilepath, pattern = ".xlsx") == FALSE) {
+  stop("No MM Master file found. Stopping...")
+}
+
+
+#===================================================================591=====================================================================================
+# Get all of the Master file up until current settlement week
+Masterfile <- read_excel(path = Masterfilepath, sheet = 1, col_names = TRUE)
+colnames(Masterfile) <- headings
+
+Masterfile <- read.xlsx(xlsxFile = Masterfilepath, sheet = 1, startRow = 2, colNames = FALSE)
+header <- c("", "", seq(from = 1, to = 50, by = 1))
+Masterfile <- rbind.na(header, Masterfile)
+
+# Get Market Message file
+MMfile <- read.csv(csvfile[grepl(x = csvfile, pattern = "591")])[,c(1,4:50)]
+temp <- MMfile[,1]
+temp2 <- MMfile[,2:ncol(MMfile)]
+emptydf <- data.frame(rep(x = NA, times = 7))
+MMfile <- cbind(temp, emptydf, temp2)
+colnames(MMfile)[1:2] <- c("Date", "Month")
+
+col_types <- c("date", "text", rep("numeric", 50))
+headings <- c("Date", "Month", "HH1","HH2","HH3","H4","HH5","HH6","HH7","HH8","HH9","HH10","HH11","HH12","HH13","HH14","HH15","HH16","HH17","HH18","HH19","HH20","HH21","HH22","HH23","HH24","HH25","HH26","HH27","HH28","HH29","HH30","HH31","HH32","HH33","HH34","HH35","HH36","HH37","HH38","HH39","HH40","HH41","HH42","HH43","HH44","HH45","HH46","HH47","HH48","HH49","HH50")
+
+MMfile$Date <- as.POSIXct(MMfile$Date, format = "%d/%m/%Y") %>% format("%d/%m/%Y")
+
+colnames(Masterfile[1:ncol(MMfile)]) <- header
+
+# Merge data
+Masterfile2 <- left_join(Masterfile, MMfile, by = "Date", suffix = c("_master", "_mm"))
+
+# Replace values in the master columns with MMfile values where they exist
+for (col in grep("_master$", names(Masterfile2), value = TRUE)) {
+  mm_col <- sub("_master$", "_mm", col)
+  Masterfile2[[col]] <- ifelse(!is.na(Masterfile2[[mm_col]]), Masterfile2[[mm_col]], Masterfile2[[col]])
+}
+Masterfile2 <- Masterfile2 %>%
+  select(-ends_with("_mm"))
+colnames(Masterfile2) <- headings
+
+outputfile <- paste0("X:\\GeneralAccounts\\Settlement\\", MMtype, " MM\\", settype2, " ", mm, " MM\\", MMtype2, " 591MM Messages ", settype, " - Temporary.xlsx")
+
+writexl::write_xlsx(Masterfile2, outputfile)
+#===================================================================591=====================================================================================
+
+
+
+```
+
+
+
+
+```{r D+4}
 # DOCUMENT
 
 # read in XML file
@@ -1660,10 +1744,6 @@ writeFormula(wb = mywb, sheet = "Summary", x = "=B97-C97", xy = c(4,startingrow+
 
 
 
-
-
-
-
 # ==============================================================================================================================================================================
 # ================================================================================= Main Table =================================================================================
 # ==============================================================================================================================================================================
@@ -1690,10 +1770,10 @@ for (row in 15:21) {
   addStyle(wb = mywb, sheet = "Summary", createStyle(border = "right", borderStyle= "thick"), rows = row, cols = 20)
 }
 
-addStyle(wb = mywb, sheet = "Summary", createStyle(border = "topleft", borderStyle= "thick"), rows = 14, cols = 11)
-addStyle(wb = mywb, sheet = "Summary", createStyle(border = "topright", borderStyle= "thick"), rows = 14, cols = 20)
-addStyle(wb = mywb, sheet = "Summary", createStyle(border = "bottomleft", borderStyle= "thick"), rows = 22, cols = 11)
-addStyle(wb = mywb, sheet = "Summary", createStyle(border = "bottomright", borderStyle= "thick"), rows = 22, cols = 20)
+addStyle(wb = mywb, sheet = "Summary", thicktl, rows = 14, cols = 11)
+addStyle(wb = mywb, sheet = "Summary", thicktr, rows = 14, cols = 20)
+addStyle(wb = mywb, sheet = "Summary", thickbl, rows = 22, cols = 11)
+addStyle(wb = mywb, sheet = "Summary", thickbr, rows = 22, cols = 20)
 
 writeFormula(wb = mywb, sheet = "Summary", xy = c(12,16), x = "=B17")
 writeFormula(wb = mywb, sheet = "Summary", xy = c(13,16), x = "=C17")
@@ -3637,10 +3717,13 @@ weekno <- readline(prompt = "State WEEK NUMBER of M4 settlement week: ")
 if (nchar(weekno) == 1) {
   weekno <- paste0("0",weekno)
 }
+
 weeknom4 <- weekno
 prevweekno <- as.numeric(weekno) - 1
+
 firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
 firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+
 year <- substring(text = firstday, first = 1, last = 4)
 yearm4 <- year
 
@@ -3649,10 +3732,6 @@ settype2 <- "M+4 Resettlement"
 settype3 <- "M+4"
 settype4 <- "M4"
 mm <- 30
-
-
-
-
 
 ### STATEMENT
 
@@ -3997,7 +4076,6 @@ delete <- inputfiles[grepl(x = inputfiles, pattern = "All*")]
 
 
 addWorksheet(wb = mywb, sheetName = "EX-Ante Report", tabColour = '#F4B084')
-addWorksheet(wb = mywb, sheetName = "CHECKS", tabColour = '#9BC2E6')
 addWorksheet(wb = mywb, sheetName = "Consumption Checks")
 addWorksheet(wb = mywb, sheetName = "En & Imp Split")
 addWorksheet(wb = mywb, sheetName = "SHADOW SETTLED")
@@ -5947,11 +6025,6 @@ for (row in c(3:338)) {
 
 
 
-
-
-
-
-
 # Ex-Ante Consumption sheet
 
 EAC <- "Ex-Ante Consumption"
@@ -6501,14 +6574,12 @@ writeData(wb = mywb, sheet = EIS, x = "CREIMDIFFP", startRow = 14, startCol = 35
 temp <- c()
 for (index in 4:10) {
   temp <- c(temp, paste0("=AI", index))
-}; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 17, startCol = 35)
+}
 
+writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 17, startCol = 35)
 writeFormula(wb = mywb, sheet = EIS, x = "=AL3", startRow = 16, startCol = 38)
-
 writeFormula(wb = mywb, sheet = EIS, x = "=AM3", startRow = 16, startCol = 39)
-
 writeFormula(wb = mywb, sheet = EIS, x = "=AN3", startRow = 16, startCol = 40)
-
 writeFormula(wb = mywb, sheet = EIS, x = "=AO3", startRow = 16, startCol = 41)
 
 for (index in 3:9) {
@@ -6585,13 +6656,6 @@ for (row in 17:23) {
   temp <- c(temp, paste0("=AL", row, "+AM", row, "-AN", row))
 }
 writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 17, startCol = 41)
-
-
-
-
-
-
-
 
 
 for (col in c(38:41)) {
@@ -7169,8 +7233,6 @@ for (file in inputfiles) {
 }
 
 writexl::write_xlsx(dfreports, outputfile)
-
-
 
 
 
@@ -9806,19 +9868,6 @@ for (row in 17:23) {
 writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 17, startCol = 41)
 
 
-
-
-
-
-
-
-
-for (col in c(38:41)) {
-  for (row in c(4:10, 17:23)) {
-    addStyle(wb = mywb, sheet = EIS, style = sterling, rows = row, cols = col)
-  }
-}
-
 temp <- c()
 for (index in 2:337) {
   temp <- c(temp, paste0("='SHADOW SETTLED'!E", index, "*VLOOKUP('En & Imp Split'!B", index+2, ",Summary!$U$2:$Y$9,4,0)"))
@@ -9828,6 +9877,11 @@ writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 46)
 
 
 # FORMATTING
+for (col in c(38:41)) {
+  for (row in c(4:10, 17:23)) {
+    addStyle(wb = mywb, sheet = EIS, style = sterling, rows = row, cols = col)
+  }
+}
 for (col in c(1,2,11,19,27,43)) {
   addStyle(wb = mywb, sheet = EIS, style = DATE, rows = 4:339, cols = col)
 }
