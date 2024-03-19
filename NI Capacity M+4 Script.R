@@ -571,8 +571,6 @@ then2 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-2), 3
 then3 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-2), 3, 4)),1,2))
 then4 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2))
 then5 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-5), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2))
-then6 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-6), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-5), 3, 4)),1,2))
-headings <- c(then6, then5, then4, then3, then2, then, when)
 
 year <- substr(year, 3, 4)
 
@@ -594,7 +592,7 @@ if (as.numeric(month.as.number) < 10) {
   calendar.tab <- paste0("20", as.numeric(year), ".", as.numeric(year)+1)
 }
 
-headings <- c(then6, then5, then4, then3, then2, then, when)
+headings <- c(then5, then4, then3, then2, then, when)
 
 for (i in 1:length(headings)) {
   writeData(mywb, SS, headings[i], startRow = 1, startCol = i+15)

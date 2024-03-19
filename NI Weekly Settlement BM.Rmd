@@ -2019,6 +2019,10 @@ for (row in c(18:20)) {
 }
 
 
+
+
+
+
 # Shadow Settled sheet
 
 SS <- "SHADOW SETTLED"
@@ -2615,12 +2619,22 @@ summer <- c("=AK3+TIME(2,30,0)", "=AK4+TIME(2,0,0)", "=AK5+TIME(2,30,0)", "=AK6+
 
 season <- c()
 
-if (firstday2 > as.Date(paste0(as.numeric(year)-1,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year),"-4-01"), format = "%Y-%m-%d")) {
-  temp <- winter
-  season <- "winter"
+if (as.numeric(year) %% 4 != 0) {     # if not a leap year
+  if (weeknod4 < 13 && weeknod4 > 44) {
+    temp <- winter
+    season <- "winter"
+    } else {
+      temp <- summer
+      season <- "summer"
+    }
 } else {
-  temp <- summer
-  season <- "summer"
+  if (weeknod4 < 13 && weeknod4 > 43) {
+    temp <- winter
+    season <- "winter"
+    } else {
+      temp <- summer
+      season <- "summer"
+    }
 }
 
 writeFormula(wb = mywb, sheet = CC, x = temp, startCol = 40, startRow = 3)
@@ -5634,12 +5648,22 @@ summer <- c("=AK3+TIME(2,30,0)", "=AK4+TIME(2,0,0)", "=AK5+TIME(2,30,0)", "=AK6+
 
 season <- c()
 
-if (firstday2 > as.Date(paste0(as.numeric(year)-1,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year),"-4-01"), format = "%Y-%m-%d")) {
-  temp <- winter
-  season <- "winter"
+if (as.numeric(year) %% 4 != 0) {     # if not a leap year
+  if (weeknod4 < 13 && weeknod4 > 44) {
+    temp <- winter
+    season <- "winter"
+    } else {
+      temp <- summer
+      season <- "summer"
+    }
 } else {
-  temp <- summer
-  season <- "summer"
+  if (weeknod4 < 13 && weeknod4 > 43) {
+    temp <- winter
+    season <- "winter"
+    } else {
+      temp <- summer
+      season <- "summer"
+    }
 }
 
 writeFormula(wb = mywb, sheet = CC, x = temp, startCol = 40, startRow = 3)
@@ -8841,12 +8865,22 @@ summer <- c("=AK3+TIME(2,30,0)", "=AK4+TIME(2,0,0)", "=AK5+TIME(2,30,0)", "=AK6+
 
 season <- c()
 
-if (firstday2 > as.Date(paste0(as.numeric(year)-1,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year),"-4-01"), format = "%Y-%m-%d")) {
-  temp <- winter
-  season <- "winter"
+if (as.numeric(year) %% 4 != 0) {     # if not a leap year
+  if (weeknod4 < 13 && weeknod4 > 44) {
+    temp <- winter
+    season <- "winter"
+    } else {
+      temp <- summer
+      season <- "summer"
+    }
 } else {
-  temp <- summer
-  season <- "summer"
+  if (weeknod4 < 13 && weeknod4 > 43) {
+    temp <- winter
+    season <- "winter"
+    } else {
+      temp <- summer
+      season <- "summer"
+    }
 }
 
 writeFormula(wb = mywb, sheet = CC, x = temp, startCol = 40, startRow = 3)
