@@ -450,7 +450,6 @@ thickbr <- createStyle(border = 'BottomRight', borderStyle = 'thick')
 
 ```
 
-
 ```{r document details}
 
 receiveddate <- readline(prompt = "Enter the DATE the document was RECEIVED in the format YYYYMMDD: ")
@@ -570,7 +569,7 @@ receiveddate3 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d-%m-%Y")
 writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/Document ", invoicenumber, " for ", PTunit, " received ", receiveddate3, ".xlsx"))
 
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
-inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = receiveddate3)]
 documentdata <- read_excel(path = inputfiles, sheet = 1)
 
 firstdayd4 <- documentdata %>% filter(run_type == "INIT" & market2 == "BALIMB")
@@ -584,86 +583,11 @@ firstdaym13 <- firstdaym13$bp_start_date %>% unique() %>% as.Date(format = "%Y-%
 
 ```
 
-
-
-# add MM here??
-
-```{r D4 Market Messages}
-
-MMtype <- "NIE"
-MMtype2 <- "NI"
-
-
-# ----------------------------------------------------------------------------------- MASTER FILE FOR MMS - SETUP -----------------------------------------------------------------------------------
-
-# read in relevant MM csv files
-receiveddate2 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d%m%Y")
-csvfile <- list.files(paste0("X:/GeneralAccounts/Settlement/SEMODownloads/", receiveddate), full.names = TRUE)
-csvfile <- csvfile[grepl(x = csvfile, pattern = paste0("*LCCPowerLimited_\\d{3}LA_", mm, "_\\d{8}-\\d{8}"))]
-
-if (length(csvfile) < 1) {
-  stop("No Adhoc Market Messages found. Stopping...")
-}
-
-Masterfilepath <- paste0("X:/GeneralAccounts/Settlement/", MMtype, " MM/", settype2, " ", mm, " MM/", list.files(paste0("X:/GeneralAccounts/Settlement/", MMtype, " MM/", settype2, " ", mm, " MM"), pattern = "Copy.xlsx"))
-
-if (length(Masterfilepath) > 1) {
-  stop("Close file before continuing. Stopping...")
-} else if (grepl(x = Masterfilepath, pattern = ".xlsx") == FALSE) {
-  stop("No MM Master file found. Stopping...")
-}
-
-
-#===================================================================591=====================================================================================
-# Get all of the Master file up until current settlement week
-Masterfile <- read_excel(path = Masterfilepath, sheet = 1, col_names = TRUE)
-colnames(Masterfile) <- headings
-
-Masterfile <- read.xlsx(xlsxFile = Masterfilepath, sheet = 1, startRow = 2, colNames = FALSE)
-header <- c("", "", seq(from = 1, to = 50, by = 1))
-Masterfile <- rbind.na(header, Masterfile)
-
-# Get Market Message file
-MMfile <- read.csv(csvfile[grepl(x = csvfile, pattern = "591")])[,c(1,4:50)]
-temp <- MMfile[,1]
-temp2 <- MMfile[,2:ncol(MMfile)]
-emptydf <- data.frame(rep(x = NA, times = 7))
-MMfile <- cbind(temp, emptydf, temp2)
-colnames(MMfile)[1:2] <- c("Date", "Month")
-
-col_types <- c("date", "text", rep("numeric", 50))
-headings <- c("Date", "Month", "HH1","HH2","HH3","H4","HH5","HH6","HH7","HH8","HH9","HH10","HH11","HH12","HH13","HH14","HH15","HH16","HH17","HH18","HH19","HH20","HH21","HH22","HH23","HH24","HH25","HH26","HH27","HH28","HH29","HH30","HH31","HH32","HH33","HH34","HH35","HH36","HH37","HH38","HH39","HH40","HH41","HH42","HH43","HH44","HH45","HH46","HH47","HH48","HH49","HH50")
-
-MMfile$Date <- as.POSIXct(MMfile$Date, format = "%d/%m/%Y") %>% format("%d/%m/%Y")
-
-colnames(Masterfile[1:ncol(MMfile)]) <- header
-
-# Merge data
-Masterfile2 <- left_join(Masterfile, MMfile, by = "Date", suffix = c("_master", "_mm"))
-
-# Replace values in the master columns with MMfile values where they exist
-for (col in grep("_master$", names(Masterfile2), value = TRUE)) {
-  mm_col <- sub("_master$", "_mm", col)
-  Masterfile2[[col]] <- ifelse(!is.na(Masterfile2[[mm_col]]), Masterfile2[[mm_col]], Masterfile2[[col]])
-}
-Masterfile2 <- Masterfile2 %>%
-  select(-ends_with("_mm"))
-colnames(Masterfile2) <- headings
-
-outputfile <- paste0("X:\\GeneralAccounts\\Settlement\\", MMtype, " MM\\", settype2, " ", mm, " MM\\", MMtype2, " 591MM Messages ", settype, " - Temporary.xlsx")
-
-writexl::write_xlsx(Masterfile2, outputfile)
-#===================================================================591=====================================================================================
-
-
-
-```
-
-
-
-
 ```{r D+4}
 
+##################################################################################################################################################################################################
+################################################################################ D+4 settlement section ##########################################################################################
+##################################################################################################################################################################################################
 
 # DEFINE VARIABLES
 
@@ -1814,7 +1738,7 @@ writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total
 
 # formulas for sales and purchases depend on date
 
-if (as.Date(firstday, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
+if (as.Date(firstdayd4, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
   # purchases
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
@@ -3734,16 +3658,16 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 # DEFINE VARIABLES
 
-weekno <- readline(prompt = "State WEEK NUMBER of M4 settlement week: ")
+firstday <- firstdaym4
+firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+
+weekno <- format(as.Date(firstday2), "%U") # %U so weeks start on Sunday
 if (nchar(weekno) == 1) {
-  weekno <- paste0("0",weekno)
+  weekno <- paste0("0", weekno)
 }
 
 weeknom4 <- weekno
 prevweekno <- as.numeric(weekno) - 1
-
-firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
-firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
 
 year <- substring(text = firstday, first = 1, last = 4)
 yearm4 <- year
@@ -4926,7 +4850,7 @@ writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total
 
 # formulas for sales and purchases depend on date
 
-if (as.Date(firstday, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
+if (as.Date(firstdaym4, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
   # purchases
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
@@ -6949,14 +6873,16 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 # DEFINE VARIABLES 
 
-weekno <- readline(prompt = "State WEEK NUMBER of M13 settlement week: ")
+firstday <- firstdaym13
+firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+
+weekno <- format(as.Date(firstday2), "%U") # %U so weeks start on Sunday
 if (nchar(weekno) == 1) {
   weekno <- paste0("0",weekno)
 }
 weeknom13 <- weekno
 prevweekno <- as.numeric(weekno) - 1
-firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
-firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+
 year <- substring(text = firstday, first = 1, last = 4)
 yearm13 <- year
 
@@ -8141,7 +8067,7 @@ writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total
 
 # formulas for sales and purchases depend on date
 
-if (as.Date(firstday, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
+if (as.Date(firstdaym13, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
   # purchases
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))

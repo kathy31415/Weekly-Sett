@@ -562,19 +562,9 @@ for (i in 2:1444) {
 }
 writeFormula(mywb, SS, temp, startRow = 50, startCol = 4)
 
-year <- paste0("20",year)
-
-when <- paste0(20, substr(year,3,4), "/", substr(as.numeric(substr(year,3,4))+1,1,2))
-then <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-1), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)), 3, 4)),1,2))
-then2 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-2), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-1), 3, 4)),1,2))
-then3 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-2), 3, 4)),1,2))
-then4 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2))
-then5 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-5), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2))
-headings <- c(then5, then4, then3, then2, then, when)
-
-year <- substr(year, 3, 4)
-
 writeData(mywb, SS, c("PCCSUP", "FSOCDIFFP", "PVMO"), startRow = 2, startCol = 15)
+
+headings <- c("2018/19", "2019/20", "2020/21", "2021/22", "2022/23", "2023/24", "2024/25")
 
 pt1 <- c(12.45, 0.023, 0.498)   #18/19
 pt2 <- c(13.29, 0.011, 0.388)   #19/20
@@ -582,7 +572,6 @@ pt3 <- c(14.91, 0.001, 0.466)   #20/21
 pt4 <- c(14.01, 0, 0.547)       #21/22
 pt5 <- c(11.97, 0, 0.422)       #22/23
 pt6 <- c(16.17, -0.013, 0.599)  #23/24
-
 passthrus <- list(pt1, pt2, pt3, pt4, pt5, pt6)
 
 calendar.tab <- c()
@@ -950,7 +939,8 @@ prevcapacityfiles <- list.files(prevcapacityfilepath)
 prevcapacityfiles <- prevcapacityfiles[grepl(x = prevcapacityfiles, pattern = paste0(month, "|", toupper(month)))]
 prevcapacityfiles <- prevcapacityfiles[grepl(x = prevcapacityfiles, pattern = year)]
 
-# SETUP
+
+# RS SETUP
 writeData(mywb, RS, prevsettype, xy = c(1,1))
 writeData(mywb, RS, settype, xy = c(1,11))
 writeData(mywb, RS, "Resettled Amounts", startCol = 1, startRow = 35)
@@ -1011,8 +1001,10 @@ for (i in 1:length(headings)) {
 writeData(mywb, RS, paste0(month, year, " ", settype), xy = c(2,23))
 writeData(mywb, RS, paste0(month, year, " ", settype), xy = c(2,35))
 
+
 # FORMULAS
 prevfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", prevsettype2, "/[", prevcapacityfiles, "]")
+prevfile <- prevfile[grepl(x = prevfile, pattern = year)]
 
 # M+4 section
 writeFormula(wb = mywb, sheet = RS, x = paste0("'", prevfile, "CRM Summary'!B$42"), startCol = 2, startRow = 3)

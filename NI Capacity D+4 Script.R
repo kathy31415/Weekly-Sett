@@ -504,8 +504,6 @@ for (ROW in 10:40) {
 
 
 
-
-
 # SHADOW SETTLED
 
 headings <- c("Date", "Time P.E", "Date/Time", "Settlement Date", "CCC", "CSOCDIFFP", "CVMO")
@@ -562,20 +560,10 @@ for (i in 2:1444) {
 writeFormula(mywb, SS, temp, startRow = 50, startCol = 4)
 
 
-year <- paste0("20",year)
-
-when <- paste0(20, substr(year,3,4), "/", substr(as.numeric(substr(year,3,4))+1,1,2))
-then <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-1), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)), 3, 4)),1,2))
-then2 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-2), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-1), 3, 4)),1,2))
-then3 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-2), 3, 4)),1,2))
-then4 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2))
-then5 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-5), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2))
-then6 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-6), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-5), 3, 4)),1,2))
-headings <- c(then6, then5, then4, then3, then2, then, when)
-
-year <- substr(year, 3, 4)
 
 writeData(mywb, SS, c("PCCSUP", "FSOCDIFFP", "PVMO"), startRow = 2, startCol = 15)
+
+headings <- c("2018/19", "2019/20", "2020/21", "2021/22", "2022/23", "2023/24", "2024/25")
 
 pt1 <- c(12.45, 0.023, 0.498)   #18/19
 pt2 <- c(13.29, 0.011, 0.388)   #19/20
@@ -592,8 +580,6 @@ if (as.numeric(month.as.number) < 10) {
 } else {
   calendar.tab <- paste0("20", as.numeric(year), ".", as.numeric(year)+1)
 }
-
-headings <- c(then6, then5, then4, then3, then2, then, when)
 
 for (i in 1:length(headings)) {
   writeData(mywb, SS, headings[i], startRow = 1, startCol = i+15)
@@ -630,7 +616,6 @@ for (i in 2:1492) {
   temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", i, ")*$", toupper(letters[which_column]), "$4"))
 }
 writeFormula(mywb, SS, temp, startRow = 2, startCol = 7)
-
 
 
 
@@ -784,6 +769,7 @@ headings <- c("Settlement Date", "Trading Date", rep(x = "", times = 3), "HH", "
 for (i in 1:length(headings1)) {
   writeData(mywb, EIS, headings[i], startCol = i, startRow = 3)
 }
+
 
 
 
@@ -942,6 +928,10 @@ for (ROW in c(2:1393)) {
 }
 
 saveWorkbook(mywb, outputfile, TRUE)
+
+
+
+
 
 # add to Invoice Backup
 
