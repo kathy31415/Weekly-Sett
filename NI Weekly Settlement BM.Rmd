@@ -586,38 +586,6 @@ firstdaym13 <- firstdaym13$bp_start_date %>% unique() %>% as.Date(format = "%Y-%
 
 
 
-```{r D+4}
-################################################################################################################################################################################################
-############################################################################## D+4 settlement section ##########################################################################################
-################################################################################################################################################################################################
-
-# DEFINE VARIABLES
-
-weekno <- format(as.Date(firstday2), "%U") # %U so weeks start on Sunday
-if (nchar(weekno) == 1) {
-  weekno <- paste0("0", weekno)
-}
-
-weeknod4 <- weekno
-prevweekno <- as.numeric(weekno) - 1
-
-firstday <- firstdayd4
-firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
-
-year <- substring(text = firstday, first = 1, last = 4)
-yeard4 <- year
-
-settype <- "D+4"
-settype2 <- "D+4 Initial"
-settype3 <- "INIT"
-settype4 <- "D4"
-mm <- 20
-
-
-
-
-```
-
 # add MM here??
 
 ```{r D4 Market Messages}
@@ -695,6 +663,31 @@ writexl::write_xlsx(Masterfile2, outputfile)
 
 
 ```{r D+4}
+
+
+# DEFINE VARIABLES
+
+firstday <- firstdayd4
+firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+
+weekno <- format(as.Date(firstday2), "%U") # %U so weeks start on Sunday
+if (nchar(weekno) == 1) {
+  weekno <- paste0("0", weekno)
+}
+
+weeknod4 <- weekno
+prevweekno <- as.numeric(weekno) - 1
+
+year <- substring(text = firstday, first = 1, last = 4)
+yeard4 <- year
+
+settype <- "D+4"
+settype2 <- "D+4 Initial"
+settype3 <- "INIT"
+settype4 <- "D4"
+mm <- 20
+
+
 
 ### STATEMENT
 
