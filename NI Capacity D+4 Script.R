@@ -561,23 +561,6 @@ for (i in 2:1444) {
 }
 writeFormula(mywb, SS, temp, startRow = 50, startCol = 4)
 
-temp <- c()
-for (i in 2:1492) {
-  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", i, ")*$P$2*SUMIFS('CRM REPORT'!M:M,'CRM REPORT'!L:L,'SHADOW SETTLED'!C", i, ",'CRM REPORT'!J:J,\"FQMCC\")"))
-}
-writeFormula(mywb, SS, temp, startRow = 2, startCol = 5)
-
-temp <- c()
-for (i in 2:1492) {
-  temp <- c(temp, paste0("=E", i, "*$P$3"))
-}
-writeFormula(mywb, SS, temp, startRow = 2, startCol = 6)
-
-temp <- c()
-for (i in 2:1492) {
-  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", i, ")*$P$4"))
-}
-writeFormula(mywb, SS, temp, startRow = 2, startCol = 7)
 
 year <- paste0("20",year)
 
@@ -587,17 +570,19 @@ then2 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-2), 3
 then3 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-2), 3, 4)),1,2))
 then4 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2))
 then5 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-5), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2))
+then6 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-6), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-5), 3, 4)),1,2))
+headings <- c(then6, then5, then4, then3, then2, then, when)
 
 year <- substr(year, 3, 4)
 
 writeData(mywb, SS, c("PCCSUP", "FSOCDIFFP", "PVMO"), startRow = 2, startCol = 15)
 
-pt1 <- c(16.17, -0.013, 0.599)  #23/24
-pt2 <- c(11.97, 0, 0.422)       #22/23
-pt3 <- c(14.01, 0, 0.547)       #21/22
-pt4 <- c(14.91, 0.001, 0.466)   #20/21
-pt5 <- c(13.29, 0.011, 0.388)   #19/20
-pt6 <- c(12.45, 0.023, 0.498)   #18/19
+pt1 <- c(12.45, 0.023, 0.498)   #18/19
+pt2 <- c(13.29, 0.011, 0.388)   #19/20
+pt3 <- c(14.91, 0.001, 0.466)   #20/21
+pt4 <- c(14.01, 0, 0.547)       #21/22
+pt5 <- c(11.97, 0, 0.422)       #22/23
+pt6 <- c(16.17, -0.013, 0.599)  #23/24
 
 passthrus <- list(pt1, pt2, pt3, pt4, pt5, pt6)
 
@@ -608,17 +593,45 @@ if (as.numeric(month.as.number) < 10) {
   calendar.tab <- paste0("20", as.numeric(year), ".", as.numeric(year)+1)
 }
 
-if (as.numeric(month.as.number) < 10) {
-  headings <- c(then, then2, then3, then4, then5)
-  passthrus <- passthrus[2:length(passthrus)]
-} else {
-  headings <- c(when, then, then2, then3, then4, then5)
-}
+headings <- c(then6, then5, then4, then3, then2, then, when)
 
 for (i in 1:length(headings)) {
   writeData(mywb, SS, headings[i], startRow = 1, startCol = i+15)
   writeData(mywb, SS, passthrus[i], startRow = 2, startCol = i+15)
 }
+
+which_column <- c()
+if(as.numeric(format(as.Date(dates[1], "%d/%m/%Y"), "%Y%m%d")) > 20231001) {
+  which_column <- 21
+} else if(as.numeric(format(as.Date(dates[1], "%d/%m/%Y"), "%Y%m%d")) > 20221001) {
+  which_column <- 20
+} else if(as.numeric(format(as.Date(dates[1], "%d/%m/%Y"), "%Y%m%d")) > 20211001) {
+  which_column <- 19
+} else if(as.numeric(format(as.Date(dates[1], "%d/%m/%Y"), "%Y%m%d")) > 20201001) {
+  which_column <- 18
+} else if(as.numeric(format(as.Date(dates[1], "%d/%m/%Y"), "%Y%m%d")) > 20191001) {
+  which_column <- 17
+}
+
+temp <- c()
+for (i in 2:1492) {
+  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", i, ")*$", toupper(letters[which_column]), "$2*SUMIFS('CRM REPORT'!M:M,'CRM REPORT'!L:L,'SHADOW SETTLED'!C", i, ",'CRM REPORT'!J:J,\"FQMCC\")"))
+}
+writeFormula(mywb, SS, temp, startRow = 2, startCol = 5)
+
+temp <- c()
+for (i in 2:1492) {
+  temp <- c(temp, paste0("=E", i, "*$", toupper(letters[which_column]), "$3"))
+}
+writeFormula(mywb, SS, temp, startRow = 2, startCol = 6)
+
+temp <- c()
+for (i in 2:1492) {
+  temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", i, ")*$", toupper(letters[which_column]), "$4"))
+}
+writeFormula(mywb, SS, temp, startRow = 2, startCol = 7)
+
+
 
 
 
@@ -656,19 +669,19 @@ writeFormula(mywb, EIS, temp, startRow = 4, startCol = 5)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!P", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$P$2)*0.8745"))
+  temp <- c(temp, paste0("=('Consumption Checks'!P", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$", toupper(letters[which_column]), "$2)*0.8745"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 6)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!Q", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$P$2)*0.8745"))
+  temp <- c(temp, paste0("=('Consumption Checks'!Q", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$", toupper(letters[which_column]), "$2)*0.8745"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 7)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=('Consumption Checks'!R", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$P$2)*0.8745"))
+  temp <- c(temp, paste0("=('Consumption Checks'!R", ROW, "*SUMIFS('CRM REPORT'!$M:$M,'CRM REPORT'!$L:$L,'En & Imp Split'!$C", ROW+2, ",'CRM REPORT'!$J:$J,\"FQMCC\")*'SHADOW SETTLED'!$", toupper(letters[which_column]), "$2)*0.8745"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 8)
 
@@ -698,19 +711,19 @@ writeFormula(mywb, EIS, temp, startRow = 4, startCol = 13)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=F", ROW+2, "*'SHADOW SETTLED'!$P$3"))
+  temp <- c(temp, paste0("=F", ROW+2, "*'SHADOW SETTLED'!$", toupper(letters[which_column]), "$3"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 14)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=G", ROW+2, "*'SHADOW SETTLED'!$P$3"))
+  temp <- c(temp, paste0("=G", ROW+2, "*'SHADOW SETTLED'!$", toupper(letters[which_column]), "$3"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 15)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("=H", ROW+2, "*'SHADOW SETTLED'!$P$3"))
+  temp <- c(temp, paste0("=H", ROW+2, "*'SHADOW SETTLED'!$", toupper(letters[which_column]), "$3"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 16)
 
@@ -740,19 +753,19 @@ writeFormula(mywb, EIS, temp, startRow = 4, startCol = 21)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("='Consumption Checks'!P", index, "*'SHADOW SETTLED'!$P$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
+  temp <- c(temp, paste0("='Consumption Checks'!P", index, "*'SHADOW SETTLED'!$", toupper(letters[which_column]), "$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 22)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("='Consumption Checks'!Q", index, "*'SHADOW SETTLED'!$P$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
+  temp <- c(temp, paste0("='Consumption Checks'!Q", index, "*'SHADOW SETTLED'!$", toupper(letters[which_column]), "$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 23)
 
 temp <- c()
 for (ROW in 2:1489) {
-  temp <- c(temp, paste0("='Consumption Checks'!R", index, "*'SHADOW SETTLED'!$P$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
+  temp <- c(temp, paste0("='Consumption Checks'!R", index, "*'SHADOW SETTLED'!$", toupper(letters[which_column]), "$4*VLOOKUP($A", index+2, ",'MO Summary'!$P$8:$S$38,4,0)"))
 }
 writeFormula(mywb, EIS, temp, startRow = 4, startCol = 24)
 
@@ -865,7 +878,7 @@ writeFormula(mywb, CC, temp, startRow = 2, startCol = 14)
 
 temp <- c()
 for (ROW in 2:1393) {
-  temp <- c(temp, paste0("=VLOOKUP(L", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/TUoS, CAIR, SSS/[SONI Bill Summary.xlsx]2023.24 CALENDAR'!$A:$AX,M", ROW, ",0)"))
+  temp <- c(temp, paste0("=VLOOKUP(L", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/PT_500057 SEMO Shadow Settlement/TUoS, CAIR, SSS/[SONI Bill Summary.xlsx]", calendar.tab, " CALENDAR'!$A:$AX,M", ROW, ",0)"))
 }
 writeFormula(mywb, CC, temp, startRow = 2, startCol = 15)
 
