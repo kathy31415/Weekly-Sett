@@ -405,34 +405,7 @@ data.frame.na <- function (..., row.names = NULL, check.rows = FALSE, check.name
 }
 ```
 
-```{r D+4}
-################################################################################################################################################################################################
-############################################################################## D+4 settlement section ##########################################################################################
-################################################################################################################################################################################################
-
-# DEFINE VARIABLES
-
-receiveddate <- readline(prompt = "Enter the DATE the document was RECEIVED in the format YYYYMMDD: ")
-
-weekno <- readline(prompt = "State WEEK NUMBER of D4 settlement week: ")
-if (nchar(weekno) == 1) {
-  weekno <- paste0("0", weekno)
-}
-
-weeknod4 <- weekno
-prevweekno <- as.numeric(weekno) - 1
-
-firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
-firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
-
-year <- substring(text = firstday, first = 1, last = 4)
-yeard4 <- year
-
-settype <- "D+4"
-settype2 <- "D+4 Initial"
-settype3 <- "INIT"
-settype4 <- "D4"
-mm <- 20
+```{r Setup}
 
 # USERNAME & DRIVES
 un <- Sys.getenv("USERNAME")
@@ -457,15 +430,15 @@ negStyle <- createStyle(fontColour = "#9C0006", bgFill = "#FFC7CE")
 posStyle <- createStyle(fontColour = "#006100", bgFill = "#C6EFCE")
 boldStyle <- createStyle(textDecoration = "bold")
 yellowStyle <- createStyle(fontColour = 'red', textDecoration = 'bold', fgFill = 'yellow', border = "TopBottomLeftRight")
-orangeStyle <- createStyle(numFmt = "[$€]#,##0.00", fgFill = '#FFCC99', border = "TopBottomLeftRight")
-whiteStyle <- createStyle(numFmt = "[$€]#,##0.00", border = "TopBottomLeftRight")
+orangeStyle <- createStyle(numFmt = "[$£]#,##0.00", fgFill = '#FFCC99', border = "TopBottomLeftRight")
+whiteStyle <- createStyle(numFmt = "[$£]#,##0.00", border = "TopBottomLeftRight")
 euro <- createStyle(numFmt = "[$€]#,##0.00")
 DATE <- createStyle(numFmt = "DATE")
 NUMBER <- createStyle(numFmt = "NUMBER")
 TIME <- createStyle(numFmt = "hh:mm:ss")
 PERCENT <- createStyle(numFmt = "0%")
 redStyle <- createStyle(fontColour = 'red', textDecoration = 'bold')
-bluestyle <- createStyle(fgFill = "#B4C6E7")
+bluegrey <- createStyle(fgFill = "#B4C6E7")
 thicktop <- createStyle(border = 'Top', borderStyle = 'thick')
 thickbottom <- createStyle(border = 'Bottom', borderStyle = 'thick')
 thickleft <- createStyle(border = 'Left', borderStyle = 'thick')
@@ -474,7 +447,12 @@ thicktl <- createStyle(border = 'TopLeft', borderStyle = 'thick')
 thicktr <- createStyle(border = 'TopRight', borderStyle = 'thick')
 thickbl <- createStyle(border = 'BottomLeft', borderStyle = 'thick')
 thickbr <- createStyle(border = 'BottomRight', borderStyle = 'thick')
-bluegrey <- bluegrey <- createStyle(fgFill = "#B4C6E7")
+
+```
+
+```{r document details}
+
+receiveddate <- readline(prompt = "Enter the DATE the document was RECEIVED in the format YYYYMMDD: ")
 
 # DOCUMENT
 
@@ -590,6 +568,52 @@ receiveddate3 <- as.Date(receiveddate, format = "%Y%m%d") %>% format("%d-%m-%Y")
 
 writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/Document ", invoicenumber, " for ", PTunit, " received ", receiveddate3, ".xlsx"))
 
+inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = receiveddate3)]
+if (length(inputfiles) > 1) {
+  inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
+}
+documentdata <- read_excel(path = inputfiles, sheet = 1)
+
+firstdayd4 <- documentdata %>% filter(run_type == "INIT" & market2 == "BALIMB")
+firstdayd4 <- firstdayd4$bp_start_date %>% unique() %>% as.Date(format = "%Y-%m-%d") %>% format("%Y%m%d")
+
+firstdaym4 <- documentdata %>% filter(run_type == "M4" & market2 == "BALIMB")
+firstdaym4 <- firstdaym4$bp_start_date %>% unique() %>% as.Date(format = "%Y-%m-%d") %>% format("%Y%m%d")
+
+firstdaym13 <- documentdata %>% filter(run_type == "M13" & market2 == "BALIMB")
+firstdaym13 <- firstdaym13$bp_start_date %>% unique() %>% as.Date(format = "%Y-%m-%d") %>% format("%Y%m%d")
+
+```
+
+
+```{r D+4}
+################################################################################################################################################################################################
+############################################################################## D+4 settlement section ##########################################################################################
+################################################################################################################################################################################################
+
+# DEFINE VARIABLES
+
+firstday <- firstdayd4
+firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+
+weekno <- as.numeric(format(as.Date(firstday2), "%U")) + 1 # %U so weeks start on Sunday
+weekno <- as.character(weekno)
+if (nchar(weekno) == 1) {
+  weekno <- paste0("0", weekno)
+}
+
+weeknod4 <- weekno
+prevweekno <- as.numeric(weekno) - 1
+
+year <- substring(text = firstday, first = 1, last = 4)
+yeard4 <- year
+
+settype <- "D+4"
+settype2 <- "D+4 Initial"
+settype3 <- "INIT"
+settype4 <- "D4"
+mm <- 20
 
 ### STATEMENT
 
@@ -1085,13 +1109,12 @@ colnames(df) <- c("ReportName", "ReportDate", "ID", "ExchangeTradeID", "Exchange
 )
 
 writeData(mywb, sheet = "EX-Ante Report", x = df)
+```
 
 
-
-
+```{r D+4}
 # Summary sheet
 
-activesheet <- "Summary"
 dates <- seq(from = as.Date(firstday, format = "%Y%m%d"), by = "1 day", length.out = 7) %>% format("%d/%m/%Y")
 charges <- c('CCA', 'CDIFFPDA', 'CDIFFPID', 'CDIFFPIMB', 'CIMB', 'CIMP', 'CREIMDIFFP', 'CREV', 'CSHORTDIFFP')
 
@@ -1647,8 +1670,8 @@ writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 13, x = "20000
 writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 14, x = "200001.4")
 writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 15, x = "200008.1")
 writeData(wb = mywb, sheet = "Summary", startRow = 17, startCol = 16, x = "200001.6")
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#FFFF00", textDecoration = 'bold', halign = 'center'), rows = 17, cols = 11)
-addStyle(wb = mywb, sheet = activesheet, style = createStyle(fgFill = "#FFFF00", textDecoration = 'bold', halign = 'center', fontColour = 'red'), rows = 17, cols = 12:16)
+addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#FFFF00", textDecoration = 'bold', halign = 'center'), rows = 17, cols = 11)
+addStyle(wb = mywb, sheet = "Summary", style = createStyle(fgFill = "#FFFF00", textDecoration = 'bold', halign = 'center', fontColour = 'red'), rows = 17, cols = 12:16)
 
 writeData(wb = mywb, sheet = "Summary", startRow = 18, startCol = 11, x = "SEMO Purchases")
 writeData(wb = mywb, sheet = "Summary", startRow = 19, startCol = 11, x = "SEMO Sales")
@@ -1656,19 +1679,7 @@ writeData(wb = mywb, sheet = "Summary", startRow = 20, startCol = 11, x = "Ex-An
 writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total")
 
 # formulas for sales and purchases depend on date
-if (as.Date(firstday, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
-  # purchases
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87+D51", xy = c(14,18))
-
-
-  # sales
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(12,19))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)", xy = c(13,19))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)", xy = c(14,19))
-
-} else {
+if (as.Date(firstdayd4, format = "%Y%m%d") >= as.Date("20221001", format = "%Y%m%d") & as.Date(firstdayd4, format = "%Y%m%d") <= as.Date("20230930", format = "%Y%m%d")) {
   # purchases
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
@@ -1679,6 +1690,18 @@ if (as.Date(firstday, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d"
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)+B51", xy = c(12,19))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+C51", xy = c(13,19))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+D51", xy = c(14,19))
+
+} else {
+  # purchases
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87+D51", xy = c(14,18))
+
+
+  # sales
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)", xy = c(14,19))
 }
 
 writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CS3:CS338)", xy = c(15,18))
@@ -1715,31 +1738,23 @@ writeData(wb = mywb, sheet = "Summary", x = "Against AD Day Ahead Sheet", startR
 for (row in c(18:22)) {
   addStyle(wb = mywb, sheet = "Summary", style = euro, rows = row, cols = 12:19)
 }
+```
 
 
-
-
-
+```{r D+4}
 # Shadow Settled sheet
 
 SS <- "SHADOW SETTLED"
 
-when <- paste0(20, substr(year,3,4), "/", substr(as.numeric(substr(year,3,4))+1,1,2))
-then <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-1), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)), 3, 4)),1,2))
-then2 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-2), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-1), 3, 4)),1,2))
-then3 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-2), 3, 4)),1,2))
-then4 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-3), 3, 4)),1,2))
-then5 <- paste0(20, substr(as.numeric(substr(as.character(as.numeric(year)-5), 3, 4)),1,2), "/", substr(as.numeric(substr(as.character(as.numeric(year)-4), 3, 4)),1,2))
-
 # Passthroughs from SEMO Charging Statement
-headings1 <- c('Date', 'Time P.E', 'Date/Time', 'Settlement Date', 'CCA', 'CDIFFPDA', 'CDIFFPIMB', 'CIMB', 'CIMP', 'CREV', 'CREIMDIFFP', 'CSHORTDIFFP', rep.int("", times = 3), when, then, then2, then3, then4, then5)
+headings1 <- c('Date', 'Time P.E', 'Date/Time', 'Settlement Date', 'CCA', 'CDIFFPDA', 'CDIFFPIMB', 'CIMB', 'CIMP', 'CREV', 'CREIMDIFFP', 'CSHORTDIFFP', rep.int("", times = 3), "2018/19", "2019/20", "2020/21", "2021/22", "2022/23", "2023/24", "2024/25")
 
-temp <- c(11.52, 1.76, 0.029, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 16, x = temp)
-temp <- c(21.85, -0.67, 0.029, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 17, x = temp)
-temp <- c(9.19, 0.70, 0, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 18, x = temp)
-temp <- c(8.96, 1.61, 0.015, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 19, x = temp)
-temp <- c(10.4, 1.25, 0.015, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 20, x = temp)
-temp <- c(5.22, 1.3, 0.015, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 21, x = temp)
+temp <- c(5.22, 1.3, 0.015, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 16, x = temp)
+temp <- c(10.4, 1.25, 0.015, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 17, x = temp)
+temp <- c(8.96, 1.61, 0.015, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 18, x = temp)
+temp <- c(9.19, 0.70, 0, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 19, x = temp)
+temp <- c(21.85, -0.67, 0.029, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 20, x = temp)
+temp <- c(11.52, 1.76, 0.029, 500); writeData(wb = mywb, sheet = SS, startRow = 2, startCol = 21, x = temp)
 
 for (COL in 1:length(headings1)) {
   writeData(wb = mywb, sheet = SS, x = headings1[COL], startRow = 1, startCol = COL)
@@ -1797,17 +1812,17 @@ addStyle(wb = mywb, sheet = SS, style = TIME, rows = 2:337, cols = 2)
 
 which_column <- c()
 if(as.numeric(firstday) > 20231001) {
-  which_column <- 16
-} else if (as.numeric(firstday) > 20221001) {
-  which_column <- 17
-} else if (as.numeric(firstday) > 20211001) {
-  which_column <- 18
-} else if (as.numeric(firstday) > 20201001) {
-  which_column <- 19
-} else if (as.numeric(firstday) > 20191001) {
-  which_column <- 20
-} else {
   which_column <- 21
+} else if (as.numeric(firstday) > 20221001) {
+  which_column <- 20
+} else if (as.numeric(firstday) > 20211001) {
+  which_column <- 19
+} else if (as.numeric(firstday) > 20201001) {
+  which_column <- 18
+} else if (as.numeric(firstday) > 20191001) {
+  which_column <- 17
+} else {
+  which_column <- 16
 }
 
 
@@ -1875,11 +1890,12 @@ writeData(wb = mywb, sheet = SS, x = "PCC", startRow = 4, startCol = 15)
 writeData(wb = mywb, sheet = SS, x = "PSTR", startRow = 5, startCol = 15)
 
 for (row in c(2:5)) {
-  addStyle(wb = mywb, sheet = "Summary", style = euro, rows = row, cols = 16:21)
+  addStyle(wb = mywb, sheet = SS, style = euro, rows = row, cols = 16:21)
 }
+```
 
 
-
+```{r D+4}
 # Consumption Checks sheet
 
 CC <- "Consumption Checks"
@@ -2285,12 +2301,22 @@ summer <- c("=AJ3+TIME(2,30,0)", "=AJ4+TIME(2,0,0)", "=AJ5+TIME(2,30,0)", "=AJ6+
 
 season <- c()
 
-if (firstday2 > as.Date(paste0(as.numeric(year)-1,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year),"-4-01"), format = "%Y-%m-%d")) {
-  temp <- winter
-  season <- "winter"
+if (as.numeric(year) %% 4 != 0) {     # if not a leap year
+  if (as.numeric(weeknod4) < 13 | as.numeric(weeknod4) > 44) {
+    temp <- winter
+    season <- "winter"
+    } else {
+      temp <- summer
+      season <- "summer"
+    }
 } else {
-  temp <- summer
-  season <- "summer"
+  if (as.numeric(weeknod4) < 13 | as.numeric(weeknod4) > 43) {
+    temp <- winter
+    season <- "winter"
+    } else {
+      temp <- summer
+      season <- "summer"
+    }
 }
 
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 39)
@@ -2635,7 +2661,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 87)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUMIFS(F:F,C:C,BP", index, ")*'SHADOW SETTLED'!$P$4*SUMIFS(REPORT!M:M,REPORT!N:N,'Consumption Checks'!BP", index, ",REPORT!J:J,\"FCCA\")")) # SS:p not SS:T to be dynamic
+  temp <- c(temp, paste0("=SUMIFS(F:F,C:C,BP", index, ")*'SHADOW SETTLED'!$", which_column, "$4*SUMIFS(REPORT!M:M,REPORT!N:N,'Consumption Checks'!BP", index, ",REPORT!J:J,\"FCCA\")"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 88)
 
@@ -2696,11 +2722,10 @@ for (ROW in 3:338) {
 for (col in c(69:88, 90:97)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#FFEB9C", fontColour = "#9C5700"), rows = 1, cols = col)
 }
+```
 
 
-
-
-
+```{r D+4}
 # Ex-Ante Consumption sheet
 
 EAC <- "Ex-Ante Consumption"
