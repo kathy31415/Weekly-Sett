@@ -587,7 +587,7 @@ firstdaym13 <- firstdaym13$bp_start_date %>% unique() %>% as.Date(format = "%Y-%
 ```
 
 
-```{r D+4}
+```{r D+4 statements & reports}
 ################################################################################################################################################################################################
 ############################################################################## D+4 settlement section ##########################################################################################
 ################################################################################################################################################################################################
@@ -903,12 +903,10 @@ for (file in inputfiles) {
 }
 
 writexl::write_xlsx(dfreports, outputfile)
+```
 
 
-
-
-
-
+```{r D+4 create workbook}
 # CREATE EXCEL FILE - SETUP
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
@@ -980,7 +978,10 @@ addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = DATE, rows = 2:194, c
 for (col in c(4,15,16,20,26:28,30:35,41)) {
   addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = NUMBER, rows = 2:194, cols = col)
 }
+```
 
+
+```{r D+4 EAR}
 # ECC Ex-Ante Report sheet
 
 # read in xml file
@@ -1112,7 +1113,7 @@ writeData(mywb, sheet = "EX-Ante Report", x = df)
 ```
 
 
-```{r D+4}
+```{r D+4 Summary}
 # Summary sheet
 
 dates <- seq(from = as.Date(firstday, format = "%Y%m%d"), by = "1 day", length.out = 7) %>% format("%d/%m/%Y")
@@ -1741,7 +1742,7 @@ for (row in c(18:22)) {
 ```
 
 
-```{r D+4}
+```{r D+4 SS}
 # Shadow Settled sheet
 
 SS <- "SHADOW SETTLED"
@@ -1895,7 +1896,7 @@ for (row in c(2:5)) {
 ```
 
 
-```{r D+4}
+```{r D+4 CC}
 # Consumption Checks sheet
 
 CC <- "Consumption Checks"
@@ -1930,7 +1931,8 @@ for (col in c(1,12,24,35,38,41,65)) {
 temp <- c()
 for (index in 2:337) {
   temp <- c(temp, paste0("='SHADOW SETTLED'!B", index))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 2)
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 2)
 
 for (col in c(2,5,14,26,36,39,42)) {
   addStyle(wb = mywb, sheet = CC, style = TIME, rows = 3:338, cols = col)
@@ -2431,7 +2433,6 @@ for (index in 3:338) {
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 51)
 
-
 temp <- c()
 for (total in totals) {
   temp <- c(temp, paste0("=SUM(AY", total-47, ":AY", total, ")"))
@@ -2444,7 +2445,6 @@ temp <- c()
 for (total in totals) {
   temp <- c(temp, paste0("=IF(AND(SUM(AY", total-47, ":AY", total, ")<0.01,SUM(AY", total-47, ":AY", total, ")>-0.01),\"TRUE\",\"FALSE\")"))
 }
-
 for (i in 1:7) {
   writeFormula(wb = mywb, sheet = CC, x = temp[i], startRow = totals[i], startCol = 53)
 }
@@ -2452,7 +2452,8 @@ for (i in 1:7) {
 temp <- c()
 for (index in 3:338) {
   temp <- c(temp, paste0("=SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$AK", index, ",REPORT!$P:$P,\"QEX\",REPORT!$O:$O, $BB$1)"))
-}; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 54)
+}
+writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 54)
 
 temp <- c()
 for (index in 3:338) {
@@ -2623,6 +2624,7 @@ for (index in 3:338) {
   temp <- c(temp, paste0("=P", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMP\"))"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 81)
+
 temp <- c()
 for (index in 3:338) {
   temp <- c(temp, paste0("=Q", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMP\"))"))
@@ -2661,25 +2663,25 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 87)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUMIFS(F:F,C:C,BP", index, ")*'SHADOW SETTLED'!$", which_column, "$4*SUMIFS(REPORT!M:M,REPORT!N:N,'Consumption Checks'!BP", index, ",REPORT!J:J,\"FCCA\")"))
+  temp <- c(temp, paste0("=SUMIFS(F:F,C:C,BP", index, ")*'SHADOW SETTLED'!$", toupper(letters[which_column]), "$4*SUMIFS(REPORT!M:M,REPORT!N:N,'Consumption Checks'!BP", index, ",REPORT!J:J,\"FCCA\")"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 88)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")<0),BW", index, ",0)"))
+  temp <- c(temp, paste0("=IF(SUM(BT", index, ":BV", index, ")<0,BW", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 90)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")<0),BX", index, ",0)"))
+  temp <- c(temp, paste0("=IF(SUM(BT", index, ":BV", index, ")<0,BX", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 91)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")<0),BY", index, ",0)"))
+  temp <- c(temp, paste0("=IF(SUM(BT", index, ":BV", index, ")<0,BY", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 92)
 
@@ -2725,7 +2727,7 @@ for (col in c(69:88, 90:97)) {
 ```
 
 
-```{r D+4}
+```{r D+4 EAC}
 # Ex-Ante Consumption sheet
 
 EAC <- "Ex-Ante Consumption"
@@ -3519,10 +3521,10 @@ temp <- c()
 for (index in 3:338) {
   temp <- c(temp, paste0("=DY", index, "*AD", index))
 }; writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 139)
+```
 
 
-
-
+```{r D+4 EIS}
 # En & Imp Split sheet
 
 EIS <- "En & Imp Split"
@@ -3749,9 +3751,10 @@ for (col in c(4,12,20,28,36,44)) {
 for (col in c(5:8,13:16,21:24,29:32,37:40,45)) {
   addStyle(wb = mywb, sheet = EIS, style = euro, rows = 4:339, cols = col)
 }
+```
 
 
-
+```{r D+4 EMS}
 EMS <- "ECC Monthly Settlement"
 
 writeData(mywb, EMS, "Sales at positive prices", startCol = 2, startRow = 1)
