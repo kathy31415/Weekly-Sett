@@ -594,7 +594,8 @@ firstdaym13 <- firstdaym13$bp_start_date %>% unique() %>% as.Date(format = "%Y-%
 firstday <- firstdayd4
 firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
 
-weekno <- format(as.Date(firstday2), "%U") # %U so weeks start on Sunday
+weekno <- as.numeric(format(as.Date(firstday2), "%U")) + 1 # %U so weeks start on Sunday
+weekno <- as.character(weekno)
 if (nchar(weekno) == 1) {
   weekno <- paste0("0", weekno)
 }
@@ -1738,7 +1739,7 @@ writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total
 
 # formulas for sales and purchases depend on date
 
-if (as.Date(firstdayd4, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
+if (as.Date(firstdayd4, format = "%Y%m%d") >= as.Date("20221001", format = "%Y%m%d") & as.Date(firstdayd4, format = "%Y%m%d") <= as.Date("20230930", format = "%Y%m%d")) {
   # purchases
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
@@ -2584,7 +2585,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+02:00\""))
+    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+01:00\""))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
   }
   temp <- c()
@@ -2600,7 +2601,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+01:00\""))
+    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+02:00\""))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
   }
   temp <- c()
@@ -4850,7 +4851,7 @@ writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total
 
 # formulas for sales and purchases depend on date
 
-if (as.Date(firstdaym4, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
+if (as.Date(firstdaym4, format = "%Y%m%d") >= as.Date("20221001", format = "%Y%m%d") & as.Date(firstdaym4, format = "%Y%m%d") <= as.Date("20230930", format = "%Y%m%d")) {
   # purchases
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
@@ -5607,7 +5608,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+02:00\""))
+    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+01:00\""))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
   }
   temp <- c()
@@ -5623,7 +5624,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+01:00\""))
+    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+02:00\""))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
   }
   temp <- c()
@@ -8067,7 +8068,7 @@ writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total
 
 # formulas for sales and purchases depend on date
 
-if (as.Date(firstdaym13, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
+if (as.Date(firstdaym13, format = "%Y%m%d") >= as.Date("20221001", format = "%Y%m%d") & as.Date(firstdaym13, format = "%Y%m%d") <= as.Date("20230930", format = "%Y%m%d")) {
   # purchases
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
@@ -8819,7 +8820,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+02:00\""))
+    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+01:00\""))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
   }
   temp <- c()
@@ -8835,7 +8836,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+01:00\""))
+    temp <- c(temp, paste0("=TEXT(AP", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AQ", index, ",\"hh:mm:ss\")&\"+02:00\""))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 44)
   }
   temp <- c()
