@@ -3875,16 +3875,17 @@ saveWorkbook(mywb, outputfile, TRUE)
 
 # DEFINE VARIABLES
 
-weekno <- readline(prompt = "State WEEK NUMBER of M+4 settlement week: ")
+firstday <- firstdaym4
+firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
+
+weekno <- as.numeric(format(as.Date(firstday2), "%U")) # %U so weeks start on Sunday
+weekno <- as.character(weekno)
 if (nchar(weekno) == 1) {
   weekno <- paste0("0", weekno)
 }
 
 weeknom4 <- weekno
 prevweekno <- as.numeric(weekno) - 1
-
-firstday <- readline(prompt = "Enter the FIRST DAY of the week you are settling in the format YYYYMMDD: ")
-firstday2 <- as.Date(firstday, format = "%Y%m%d") %>% format("%Y-%m-%d")
 
 year <- substring(text = firstday, first = 1, last = 4)
 yearm4 <- year
@@ -4191,11 +4192,13 @@ writexl::write_xlsx(dfreports, outputfile)
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
+inputfiles <- inputfiles[grepl(pattern = PTunit, x = inputfiles)]
 inputfiles <- inputfiles[grepl(pattern = paste0("Document|Week ", as.character(weekno)), x = inputfiles)]
 
 # Get previous week's file
 prevfile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/"), full.names = TRUE)
 prevfile <- prevfile[grepl(x = prevfile, pattern = as.character(prevweekno))]
+prevfile <- prevfile[grepl(x = prevfile, pattern = PTunit)]
 prevfile <- prevfile[grepl(x = prevfile, pattern = as.character(year))]
 
 if (length(prevfile[grepl(x = prevfile, pattern = "$")]) > 1) {
@@ -4866,39 +4869,38 @@ writeData(wb = mywb, sheet = "Summary", startRow = 23, startCol = 11, x = "Total
 
 # formulas for sales and purchases depend on date
 
-if (as.Date(firstday, format = "%Y%m%d") > as.Date("20221001", format = "%Y%m%d")) {
-  
+# formulas for sales and purchases depend on date
+if (as.Date(firstdayd4, format = "%Y%m%d") >= as.Date("20221001", format = "%Y%m%d") & as.Date(firstdayd4, format = "%Y%m%d") <= as.Date("20230930", format = "%Y%m%d")) {
   # purchases
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+B39+B63+B75+B87-H26-G39+B51", xy = c(12,19))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+C39+C63+C75+C87+C51", xy = c(13,19))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CR3:CR338)+D39+D63+D75+D87+D51", xy = c(14,19))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)", xy = c(15,19))
-
-
-  # sales
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CL3:CL338)", xy = c(12,20))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CM3:CM338)", xy = c(13,20))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CN3:CN338)", xy = c(14,20))
-
-} else {
-  
-  # purchases
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+B39+B63+B75+B87-H26-G39", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+B39+B63+B75+B87", xy = c(12,19))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+C39+C63+C75+C87", xy = c(13,19))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CR3:CR338)+D39+D63+D75+D87", xy = c(14,19))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)", xy = c(15,19))
+
 
   # sales
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CL3:CL338)+B51", xy = c(12,20))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CM3:CM338)+C51", xy = c(13,20))
   writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CN3:CN338)+D51", xy = c(14,20))
 
+} else {
+  # purchases
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+B39+B63+B75+B87+B51", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+C39+C63+C75+C87+C51", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CR3:CR338)+D39+D63+D75+D87+D51", xy = c(14,19))
+
+
+  # sales
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CL3:CL338)", xy = c(12,20))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CM3:CM338)", xy = c(13,20))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CN3:CN338)", xy = c(14,20))
 }
 
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)", xy = c(15,19))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(15,20))
 writeFormula(wb = mywb, sheet = "Summary", x = "=-B100", xy = c(16,19))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L19:P19)", xy = c(17,19))
-writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(15,20))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L20:P20)", xy = c(17,20))
+
 
 # ex ante
 writeFormula(wb = mywb, sheet = "Summary", x = "='Ex-Ante Consumption'!BA11", xy = c(12,21))
@@ -5220,7 +5222,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 16)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=-VLOOKUP($L", index, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+4 Resettlement 30 MM/[ESB MASTER MM Messages M+4.xlsx]MM598'!$A:$AY,$M", index, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($L", index, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+4 Resettlement 30 MM/[ESB MASTER MM Messages M+4.xlsx]MM598'!$A:$AY,$M", index, ",0)/1000"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 17)
 
@@ -5232,7 +5234,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 18)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUM(O", index, ":Q", index, ")+R", index))
+  temp <- c(temp, paste0("=P", index, "+O", index, "-Q", index, "+R", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 19)
 
@@ -5293,268 +5295,148 @@ for (index in 3:338) {
   temp <- c(temp, paste0("=(AB", index, "+AA", index, ")-AC", index, "+AD",index))
 }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 31)
 
+
+# refer to D+4 for datetime formulas
+prevtypefile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/D+4 INITIAL/"), full.names = FALSE)
+prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = as.character(weekno))]
+prevtypefile <- prevtypefile[grepl(x = prevtypefile, pattern = as.character(year))]
+if (length(prevtypefile) > 1) {
+  prevtypefile <- prevtypefile[-grepl(x = prevtypefile, pattern = "~\\$")]
+} else if (length(prevtypefile) < 1) {
+  stop("Could not find D+4 file for this week. Stopping...")
+}
+prevtypefile2 <- paste0("'", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/D+4 Initial/[", prevtypefile, "]")
+
+
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=A",index))
+  temp <- c(temp, paste0(prevtypefile2, CC, "'!AI", index))
 };
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 35)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=B", index))
+  temp <- c(temp, paste0(prevtypefile2, CC, "'!AJ", index))
 }; writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 36)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=C", index))
+  temp <- c(temp, paste0(prevtypefile2, CC, "'!AK", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 37)
 
 temp <- c()
-for (index in 3:46) {
-  temp <- c(temp, paste0("=AI", index))
+for (index in 3:338) {
+  temp <- c(temp, paste0(prevtypefile2, CC, "'!AL", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 38)
 
-temp <- c()
-for (index in 47:50) {
-  temp <- c(temp, paste0("=AI", index, "+1"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 47, startCol = 38)
+# temp <- c()
+# for (index in 47:50) {
+#   temp <- c(temp, paste0("=AI", index, "+1"))
+# }
+# writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 47, startCol = 38)
+# 
+# temp <- c()
+# for (index in 51:94) {
+#   temp <- c(temp, paste0("=AI", index))
+# }
+# writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 38)
+# 
+# temp <- c()
+# for (index in 47:290) {
+#   temp <- c(temp, paste0("=AI", index, "+1"))
+# }
+# writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 95, startCol = 38)
 
 temp <- c()
-for (index in 51:94) {
-  temp <- c(temp, paste0("=AI", index))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 51, startCol = 38)
-
-temp <- c()
-for (index in 47:290) {
-  temp <- c(temp, paste0("=AI", index, "+1"))
-}
-writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 95, startCol = 38)
-
-temp <- c()
-
-winter <- c("=AJ3+TIME(1,30,0)", "=AJ4+TIME(1,0,0)", "=AJ5+TIME(1,30,0)", "=AJ6+TIME(1,0,0)",
-            "=AJ7+TIME(1,30,0)", "=AJ8+TIME(1,0,0)", "=AJ9+TIME(1,30,0)", "=AJ10+TIME(1,0,0)",
-            "=AJ11+TIME(1,30,0)", "=AJ12+TIME(1,0,0)", "=AJ13+TIME(1,30,0)", "=AJ14+TIME(1,0,0)",
-            "=AJ15+TIME(1,30,0)", "=AJ16+TIME(1,0,0)", "=AJ17+TIME(1,30,0)", "=AJ18+TIME(1,0,0)",
-            "=AJ19+TIME(1,30,0)", "=AJ20+TIME(1,0,0)", "=AJ21+TIME(1,30,0)", "=AJ22+TIME(1,0,0)",
-            "=AJ23+TIME(1,30,0)", "=AJ24+TIME(1,0,0)", "=AJ25+TIME(1,30,0)", "=AJ26+TIME(1,0,0)",
-            "=AJ27+TIME(1,30,0)", "=AJ28+TIME(1,0,0)", "=AJ29+TIME(1,30,0)", "=AJ30+TIME(1,0,0)",
-            "=AJ31+TIME(1,30,0)", "=AJ32+TIME(1,0,0)", "=AJ33+TIME(1,30,0)", "=AJ34+TIME(1,0,0)",
-            "=AJ35+TIME(1,30,0)", "=AJ36+TIME(1,0,0)", "=AJ37+TIME(1,30,0)", "=AJ38+TIME(1,0,0)",
-            "=AJ39+TIME(1,30,0)", "=AJ40+TIME(1,0,0)", "=AJ41+TIME(1,30,0)", "=AJ42+TIME(1,0,0)",
-            "=AJ43+TIME(1,30,0)", "=AJ44+TIME(1,0,0)", "=AJ45+TIME(1,30,0)", "=AJ46+TIME(1,0,0)",
-            "=AJ47+TIME(1,30,0)", "=AJ48+TIME(1,0,0)", "=AJ49+TIME(1,30,0)", "=AJ50+TIME(1,0,0)",
-            "=AJ51+TIME(1,30,0)", "=AJ52+TIME(1,0,0)", "=AJ53+TIME(1,30,0)", "=AJ54+TIME(1,0,0)",
-            "=AJ55+TIME(1,30,0)", "=AJ56+TIME(1,0,0)", "=AJ57+TIME(1,30,0)", "=AJ58+TIME(1,0,0)",
-            "=AJ59+TIME(1,30,0)", "=AJ60+TIME(1,0,0)", "=AJ61+TIME(1,30,0)", "=AJ62+TIME(1,0,0)",
-            "=AJ63+TIME(1,30,0)", "=AJ64+TIME(1,0,0)", "=AJ65+TIME(1,30,0)", "=AJ66+TIME(1,0,0)",
-            "=AJ67+TIME(1,30,0)", "=AJ68+TIME(1,0,0)", "=AJ69+TIME(1,30,0)", "=AJ70+TIME(1,0,0)",
-            "=AJ71+TIME(1,30,0)", "=AJ72+TIME(1,0,0)", "=AJ73+TIME(1,30,0)", "=AJ74+TIME(1,0,0)",
-            "=AJ75+TIME(1,30,0)", "=AJ76+TIME(1,0,0)", "=AJ77+TIME(1,30,0)", "=AJ78+TIME(1,0,0)",
-            "=AJ79+TIME(1,30,0)", "=AJ80+TIME(1,0,0)", "=AJ81+TIME(1,30,0)", "=AJ82+TIME(1,0,0)",
-            "=AJ83+TIME(1,30,0)", "=AJ84+TIME(1,0,0)", "=AJ85+TIME(1,30,0)", "=AJ86+TIME(1,0,0)",
-            "=AJ87+TIME(1,30,0)", "=AJ88+TIME(1,0,0)", "=AJ89+TIME(1,30,0)", "=AJ90+TIME(1,0,0)",
-            "=AJ91+TIME(1,30,0)", "=AJ92+TIME(1,0,0)", "=AJ93+TIME(1,30,0)", "=AJ94+TIME(1,0,0)",
-            "=AJ95+TIME(1,30,0)", "=AJ96+TIME(1,0,0)", "=AJ97+TIME(1,30,0)", "=AJ98+TIME(1,0,0)",
-            "=AJ99+TIME(1,30,0)", "=AJ100+TIME(1,0,0)", "=AJ101+TIME(1,30,0)", "=AJ102+TIME(1,0,0)",
-            "=AJ103+TIME(1,30,0)", "=AJ104+TIME(1,0,0)", "=AJ105+TIME(1,30,0)", "=AJ106+TIME(1,0,0)",
-            "=AJ107+TIME(1,30,0)", "=AJ108+TIME(1,0,0)", "=AJ109+TIME(1,30,0)", "=AJ110+TIME(1,0,0)",
-            "=AJ111+TIME(1,30,0)", "=AJ112+TIME(1,0,0)", "=AJ113+TIME(1,30,0)", "=AJ114+TIME(1,0,0)",
-            "=AJ115+TIME(1,30,0)", "=AJ116+TIME(1,0,0)", "=AJ117+TIME(1,30,0)", "=AJ118+TIME(1,0,0)",
-            "=AJ119+TIME(1,30,0)", "=AJ120+TIME(1,0,0)", "=AJ121+TIME(1,30,0)", "=AJ122+TIME(1,0,0)",
-            "=AJ123+TIME(1,30,0)", "=AJ124+TIME(1,0,0)", "=AJ125+TIME(1,30,0)", "=AJ126+TIME(1,0,0)",
-            "=AJ127+TIME(1,30,0)", "=AJ128+TIME(1,0,0)", "=AJ129+TIME(1,30,0)", "=AJ130+TIME(1,0,0)",
-            "=AJ131+TIME(1,30,0)", "=AJ132+TIME(1,0,0)", "=AJ133+TIME(1,30,0)", "=AJ134+TIME(1,0,0)",
-            "=AJ135+TIME(1,30,0)", "=AJ136+TIME(1,0,0)", "=AJ137+TIME(1,30,0)", "=AJ138+TIME(1,0,0)",
-            "=AJ139+TIME(1,30,0)", "=AJ140+TIME(1,0,0)", "=AJ141+TIME(1,30,0)", "=AJ142+TIME(1,0,0)",
-            "=AJ143+TIME(1,30,0)", "=AJ144+TIME(1,0,0)", "=AJ145+TIME(1,30,0)", "=AJ146+TIME(1,0,0)",
-            "=AJ147+TIME(1,30,0)", "=AJ148+TIME(1,0,0)", "=AJ149+TIME(1,30,0)", "=AJ150+TIME(1,0,0)",
-            "=AJ151+TIME(1,30,0)", "=AJ152+TIME(1,0,0)", "=AJ153+TIME(1,30,0)", "=AJ154+TIME(1,0,0)",
-            "=AJ155+TIME(1,30,0)", "=AJ156+TIME(1,0,0)", "=AJ157+TIME(1,30,0)", "=AJ158+TIME(1,0,0)",
-            "=AJ159+TIME(1,30,0)", "=AJ160+TIME(1,0,0)", "=AJ161+TIME(1,30,0)", "=AJ162+TIME(1,0,0)",
-            "=AJ163+TIME(1,30,0)", "=AJ164+TIME(1,0,0)", "=AJ165+TIME(1,30,0)", "=AJ166+TIME(1,0,0)",
-            "=AJ167+TIME(1,30,0)", "=AJ168+TIME(1,0,0)", "=AJ169+TIME(1,30,0)", "=AJ170+TIME(1,0,0)",
-            "=AJ171+TIME(1,30,0)", "=AJ172+TIME(1,0,0)", "=AJ173+TIME(1,30,0)", "=AJ174+TIME(1,0,0)",
-            "=AJ175+TIME(1,30,0)", "=AJ176+TIME(1,0,0)", "=AJ177+TIME(1,30,0)", "=AJ178+TIME(1,0,0)",
-            "=AJ179+TIME(1,30,0)", "=AJ180+TIME(1,0,0)", "=AJ181+TIME(1,30,0)", "=AJ182+TIME(1,0,0)",
-            "=AJ183+TIME(1,30,0)", "=AJ184+TIME(1,0,0)", "=AJ185+TIME(1,30,0)", "=AJ186+TIME(1,0,0)",
-            "=AJ187+TIME(1,30,0)", "=AJ188+TIME(1,0,0)", "=AJ189+TIME(1,30,0)", "=AJ190+TIME(1,0,0)",
-            "=AJ191+TIME(1,30,0)", "=AJ192+TIME(1,0,0)", "=AJ193+TIME(1,30,0)", "=AJ194+TIME(1,0,0)",
-            "=AJ195+TIME(1,30,0)", "=AJ196+TIME(1,0,0)", "=AJ197+TIME(1,30,0)", "=AJ198+TIME(1,0,0)",
-            "=AJ199+TIME(1,30,0)", "=AJ200+TIME(1,0,0)", "=AJ201+TIME(1,30,0)", "=AJ202+TIME(1,0,0)",
-            "=AJ203+TIME(1,30,0)", "=AJ204+TIME(1,0,0)", "=AJ205+TIME(1,30,0)", "=AJ206+TIME(1,0,0)",
-            "=AJ207+TIME(1,30,0)", "=AJ208+TIME(1,0,0)", "=AJ209+TIME(1,30,0)", "=AJ210+TIME(1,0,0)",
-            "=AJ211+TIME(1,30,0)", "=AJ212+TIME(1,0,0)", "=AJ213+TIME(1,30,0)", "=AJ214+TIME(1,0,0)",
-            "=AJ215+TIME(1,30,0)", "=AJ216+TIME(1,0,0)", "=AJ217+TIME(1,30,0)", "=AJ218+TIME(1,0,0)",
-            "=AJ219+TIME(1,30,0)", "=AJ220+TIME(1,0,0)", "=AJ221+TIME(1,30,0)", "=AJ222+TIME(1,0,0)",
-            "=AJ223+TIME(1,30,0)", "=AJ224+TIME(1,0,0)", "=AJ225+TIME(1,30,0)", "=AJ226+TIME(1,0,0)",
-            "=AJ227+TIME(1,30,0)", "=AJ228+TIME(1,0,0)", "=AJ229+TIME(1,30,0)", "=AJ230+TIME(1,0,0)",
-            "=AJ231+TIME(1,30,0)", "=AJ232+TIME(1,0,0)", "=AJ233+TIME(1,30,0)", "=AJ234+TIME(1,0,0)",
-            "=AJ235+TIME(1,30,0)", "=AJ236+TIME(1,0,0)", "=AJ237+TIME(1,30,0)", "=AJ238+TIME(1,0,0)",
-            "=AJ239+TIME(1,30,0)", "=AJ240+TIME(1,0,0)", "=AJ241+TIME(1,30,0)", "=AJ242+TIME(1,0,0)",
-            "=AJ243+TIME(1,30,0)", "=AJ244+TIME(1,0,0)", "=AJ245+TIME(1,30,0)", "=AJ246+TIME(1,0,0)",
-            "=AJ247+TIME(1,30,0)", "=AJ248+TIME(1,0,0)", "=AJ249+TIME(1,30,0)", "=AJ250+TIME(1,0,0)",
-            "=AJ251+TIME(1,30,0)", "=AJ252+TIME(1,0,0)", "=AJ253+TIME(1,30,0)", "=AJ254+TIME(1,0,0)",
-            "=AJ255+TIME(1,30,0)", "=AJ256+TIME(1,0,0)", "=AJ257+TIME(1,30,0)", "=AJ258+TIME(1,0,0)",
-            "=AJ259+TIME(1,30,0)", "=AJ260+TIME(1,0,0)", "=AJ261+TIME(1,30,0)", "=AJ262+TIME(1,0,0)",
-            "=AJ263+TIME(1,30,0)", "=AJ264+TIME(1,0,0)", "=AJ265+TIME(1,30,0)", "=AJ266+TIME(1,0,0)",
-            "=AJ267+TIME(1,30,0)", "=AJ268+TIME(1,0,0)", "=AJ269+TIME(1,30,0)", "=AJ270+TIME(1,0,0)",
-            "=AJ271+TIME(1,30,0)", "=AJ272+TIME(1,0,0)", "=AJ273+TIME(1,30,0)", "=AJ274+TIME(1,0,0)",
-            "=AJ275+TIME(1,30,0)", "=AJ276+TIME(1,0,0)", "=AJ277+TIME(1,30,0)", "=AJ278+TIME(1,0,0)",
-            "=AJ279+TIME(1,30,0)", "=AJ280+TIME(1,0,0)", "=AJ281+TIME(1,30,0)", "=AJ282+TIME(1,0,0)",
-            "=AJ283+TIME(1,30,0)", "=AJ284+TIME(1,0,0)", "=AJ285+TIME(1,30,0)", "=AJ286+TIME(1,0,0)",
-            "=AJ287+TIME(1,30,0)", "=AJ288+TIME(1,0,0)", "=AJ289+TIME(1,30,0)", "=AJ290+TIME(1,0,0)",
-            "=AJ291+TIME(1,30,0)", "=AJ292+TIME(1,0,0)", "=AJ293+TIME(1,30,0)", "=AJ294+TIME(1,0,0)",
-            "=AJ295+TIME(1,30,0)", "=AJ296+TIME(1,0,0)", "=AJ297+TIME(1,30,0)", "=AJ298+TIME(1,0,0)",
-            "=AJ299+TIME(1,30,0)", "=AJ300+TIME(1,0,0)", "=AJ301+TIME(1,30,0)", "=AJ302+TIME(1,0,0)",
-            "=AJ303+TIME(1,30,0)", "=AJ304+TIME(1,0,0)", "=AJ305+TIME(1,30,0)", "=AJ306+TIME(1,0,0)",
-            "=AJ307+TIME(1,30,0)", "=AJ308+TIME(1,0,0)", "=AJ309+TIME(1,30,0)", "=AJ310+TIME(1,0,0)",
-            "=AJ311+TIME(1,30,0)", "=AJ312+TIME(1,0,0)", "=AJ313+TIME(1,30,0)", "=AJ314+TIME(1,0,0)",
-            "=AJ315+TIME(1,30,0)", "=AJ316+TIME(1,0,0)", "=AJ317+TIME(1,30,0)", "=AJ318+TIME(1,0,0)",
-            "=AJ319+TIME(1,30,0)", "=AJ320+TIME(1,0,0)", "=AJ321+TIME(1,30,0)", "=AJ322+TIME(1,0,0)",
-            "=AJ323+TIME(1,30,0)", "=AJ324+TIME(1,0,0)", "=AJ325+TIME(1,30,0)", "=AJ326+TIME(1,0,0)",
-            "=AJ327+TIME(1,30,0)", "=AJ328+TIME(1,0,0)", "=AJ329+TIME(1,30,0)", "=AJ330+TIME(1,0,0)",
-            "=AJ331+TIME(1,30,0)", "=AJ332+TIME(1,0,0)", "=AJ333+TIME(1,30,0)", "=AJ334+TIME(1,0,0)",
-            "=AJ335+TIME(1,30,0)", "=AJ336+TIME(1,0,0)", "=AJ337+TIME(1,30,0)", "=AJ338+TIME(1,0,0)"
-)
-
-summer <- c("=AJ3+TIME(2,30,0)", "=AJ4+TIME(2,0,0)", "=AJ5+TIME(2,30,0)", "=AJ6+TIME(2,0,0)",
-            "=AJ7+TIME(2,30,0)", "=AJ8+TIME(2,0,0)", "=AJ9+TIME(2,30,0)", "=AJ10+TIME(2,0,0)",
-            "=AJ11+TIME(2,30,0)", "=AJ12+TIME(2,0,0)", "=AJ13+TIME(2,30,0)", "=AJ14+TIME(2,0,0)",
-            "=AJ15+TIME(2,30,0)", "=AJ16+TIME(2,0,0)", "=AJ17+TIME(2,30,0)", "=AJ18+TIME(2,0,0)",
-            "=AJ19+TIME(2,30,0)", "=AJ20+TIME(2,0,0)", "=AJ21+TIME(2,30,0)", "=AJ22+TIME(2,0,0)",
-            "=AJ23+TIME(2,30,0)", "=AJ24+TIME(2,0,0)", "=AJ25+TIME(2,30,0)", "=AJ26+TIME(2,0,0)",
-            "=AJ27+TIME(2,30,0)", "=AJ28+TIME(2,0,0)", "=AJ29+TIME(2,30,0)", "=AJ30+TIME(2,0,0)",
-            "=AJ31+TIME(2,30,0)", "=AJ32+TIME(2,0,0)", "=AJ33+TIME(2,30,0)", "=AJ34+TIME(2,0,0)",
-            "=AJ35+TIME(2,30,0)", "=AJ36+TIME(2,0,0)", "=AJ37+TIME(2,30,0)", "=AJ38+TIME(2,0,0)",
-            "=AJ39+TIME(2,30,0)", "=AJ40+TIME(2,0,0)", "=AJ41+TIME(2,30,0)", "=AJ42+TIME(2,0,0)",
-            "=AJ43+TIME(2,30,0)", "=AJ44+TIME(2,0,0)", "=AJ45+TIME(2,30,0)", "=AJ46+TIME(2,0,0)",
-            "=AJ47+TIME(2,30,0)", "=AJ48+TIME(2,0,0)", "=AJ49+TIME(2,30,0)", "=AJ50+TIME(2,0,0)",
-            "=AJ51+TIME(2,30,0)", "=AJ52+TIME(2,0,0)", "=AJ53+TIME(2,30,0)", "=AJ54+TIME(2,0,0)",
-            "=AJ55+TIME(2,30,0)", "=AJ56+TIME(2,0,0)", "=AJ57+TIME(2,30,0)", "=AJ58+TIME(2,0,0)",
-            "=AJ59+TIME(2,30,0)", "=AJ60+TIME(2,0,0)", "=AJ61+TIME(2,30,0)", "=AJ62+TIME(2,0,0)",
-            "=AJ63+TIME(2,30,0)", "=AJ64+TIME(2,0,0)", "=AJ65+TIME(2,30,0)", "=AJ66+TIME(2,0,0)",
-            "=AJ67+TIME(2,30,0)", "=AJ68+TIME(2,0,0)", "=AJ69+TIME(2,30,0)", "=AJ70+TIME(2,0,0)",
-            "=AJ71+TIME(2,30,0)", "=AJ72+TIME(2,0,0)", "=AJ73+TIME(2,30,0)", "=AJ74+TIME(2,0,0)",
-            "=AJ75+TIME(2,30,0)", "=AJ76+TIME(2,0,0)", "=AJ77+TIME(2,30,0)", "=AJ78+TIME(2,0,0)",
-            "=AJ79+TIME(2,30,0)", "=AJ80+TIME(2,0,0)", "=AJ81+TIME(2,30,0)", "=AJ82+TIME(2,0,0)",
-            "=AJ83+TIME(2,30,0)", "=AJ84+TIME(2,0,0)", "=AJ85+TIME(2,30,0)", "=AJ86+TIME(2,0,0)",
-            "=AJ87+TIME(2,30,0)", "=AJ88+TIME(2,0,0)", "=AJ89+TIME(2,30,0)", "=AJ90+TIME(2,0,0)",
-            "=AJ91+TIME(2,30,0)", "=AJ92+TIME(2,0,0)", "=AJ93+TIME(2,30,0)", "=AJ94+TIME(2,0,0)",
-            "=AJ95+TIME(2,30,0)", "=AJ96+TIME(2,0,0)", "=AJ97+TIME(2,30,0)", "=AJ98+TIME(2,0,0)",
-            "=AJ99+TIME(2,30,0)", "=AJ100+TIME(2,0,0)", "=AJ101+TIME(2,30,0)", "=AJ102+TIME(2,0,0)",
-            "=AJ103+TIME(2,30,0)", "=AJ104+TIME(2,0,0)", "=AJ105+TIME(2,30,0)", "=AJ106+TIME(2,0,0)",
-            "=AJ107+TIME(2,30,0)", "=AJ108+TIME(2,0,0)", "=AJ109+TIME(2,30,0)", "=AJ110+TIME(2,0,0)",
-            "=AJ111+TIME(2,30,0)", "=AJ112+TIME(2,0,0)", "=AJ113+TIME(2,30,0)", "=AJ114+TIME(2,0,0)",
-            "=AJ115+TIME(2,30,0)", "=AJ116+TIME(2,0,0)", "=AJ117+TIME(2,30,0)", "=AJ118+TIME(2,0,0)",
-            "=AJ119+TIME(2,30,0)", "=AJ120+TIME(2,0,0)", "=AJ121+TIME(2,30,0)", "=AJ122+TIME(2,0,0)",
-            "=AJ123+TIME(2,30,0)", "=AJ124+TIME(2,0,0)", "=AJ125+TIME(2,30,0)", "=AJ126+TIME(2,0,0)",
-            "=AJ127+TIME(2,30,0)", "=AJ128+TIME(2,0,0)", "=AJ129+TIME(2,30,0)", "=AJ130+TIME(2,0,0)",
-            "=AJ131+TIME(2,30,0)", "=AJ132+TIME(2,0,0)", "=AJ133+TIME(2,30,0)", "=AJ134+TIME(2,0,0)",
-            "=AJ135+TIME(2,30,0)", "=AJ136+TIME(2,0,0)", "=AJ137+TIME(2,30,0)", "=AJ138+TIME(2,0,0)",
-            "=AJ139+TIME(2,30,0)", "=AJ140+TIME(2,0,0)", "=AJ141+TIME(2,30,0)", "=AJ142+TIME(2,0,0)",
-            "=AJ143+TIME(2,30,0)", "=AJ144+TIME(2,0,0)", "=AJ145+TIME(2,30,0)", "=AJ146+TIME(2,0,0)",
-            "=AJ147+TIME(2,30,0)", "=AJ148+TIME(2,0,0)", "=AJ149+TIME(2,30,0)", "=AJ150+TIME(2,0,0)",
-            "=AJ151+TIME(2,30,0)", "=AJ152+TIME(2,0,0)", "=AJ153+TIME(2,30,0)", "=AJ154+TIME(2,0,0)",
-            "=AJ155+TIME(2,30,0)", "=AJ156+TIME(2,0,0)", "=AJ157+TIME(2,30,0)", "=AJ158+TIME(2,0,0)",
-            "=AJ159+TIME(2,30,0)", "=AJ160+TIME(2,0,0)", "=AJ161+TIME(2,30,0)", "=AJ162+TIME(2,0,0)",
-            "=AJ163+TIME(2,30,0)", "=AJ164+TIME(2,0,0)", "=AJ165+TIME(2,30,0)", "=AJ166+TIME(2,0,0)",
-            "=AJ167+TIME(2,30,0)", "=AJ168+TIME(2,0,0)", "=AJ169+TIME(2,30,0)", "=AJ170+TIME(2,0,0)",
-            "=AJ171+TIME(2,30,0)", "=AJ172+TIME(2,0,0)", "=AJ173+TIME(2,30,0)", "=AJ174+TIME(2,0,0)",
-            "=AJ175+TIME(2,30,0)", "=AJ176+TIME(2,0,0)", "=AJ177+TIME(2,30,0)", "=AJ178+TIME(2,0,0)",
-            "=AJ179+TIME(2,30,0)", "=AJ180+TIME(2,0,0)", "=AJ181+TIME(2,30,0)", "=AJ182+TIME(2,0,0)",
-            "=AJ183+TIME(2,30,0)", "=AJ184+TIME(2,0,0)", "=AJ185+TIME(2,30,0)", "=AJ186+TIME(2,0,0)",
-            "=AJ187+TIME(2,30,0)", "=AJ188+TIME(2,0,0)", "=AJ189+TIME(2,30,0)", "=AJ190+TIME(2,0,0)",
-            "=AJ191+TIME(2,30,0)", "=AJ192+TIME(2,0,0)", "=AJ193+TIME(2,30,0)", "=AJ194+TIME(2,0,0)",
-            "=AJ195+TIME(2,30,0)", "=AJ196+TIME(2,0,0)", "=AJ197+TIME(2,30,0)", "=AJ198+TIME(2,0,0)",
-            "=AJ199+TIME(2,30,0)", "=AJ200+TIME(2,0,0)", "=AJ201+TIME(2,30,0)", "=AJ202+TIME(2,0,0)",
-            "=AJ203+TIME(2,30,0)", "=AJ204+TIME(2,0,0)", "=AJ205+TIME(2,30,0)", "=AJ206+TIME(2,0,0)",
-            "=AJ207+TIME(2,30,0)", "=AJ208+TIME(2,0,0)", "=AJ209+TIME(2,30,0)", "=AJ210+TIME(2,0,0)",
-            "=AJ211+TIME(2,30,0)", "=AJ212+TIME(2,0,0)", "=AJ213+TIME(2,30,0)", "=AJ214+TIME(2,0,0)",
-            "=AJ215+TIME(2,30,0)", "=AJ216+TIME(2,0,0)", "=AJ217+TIME(2,30,0)", "=AJ218+TIME(2,0,0)",
-            "=AJ219+TIME(2,30,0)", "=AJ220+TIME(2,0,0)", "=AJ221+TIME(2,30,0)", "=AJ222+TIME(2,0,0)",
-            "=AJ223+TIME(2,30,0)", "=AJ224+TIME(2,0,0)", "=AJ225+TIME(2,30,0)", "=AJ226+TIME(2,0,0)",
-            "=AJ227+TIME(2,30,0)", "=AJ228+TIME(2,0,0)", "=AJ229+TIME(2,30,0)", "=AJ230+TIME(2,0,0)",
-            "=AJ231+TIME(2,30,0)", "=AJ232+TIME(2,0,0)", "=AJ233+TIME(2,30,0)", "=AJ234+TIME(2,0,0)",
-            "=AJ235+TIME(2,30,0)", "=AJ236+TIME(2,0,0)", "=AJ237+TIME(2,30,0)", "=AJ238+TIME(2,0,0)",
-            "=AJ239+TIME(2,30,0)", "=AJ240+TIME(2,0,0)", "=AJ241+TIME(2,30,0)", "=AJ242+TIME(2,0,0)",
-            "=AJ243+TIME(2,30,0)", "=AJ244+TIME(2,0,0)", "=AJ245+TIME(2,30,0)", "=AJ246+TIME(2,0,0)",
-            "=AJ247+TIME(2,30,0)", "=AJ248+TIME(2,0,0)", "=AJ249+TIME(2,30,0)", "=AJ250+TIME(2,0,0)",
-            "=AJ251+TIME(2,30,0)", "=AJ252+TIME(2,0,0)", "=AJ253+TIME(2,30,0)", "=AJ254+TIME(2,0,0)",
-            "=AJ255+TIME(2,30,0)", "=AJ256+TIME(2,0,0)", "=AJ257+TIME(2,30,0)", "=AJ258+TIME(2,0,0)",
-            "=AJ259+TIME(2,30,0)", "=AJ260+TIME(2,0,0)", "=AJ261+TIME(2,30,0)", "=AJ262+TIME(2,0,0)",
-            "=AJ263+TIME(2,30,0)", "=AJ264+TIME(2,0,0)", "=AJ265+TIME(2,30,0)", "=AJ266+TIME(2,0,0)",
-            "=AJ267+TIME(2,30,0)", "=AJ268+TIME(2,0,0)", "=AJ269+TIME(2,30,0)", "=AJ270+TIME(2,0,0)",
-            "=AJ271+TIME(2,30,0)", "=AJ272+TIME(2,0,0)", "=AJ273+TIME(2,30,0)", "=AJ274+TIME(2,0,0)",
-            "=AJ275+TIME(2,30,0)", "=AJ276+TIME(2,0,0)", "=AJ277+TIME(2,30,0)", "=AJ278+TIME(2,0,0)",
-            "=AJ279+TIME(2,30,0)", "=AJ280+TIME(2,0,0)", "=AJ281+TIME(2,30,0)", "=AJ282+TIME(2,0,0)",
-            "=AJ283+TIME(2,30,0)", "=AJ284+TIME(2,0,0)", "=AJ285+TIME(2,30,0)", "=AJ286+TIME(2,0,0)",
-            "=AJ287+TIME(2,30,0)", "=AJ288+TIME(2,0,0)", "=AJ289+TIME(2,30,0)", "=AJ290+TIME(2,0,0)",
-            "=AJ291+TIME(2,30,0)", "=AJ292+TIME(2,0,0)", "=AJ293+TIME(2,30,0)", "=AJ294+TIME(2,0,0)",
-            "=AJ295+TIME(2,30,0)", "=AJ296+TIME(2,0,0)", "=AJ297+TIME(2,30,0)", "=AJ298+TIME(2,0,0)",
-            "=AJ299+TIME(2,30,0)", "=AJ300+TIME(2,0,0)", "=AJ301+TIME(2,30,0)", "=AJ302+TIME(2,0,0)",
-            "=AJ303+TIME(2,30,0)", "=AJ304+TIME(2,0,0)", "=AJ305+TIME(2,30,0)", "=AJ306+TIME(2,0,0)",
-            "=AJ307+TIME(2,30,0)", "=AJ308+TIME(2,0,0)", "=AJ309+TIME(2,30,0)", "=AJ310+TIME(2,0,0)",
-            "=AJ311+TIME(2,30,0)", "=AJ312+TIME(2,0,0)", "=AJ313+TIME(2,30,0)", "=AJ314+TIME(2,0,0)",
-            "=AJ315+TIME(2,30,0)", "=AJ316+TIME(2,0,0)", "=AJ317+TIME(2,30,0)", "=AJ318+TIME(2,0,0)",
-            "=AJ319+TIME(2,30,0)", "=AJ320+TIME(2,0,0)", "=AJ321+TIME(2,30,0)", "=AJ322+TIME(2,0,0)",
-            "=AJ323+TIME(2,30,0)", "=AJ324+TIME(2,0,0)", "=AJ325+TIME(2,30,0)", "=AJ326+TIME(2,0,0)",
-            "=AJ327+TIME(2,30,0)", "=AJ328+TIME(2,0,0)", "=AJ329+TIME(2,30,0)", "=AJ330+TIME(2,0,0)",
-            "=AJ331+TIME(2,30,0)", "=AJ332+TIME(2,0,0)", "=AJ333+TIME(2,30,0)", "=AJ334+TIME(2,0,0)",
-            "=AJ335+TIME(2,30,0)", "=AJ336+TIME(2,0,0)", "=AJ337+TIME(2,30,0)", "=AJ338+TIME(2,0,0)"
-)
-
 season <- c()
 
-if (firstday2 > as.Date(paste0(as.numeric(year)-1,"-10-01"), format = "%Y-%m-%d") & firstday2 < as.Date(paste0(as.numeric(year),"-4-01"), format = "%Y-%m-%d")) {
-  temp <- winter
-  season <- "winter"
+if (as.numeric(year) %% 4 != 0) {     # if not a leap year
+  if (as.numeric(weeknod4) < 13 | as.numeric(weeknod4) > 44) {
+    temp <- winter
+    season <- "winter"
+    } else {
+      temp <- summer
+      season <- "summer"
+    }
 } else {
-  temp <- summer
-  season <- "summer"
+  if (as.numeric(weeknod4) < 13 | as.numeric(weeknod4) > 43) {
+    temp <- winter
+    season <- "winter"
+    } else {
+      temp <- summer
+      season <- "summer"
+    }
 }
 
+
+#writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 39)
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0(prevtypefile2, CC, "'!AM", index))
+}
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 39)
 
 temp <- c()
-
-if (season == "winter") {
-  for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AL", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AM", index, ",\"hh:mm:ss\")&\"+01:00\""))
-    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 40)
-  }
-  temp <- c()
-  for (index in 3:338) {
-    temp <- c(temp, paste0("=AJ", index, "+TIME(1,0,0)"))
-    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 42)
-  }
-  temp <- c()
-  for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+02:00\""))
-    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
-  }
-  temp <- c()
-} else if (season == "summer") {
-  for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AL", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AM", index, ",\"hh:mm:ss\")&\"+02:00\""))
-    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 40)
-  }
-  temp <- c()
-  for (index in 3:338) {
-    temp <- c(temp, paste0("=AJ", index, "+TIME(2,0,0)"))
-    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 42)
-  }
-  temp <- c()
-  for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+01:00\""))
-    writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
-  }
-  temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0(prevtypefile2, CC, "'!AN", index))
 }
+writeFormula(mywb, CC, x = temp, startRow = 3, startCol = 40)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0(prevtypefile2, CC, "'!AO", index))
+}
+writeFormula(mywb, CC, x = temp, startRow = 3, startCol = 41)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0(prevtypefile2, CC, "'!AP", index))
+}
+writeFormula(mywb, CC, x = temp, startRow = 3, startCol = 42)
+
+temp <- c()
+for (index in 3:338) {
+  temp <- c(temp, paste0(prevtypefile2, CC, "'!AQ", index))
+}
+writeFormula(mywb, CC, x = temp, startRow = 3, startCol = 43)
+
+temp <- c()
+
+# if (season == "winter") {
+#   for (index in 3:338) {
+#     temp <- c(temp, paste0("=TEXT(AL", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AM", index, ",\"hh:mm:ss\")&\"+01:00\""))
+#     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 40)
+#   }
+#   temp <- c()
+#   for (index in 3:338) {
+#     temp <- c(temp, paste0("=AJ", index, "+TIME(1,0,0)"))
+#     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 42)
+#   }
+#   temp <- c()
+#   for (index in 3:338) {
+#     temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+01:00\""))
+#     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
+#   }
+#   temp <- c()
+# } else if (season == "summer") {
+#   for (index in 3:338) {
+#     temp <- c(temp, paste0("=TEXT(AL", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AM", index, ",\"hh:mm:ss\")&\"+02:00\""))
+#     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 40)
+#   }
+#   temp <- c()
+#   for (index in 3:338) {
+#     temp <- c(temp, paste0("=AJ", index, "+TIME(2,0,0)"))
+#     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 42)
+#   }
+#   temp <- c()
+#   for (index in 3:338) {
+#     temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+02:00\""))
+#     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
+#   }
+#   temp <- c()
+# }
 
 temp <- c()
 for (index in 3:338) {
@@ -5750,7 +5632,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 73)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=Q", index, "-BS", index))
+  temp <- c(temp, paste0("=-Q", index, "-BS", index))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 74)
 
@@ -5798,7 +5680,7 @@ for (index in 3:338) {
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 81)
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=Q", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMP\"))"))
+  temp <- c(temp, paste0("=-Q", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMP\"))"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 82)
 
@@ -5822,7 +5704,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 85)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'Consumption Checks'!$BM", index, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$BP", index, ",REPORT!$P:$P,\"FNIEP\")"))
+  temp <- c(temp, paste0("=-Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'Consumption Checks'!$BM", index, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$BP", index, ",REPORT!$P:$P,\"FNIEP\")"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 86)
 
@@ -5840,19 +5722,19 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 88)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")<0),BW", index, ",0)"))
+  temp <- c(temp, paste0("=IF(SUM(BT", index, ":BV", index, ")<0,BW", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 90)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")<0),BX", index, ",0)"))
+  temp <- c(temp, paste0("=IF(SUM(BT", index, ":BV", index, ")<0,BX", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 91)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")<0),BY", index, ",0)"))
+  temp <- c(temp, paste0("=IF(SUM(BT", index, ":BV", index, ")<0,BY", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 92)
 
@@ -5864,19 +5746,19 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 93)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")>0),BW", index, ",0)"))
+  temp <- c(temp, paste0("=IF(SUM(BT", index, ":BV", index, ")>0,BW", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 94)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")>0),BX", index, ",0)"))
+  temp <- c(temp, paste0("=IF(SUM(BT", index, ":BV", index, ")>0,BX", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 95)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=IF((SUM(BT", index, ":BV", index, ")>0),BY", index, ",0)"))
+  temp <- c(temp, paste0("=IF(SUM(BT", index, ":BV", index, ")>0,BY", index, ",0)"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 96)
 
@@ -8600,7 +8482,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+02:00\""))
+    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+01:00\""))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
   }
   temp <- c()
@@ -8616,7 +8498,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+01:00\""))
+    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+02:00\""))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
   }
   temp <- c()
