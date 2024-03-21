@@ -1,3 +1,4 @@
 * linguist-vendored=false
-*.vba linguist-vendored=false
-*.R text
+*.R linguist-language=R
+*.Rmd linguist-language=R
+*.bas linguist-language=VBA
