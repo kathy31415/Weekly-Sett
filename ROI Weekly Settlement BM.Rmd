@@ -587,7 +587,7 @@ firstdaym13 <- firstdaym13$bp_start_date %>% unique() %>% as.Date(format = "%Y-%
 ```
 
 
-```{r D+4 statements & reports}
+```{r D+4}
 ################################################################################################################################################################################################
 ############################################################################## D+4 settlement section ##########################################################################################
 ################################################################################################################################################################################################
@@ -903,10 +903,9 @@ for (file in inputfiles) {
 }
 
 writexl::write_xlsx(dfreports, outputfile)
-```
 
 
-```{r D+4 create workbook}
+
 # CREATE EXCEL FILE - SETUP
 
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
@@ -978,10 +977,9 @@ addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = DATE, rows = 2:194, c
 for (col in c(4,15,16,20,26:28,30:35,41)) {
   addStyle(wb = mywb, sheet = "Ex-Ante Consumption", style = NUMBER, rows = 2:194, cols = col)
 }
-```
 
 
-```{r D+4 EAR}
+
 # ECC Ex-Ante Report sheet
 
 # read in xml file
@@ -1110,10 +1108,9 @@ colnames(df) <- c("ReportName", "ReportDate", "ID", "ExchangeTradeID", "Exchange
 )
 
 writeData(mywb, sheet = "EX-Ante Report", x = df)
-```
 
 
-```{r D+4 Summary}
+
 # Summary sheet
 
 dates <- seq(from = as.Date(firstday, format = "%Y%m%d"), by = "1 day", length.out = 7) %>% format("%d/%m/%Y")
@@ -1641,9 +1638,9 @@ addStyle(wb = mywb, sheet = "Summary", style = DATE, rows = 14, cols = 18)
 addStyle(wb = mywb, sheet = "Summary", style = boldStyle, rows = 14, cols = 11:13)
 
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol = 15, x = "FROM")
-writeFormula(wb = mywb, sheet = "Summary", x = "=U2", xy = c(16,14))
+writeFormula(wb = mywb, sheet = "Summary", x = "=B1", xy = c(16,14))
 writeData(wb = mywb, sheet = "Summary", startRow = 14, startCol =, 17, x = "TO")
-writeFormula(wb = mywb, sheet = "Summary", x = "=U8", xy = c(18,14))
+writeFormula(wb = mywb, sheet = "Summary", x = "=H1", xy = c(18,14))
 writeData(wb = mywb, sheet = "Summary", startRow = 15, startCol = 12, x = "Totals")
 
 for (row in 15:21) {
@@ -1682,30 +1679,31 @@ writeData(wb = mywb, sheet = "Summary", startRow = 22, startCol = 11, x = "Total
 # formulas for sales and purchases depend on date
 if (as.Date(firstdayd4, format = "%Y%m%d") >= as.Date("20221001", format = "%Y%m%d") & as.Date(firstdayd4, format = "%Y%m%d") <= as.Date("20230930", format = "%Y%m%d")) {
   # purchases
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87", xy = c(12,18))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87", xy = c(13,18))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87", xy = c(14,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+B39+B63+B75+B87", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+C39+C63+C75+C87", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CR3:CR338)+D39+D63+D75+D87", xy = c(14,18))
 
 
   # sales
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)+B51", xy = c(12,19))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+C51", xy = c(13,19))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+D51", xy = c(14,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CL3:CL338)+B51", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CM3:CM338)+C51", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CN3:CN338)+D51", xy = c(14,19))
 
 } else {
   # purchases
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)+B39+B63+B75+B87+B51", xy = c(12,18))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CT3:CT338)+C39+C63+C75+C87+C51", xy = c(13,18))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CU3:CU338)+D39+D63+D75+D87+D51", xy = c(14,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)+B39+B63+B75+B87+B51", xy = c(12,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)+C39+C63+C75+C87+C51", xy = c(13,18))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CR3:CR338)+D39+D63+D75+D87+D51", xy = c(14,18))
 
 
   # sales
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(12,19))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CP3:CP338)", xy = c(13,19))
-  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CQ3:CQ338)", xy = c(14,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CL3:CL338)", xy = c(12,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CM3:CM338)", xy = c(13,19))
+  writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CN3:CN338)", xy = c(14,19))
 }
 
-writeFormula(wb = mywb, sheet = "Summary", x = "=-SUM('Consumption Checks'!CS3:CS338)", xy = c(15,18))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CS3:CS338)", xy = c(15,18))
+writeFormula(wb = mywb, sheet = "Summary", x = "=SUM('Consumption Checks'!CO3:CO338)", xy = c(15,19))
 writeFormula(wb = mywb, sheet = "Summary", x = "=-B100", xy = c(16,18))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L18:P18)", xy = c(17,18))
 writeFormula(wb = mywb, sheet = "Summary", x = "=SUM(L19:P19)", xy = c(17,19))
@@ -1739,10 +1737,9 @@ writeData(wb = mywb, sheet = "Summary", x = "Against AD Day Ahead Sheet", startR
 for (row in c(18:22)) {
   addStyle(wb = mywb, sheet = "Summary", style = euro, rows = row, cols = 12:19)
 }
-```
 
 
-```{r D+4 SS}
+
 # Shadow Settled sheet
 
 SS <- "SHADOW SETTLED"
@@ -1826,7 +1823,6 @@ if(as.numeric(firstday) > 20231001) {
   which_column <- 16
 }
 
-
 temp <- c()
 for (index in 2:337) {
   temp <- c(temp, paste0("=SUMIFS('Consumption Checks'!F:F,'Consumption Checks'!C:C,'SHADOW SETTLED'!C", index, ")*$", toupper(letters[which_column]), "$4*SUMIFS(REPORT!M:M,REPORT!N:N,'SHADOW SETTLED'!C", index, ",REPORT!J:J,\"FCCA\")"))
@@ -1893,10 +1889,9 @@ writeData(wb = mywb, sheet = SS, x = "PSTR", startRow = 5, startCol = 15)
 for (row in c(2:5)) {
   addStyle(wb = mywb, sheet = SS, style = euro, rows = row, cols = 16:21)
 }
-```
 
 
-```{r D+4 CC}
+
 # Consumption Checks sheet
 
 CC <- "Consumption Checks"
@@ -2363,7 +2358,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+02:00\""))
+    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+01:00\""))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
   }
   temp <- c()
@@ -2379,7 +2374,7 @@ if (season == "winter") {
   }
   temp <- c()
   for (index in 3:338) {
-    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+01:00\""))
+    temp <- c(temp, paste0("=TEXT(AO", index, ",\"yyyy-mm-dd\")&\"T\"&TEXT(AP", index, ",\"hh:mm:ss\")&\"+02:00\""))
     writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 43)
   }
   temp <- c()
@@ -2627,7 +2622,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 81)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=Q", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMP\"))"))
+  temp <- c(temp, paste0("=-Q", index, "*(SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'Consumption Checks'!$BP", index, ",REPORT!$J:$J,\"PIMP\"))"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 82)
 
@@ -2651,7 +2646,7 @@ writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 85)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'Consumption Checks'!$BM", index, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$BP", index, ",REPORT!$P:$P,\"FNIEP\")"))
+  temp <- c(temp, paste0("=-Q", index, "*SUMIFS(REPORT!$M:$M,REPORT!$L:$L,'Consumption Checks'!$BM", index, ",REPORT!$J:$J,\"PREV\")*SUMIFS(REPORT!$S:$S,REPORT!$R:$R,'Consumption Checks'!$BP", index, ",REPORT!$P:$P,\"FNIEP\")"))
 }
 writeFormula(wb = mywb, sheet = CC, x = temp, startRow = 3, startCol = 86)
 
@@ -2724,10 +2719,9 @@ for (ROW in 3:338) {
 for (col in c(69:88, 90:97)) {
   addStyle(wb = mywb, sheet = CC, createStyle(fgFill = "#FFEB9C", fontColour = "#9C5700"), rows = 1, cols = col)
 }
-```
 
 
-```{r D+4 EAC}
+
 # Ex-Ante Consumption sheet
 
 EAC <- "Ex-Ante Consumption"
@@ -3521,10 +3515,9 @@ temp <- c()
 for (index in 3:338) {
   temp <- c(temp, paste0("=DY", index, "*AD", index))
 }; writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 139)
-```
 
 
-```{r D+4 EIS}
+
 # En & Imp Split sheet
 
 EIS <- "En & Imp Split"
@@ -3751,10 +3744,9 @@ for (col in c(4,12,20,28,36,44)) {
 for (col in c(5:8,13:16,21:24,29:32,37:40,45)) {
   addStyle(wb = mywb, sheet = EIS, style = euro, rows = 4:339, cols = col)
 }
-```
 
 
-```{r D+4 EMS}
+
 EMS <- "ECC Monthly Settlement"
 
 writeData(mywb, EMS, "Sales at positive prices", startCol = 2, startRow = 1)
@@ -3868,7 +3860,6 @@ for (ROW in 4:10) {
     addStyle(mywb, EMS, NUMBER, rows = ROW, cols = COL)
   }
 }
-
 
 saveWorkbook(mywb, outputfile, TRUE)
 
@@ -10161,4 +10152,3 @@ saveWorkbook(mywb, outputfile, overwrite = TRUE)
 print_colour("Script has finished executing.", colour = "green")
 
 ```
-
