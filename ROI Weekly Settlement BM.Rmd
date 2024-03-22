@@ -9703,7 +9703,7 @@ if (InitCaps == TRUE) {
 ```{r M+4 Capacity script}
 
 if (M4Caps == TRUE) {
-  print_colour("Building M+4 Capacity file", colour = 'black')
+  print_colour("Building M+4 Capacity file ", colour = 'black')
   source("ROI Capacity M+4 Script.R")
   print_colour("\nM+4 Capacity file created.", colour = "green")
 } else {
