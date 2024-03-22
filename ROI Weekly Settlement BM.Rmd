@@ -9667,6 +9667,67 @@ ivbu <- mywb
 
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
-print_colour("Script has finished executing.", colour = "green")
+print_colour("Invoice backup file created.", colour = "green")
 
 ```
+
+
+```{r determine if Capacity sett needed}
+
+Caps <- subset(documentdata, subset = market2 == "CRM")$run_type %>% unique()
+InitCaps <- FALSE
+M4Caps <- FALSE
+M13Caps <- FALSE
+
+if (length(Caps != 0)) {
+  InitCaps <- "INIT" %in% Caps
+  M4Caps <- "M4" %in% Caps
+  M13Caps <- "M13" %in% Caps
+}
+
+```
+
+
+```{r D+4 Capacity script}
+
+if (InitCaps == TRUE) {
+  print_colour("Building D+4 Capacity file. ", colour = 'black')
+  source("ROI Capacity D+4 Script.R")
+  print_colour("\nD+4 Capacity file created.", colour = "green")
+} else {
+  print_colour("\nNo D+4 Capacity settlement required.", colour = "blue")
+}
+
+```
+
+```{r M+4 Capacity script}
+
+if (M4Caps == TRUE) {
+  print_colour("Building M+4 Capacity file", colour = 'black')
+  source("ROI Capacity M+4 Script.R")
+  print_colour("\nM+4 Capacity file created.", colour = "green")
+} else {
+  print_colour("\nNo M+4 Capacity settlement required.", colour = "blue")
+}
+
+```
+
+```{r M+13 Capacity script}
+
+if (M13Caps == TRUE) {
+  print_colour("Building M+13 Capacity file", colour = 'black')
+  source("ROI Capacity M+13 Script.R")
+  print_colour("\nM+13 Capacity file created.", colour = "green")
+} else {
+  print_colour("\nNo M+13 Capacity settlement required.", colour = "blue")
+}
+
+
+```
+
+```{r end}
+
+print_colour("Script has finished executing.\n", colour = "green")
+
+```
+
