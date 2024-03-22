@@ -2932,13 +2932,13 @@ writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 27)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$V:$V,'EX-Ante Report'!$U:$U,'Ex-ante Consumption'!$C", index, ",'EX-Ante Report'!$M:$M,\"EGRD\",'EX-Ante Report'!$K:$K,\"IT2\",'EX-Ante Report'!$AM:$AM,IF(P", index, "=0,\"AU_400117_&_AU_400117\",\"SU_400173_&_SU_400173\"))"))
+  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$T:$T,'EX-Ante Report'!$S:$S,'Ex-ante Consumption'!$C", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,\"IT2\",'EX-Ante Report'!$AK:$AK,IF(P", index, "=0,\"AU_400117_&_AU_400117\",\"SU_400173_&_SU_400173\"))"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 28)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$V:$V,'EX-Ante Report'!$U:$U,'Ex-ante Consumption'!$C", index, ",'EX-Ante Report'!$M:$M,\"EGRD\",'EX-Ante Report'!$K:$K,\"IT3\",'EX-Ante Report'!$AM:$AM,IF(Q", index, "=0,\"AU_400117_&_AU_400117\",\"SU_400173_&_SU_400173\"))"))
+  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$T:$T,'EX-Ante Report'!$S:$S,'Ex-ante Consumption'!$C", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,\"IT3\",'EX-Ante Report'!$AK:$AK,IF(Q", index, "=0,\"AU_400117_&_AU_400117\",\"SU_400173_&_SU_400173\"))"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 29)
 
@@ -4282,6 +4282,8 @@ for (col in c(4,15,16,20,26:28,30:35,41)) {
 
 
 # ECC Ex-Ante Report sheet
+
+EAR <- "EX-Ante Report"
 
 prevtypefile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/D+4 INITIAL/"), full.names = TRUE)
 if (length(prevtypefile[grepl(x = prevtypefile, pattern = paste0(" ", as.character(weekno)))]) == 0) {
@@ -6243,17 +6245,17 @@ for (index in 4:339) {
 
 temp <- c()
 for (index in 4:339) {
-  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$S$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!O", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
+  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$", LETTERS[which_column], "$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!O", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 30)
 
 temp <- c()
 for (index in 4:339) {
-  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$S$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!P", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
+  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$", LETTERS[which_column], "$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!P", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 31)
 
 temp <- c()
 for (index in 4:339) {
-  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$S$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!Q", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
+  temp <- c(temp, paste0("=IFERROR(((MIN(SUMIFS('Consumption Checks'!$AD:$AD,'Consumption Checks'!$X:$X,'En & Imp Split'!$AA", index, ",'Consumption Checks'!$Y:$Y,'En & Imp Split'!$AB", index, "),0)*MIN(0,('SHADOW SETTLED'!$", LETTERS[which_column], "$5-SUMIFS(REPORT!$M:$M,REPORT!$N:$N,'En & Imp Split'!$C", index, ",REPORT!$J:$J,\"PIMB\"))))*('Consumption Checks'!Q", index-1, "/'Consumption Checks'!$R", index-1, ")),0)"))
 }; writeFormula(wb = mywb, sheet = EIS, x = temp, startRow = 4, startCol = 32)
 
 temp <- c()
@@ -6339,6 +6341,10 @@ for (col in c(6:9,14:17,22:25,30:33,38:41,46)) {
 
 
 # Resettlement Summary sheet
+
+RS <- "Resettlement Summary"
+mybold <- boldStyle
+bb <- createStyle(textDecoration = 'bold', fontSize = 18)
 
 writeData(mywb, RS, x = paste0(PTunit, " ", settype3, " ENERGY"), startRow = 1, startCol = 2)
 writeData(mywb, RS, x = paste0("WK ", weekno, " ", year), startRow = 1, startCol = 4)
@@ -7696,8 +7702,6 @@ for (ROW in c(14,24)) {
 
 # Shadow Settled sheet
 
-SS <- "SHADOW SETTLED"
-
 # Passthroughs from SEMO Charging Statement
 headings1 <- c('Date', 'Time P.E', 'Date/Time', 'Settlement Date', 'CCA', 'CDIFFPDA', 'CDIFFPIMB', 'CIMB', 'CIMP', 'CREV', 'CREIMDIFFP', 'CSHORTDIFFP', rep.int("", times = 3), "2018/19", "2019/20", "2020/21", "2021/22", "2022/23", "2023/24", "2024/25")
 
@@ -8493,8 +8497,6 @@ for (col in c(69:88, 90:97)) {
 
 # Ex-Ante Consumption sheet
 
-EAC <- "Ex-Ante Consumption"
-
 headings1 <- c(rep.int("", times = 6),
                "Forecasted Consumption", rep.int("", times = 3),
                "Ratio", rep.int("", times = 2),
@@ -8883,8 +8885,6 @@ for (ROW in 3:11) {
 
 
 # En & Imp Split sheet
-
-EIS <- "En & Imp Split"
 
 writeData(wb = mywb, sheet = EIS, x = "CIMB", startRow = 1, startCol = 1)
 writeData(wb = mywb, sheet = EIS, x = "CIMP", startRow = 1, startCol = 11)
