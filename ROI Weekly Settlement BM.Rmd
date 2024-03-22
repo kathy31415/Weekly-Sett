@@ -586,7 +586,6 @@ firstdaym13 <- firstdaym13$bp_start_date %>% unique() %>% as.Date(format = "%Y-%
 
 ```
 
-
 ```{r D+4}
 ################################################################################################################################################################################################
 ############################################################################## D+4 settlement section ##########################################################################################
@@ -2932,13 +2931,13 @@ writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 27)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$T:$T,'EX-Ante Report'!$S:$S,'Ex-ante Consumption'!$C", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,\"IT2\",'EX-Ante Report'!$AK:$AK,IF(P", index, "=0,\"AU_400117_&_AU_400117\",\"SU_400173_&_SU_400173\"))"))
+  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$T:$T,'EX-Ante Report'!$S:$S,'Ex-ante Consumption'!C", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,\"IT2\",'EX-Ante Report'!$AK:$AK,IF(O", index, "=0,\"AU_400131_&_AU_400131\",\"SU_400173_&_SU_400173\"))"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 28)
 
 temp <- c()
 for (index in 3:338) {
-  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$T:$T,'EX-Ante Report'!$S:$S,'Ex-ante Consumption'!$C", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,\"IT3\",'EX-Ante Report'!$AK:$AK,IF(Q", index, "=0,\"AU_400117_&_AU_400117\",\"SU_400173_&_SU_400173\"))"))
+  temp <- c(temp, paste0("=SUMIFS('EX-Ante Report'!$T:$T,'EX-Ante Report'!$S:$S,'Ex-ante Consumption'!C", index, ",'EX-Ante Report'!$K:$K,\"EGRD\",'EX-Ante Report'!$I:$I,\"IT3\",'EX-Ante Report'!$AK:$AK,'Consumption Checks'!$BC$1)"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 29)
 
@@ -3868,8 +3867,6 @@ for (ROW in 4:10) {
 saveWorkbook(mywb, outputfile, TRUE)
 
 ```
-
-
 
 ```{r M+4}
 ################################################################################################################################################################################################
@@ -6643,8 +6640,6 @@ for (ROW in 25:26) {
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 ```
-
-
 
 ```{r M+13}
 ################################################################################################################################################################################################
@@ -9421,8 +9416,6 @@ for (ROW in 25:26) {
 saveWorkbook(mywb, outputfile, overwrite = TRUE)
 
 ```
-
-
 
 ```{r Invoice Backup}
 
