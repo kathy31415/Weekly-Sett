@@ -570,10 +570,10 @@ writexl::write_xlsx(df, paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/D
 
 inputfiles <- list.files(paste0("C:/Users/", Sys.getenv("USERNAME"), "/Downloads"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = receiveddate3)]
-if (length(inputfiles) > 1) {
-  inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
-}
-documentdata <- read_excel(path = inputfiles, sheet = 1)
+# if (length(inputfiles) > 1) {
+#   inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
+# }
+documentdata <- read_excel(path = inputfiles)
 
 firstdayd4 <- documentdata %>% filter(run_type == "INIT" & market2 == "BALIMB")
 firstdayd4 <- firstdayd4$bp_start_date %>% unique() %>% as.Date(format = "%Y-%m-%d") %>% format("%Y%m%d")
@@ -3068,7 +3068,7 @@ writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 52)
 
 temp <- c()
 for (index in 3:9) {
-  temp <- c(temp, paste0("=SUMIF($D:$D,$AY", index, ",AY:AU)"))
+  temp <- c(temp, paste0("=SUMIF($D:$D,$AY", index, ",AU:AU)"))
 }
 writeFormula(wb = mywb, sheet = EAC, x = temp, startRow = 3, startCol = 53)
 
@@ -6968,6 +6968,10 @@ writexl::write_xlsx(dfreports, outputfile)
 inputfiles <- list.files(path = paste0("C:/Users/", Sys.getenv("USERNAME"),"/Downloads/"), full.names = TRUE)
 inputfiles <- inputfiles[grepl(pattern = "\\.xlsx$", x = inputfiles)]
 inputfiles <- inputfiles[grepl(x = inputfiles, pattern = PTunit)]
+inputfiles <- inputfiles[grepl(x = inputfiles, pattern = "Document|W")]
+if (length(inputfiles) != 3) {
+  stop("Ensure previous settlement files have been deleted from your Downloads folder before running. Stopping...")
+}
 
 # Get previous week's file
 prevfile <- list.files(path = paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/", settype2, "/"), full.names = TRUE)

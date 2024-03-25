@@ -1,13 +1,13 @@
-settype <- "M+4"
-settype2 <- "M+4 Resettlement" 
-settype3 <- "M4"
-settype4 <- "M4"
-mm <- 30
+settype <- "M+13"
+settype2 <- "M13" 
+settype3 <- "M13"
+settype4 <- "M13"
+mm <- 40
 bluestyle <- bluegrey
 
-startdate <- documentdata %>%  filter(market2 == "CRM" & run_type == "M4")
+startdate <- documentdata %>%  filter(market2 == "CRM" & run_type == "M13")
 startdate <- startdate$bp_start_date %>% unique() %>% as.Date(format = "%Y-%m-%d")
-enddate <- documentdata %>% filter(market2 == "CRM" & run_type == "M4")
+enddate <- documentdata %>% filter(market2 == "CRM" & run_type == "M13")
 enddate <- enddate$bp_end_date %>% unique() %>% as.Date(format = "%Y-%m-%d")
 
 month <- format(startdate, "%b")
@@ -299,7 +299,7 @@ if (nchar(month.as.number) == 1) {
 }
 
 # Get file path for output file
-outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/M4/20", year, " ", month.as.number, ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx")
+outputfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/20", year, " ", month.as.number, ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx")
 if (file.exists(outputfile)) {
   file.remove(outputfile)
 }
@@ -389,7 +389,7 @@ for (i in 1:length(dates)) {
 
 
 # MAIN TABLE
-writeData(mywb, CRMS, "M+4 CAPACITY", xy = c(17,7))
+writeData(mywb, CRMS, "M+13 CAPACITY", xy = c(17,7))
 writeData(mywb, CRMS, paste0(month, "-", year), xy = c(19,7))
 writeData(mywb, CRMS, "Totals", xy = c(18,8))
 
@@ -762,7 +762,7 @@ for (i in 1:length(headings1)) {
 
 # CONSUMPTION CHECKS
 
-headings <- c("Settlement Date", "Time P.E", "Date/Time", rep(x = "", times = 2), "MM 596", rep(x = "", times = 8), "TUOS", "MM595", "MM591", "MM598", "MM596")
+headings <- c("Settlement Date", "Time P.E", "Date/Time", rep(x = "", times = 2), "MM 596", rep(x = "", times = 8), "MM595", "MM591", "MM598", "MM596")
 
 temp <- c()
 for (i in 1:length(headings)) {
@@ -826,7 +826,7 @@ writeFormula(mywb, CC, temp, startRow = 50, startCol = 5)
 
 temp <- c()
 for (ROW in 2:1491) {
-  temp <- c(temp, paste0("=VLOOKUP(A", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+4 Resettlement 30 MM/[ESB MASTER MM Messages M+4.xlsx]MM596'!$A:$AY,D", ROW, ",0)"))
+  temp <- c(temp, paste0("=VLOOKUP(A", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+13 Resettlement 40 MM/[ESB MASTER MM Messages M+13.xlsx]MM596'!$A:$AY,D", ROW, ",0)"))
 }
 writeFormula(mywb, CC, temp, startRow = 2, startCol = 6)
 
@@ -846,19 +846,19 @@ writeData(mywb, CC, time_vector, startCol = 14, startRow = 2)
 
 temp <- c()
 for (ROW in 2:1491) {
-  temp <- c(temp, paste0("=VLOOKUP($L", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+4 Resettlement 30 MM/[ESB MASTER MM Messages M+4.xlsx]MM595 LA'!$A:$AZ,$M", ROW, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($L", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+13 Resettlement 40 MM/[ESB MASTER MM Messages M+13.xlsx]MM595 LA'!$A:$AZ,$M", ROW, ",0)/1000"))
 }
 writeFormula(mywb, CC, temp, startRow = 2, startCol = 15)
 
 temp <- c()
 for (ROW in 2:1491) {
-  temp <- c(temp, paste0("=VLOOKUP($L", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+4 Resettlement 30 MM/[ESB MASTER MM Messages M+4.xlsx]MM591 LA'!$A:$AY,$M", ROW, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($L", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+13 Resettlement 40 MM/[ESB MASTER MM Messages M+13.xlsx]MM591 LA'!$A:$AY,$M", ROW, ",0)/1000"))
 }
 writeFormula(mywb, CC, temp, startRow = 2, startCol = 16)
 
 temp <- c()
 for (ROW in 2:1491) {
-  temp <- c(temp, paste0("=VLOOKUP($L", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+4 Resettlement 30 MM/[ESB MASTER MM Messages M+4.xlsx]MM598'!$A:$AZ,$M", ROW, ",0)/1000"))
+  temp <- c(temp, paste0("=VLOOKUP($L", ROW, ",'", accdrive, ":/GeneralAccounts/Settlement/ESB MM/M+13 Resettlement 40 MM/[ESB MASTER MM Messages M+13.xlsx]MM598'!$A:$AZ,$M", ROW, ",0)/1000"))
 }
 writeFormula(mywb, CC, temp, startRow = 2, startCol = 17)
 
@@ -877,14 +877,13 @@ writeFormula(mywb, CC, temp, startRow = 2, startCol = 19)
 totals <- seq(from = 49, by = 48, length.out = days_in_month(startdate))
 
 # get previous capacity file
-prevsettype <- "D+4"
-prevsettype2 <- "D+4 Initial" 
-prevsettype3 <- "INIT"
-prevsettype4 <- "D4"
-prevmm <- 20
+prevsettype <- "M+4"
+prevsettype2 <- "M+4 Resettlement" 
+prevsettype3 <- "M4"
+prevsettype4 <- "M4"
+prevmm <- 30
 
-prevcapacityfilepath <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/D4/")
-
+prevcapacityfilepath <- paste0("X:/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", prevsettype3, "/")
 prevcapacityfiles <- list.files(prevcapacityfilepath)
 prevcapacityfiles <- prevcapacityfiles[grepl(x = prevcapacityfiles, pattern = paste0(month, "|", month2))]
 prevcapacityfiles <- prevcapacityfiles[grepl(x = prevcapacityfiles, pattern = year)]
@@ -914,8 +913,8 @@ for (ROW in c(21,34)) {
   addStyle(mywb, RS, boldStyle, rows = ROW, cols = 1)
 }
 
-writeData(mywb, RS, "CAPACITY M+4 TOTAL", xy = c(1,30))
-writeData(mywb, RS, "MO M+4 TOTAL", xy = c(1,39))
+writeData(mywb, RS, "CAPACITY M+13 TOTAL", xy = c(1,30))
+writeData(mywb, RS, "MO M+13 TOTAL", xy = c(1,39))
 writeData(mywb, RS, "NOMINAL CODE", startCol = 1, startRow = 31)
 writeData(mywb, RS, "NOMINAL CODE", startCol = 1, startRow = 40)
 
@@ -947,10 +946,10 @@ writeData(mywb, RS, paste0(month, year, " ", settype), xy = c(2,23))
 writeData(mywb, RS, paste0(month, year, " ", settype), xy = c(2,35))
 
 # FORMULAS
-prevfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/D4/[", prevcapacityfiles, "]")
+prevfile <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", prevsettype3, "/[", prevcapacityfiles, "]")
 prevfile <- prevfile[grepl(x = prevfile, pattern = year)]
 
-# D+4 section
+# M+4 section
 writeFormula(wb = mywb, sheet = RS, x = paste0("'", prevfile, "CRM Summary'!B$42"), startCol = 2, startRow = 3)
 writeFormula(wb = mywb, sheet = RS, x = paste0("'", prevfile, "CRM Summary'!C$42"), startCol = 3, startRow = 3)
 writeFormula(wb = mywb, sheet = RS, x = paste0("'", prevfile, "CRM Summary'!D$42"), startCol = 4, startRow = 3)
@@ -1089,18 +1088,18 @@ saveWorkbook(mywb, outputfile, TRUE)
 
 
 
-# add M+4 Capacity to Invoice Backup
+# add M+13 Capacity to Invoice Backup
 
 ivbuoutput <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/Invoice Backups/", documentidnumber, " BACKUP - ", initials, ".xlsx")
 
-inputfiles <- list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/M4/"))
+inputfiles <- list.files(paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype3, "/"))
 inputfiles <- inputfiles[grepl(inputfiles, pattern = month)]
 inputfiles <- inputfiles[grepl(inputfiles, pattern = year)]
 inputfiles <- inputfiles[grepl(inputfiles, pattern = initials)]
 
 # purchases
-writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/M4/[", inputfiles, "]Resettlement Summary'!B30"), startRow = 46, startCol = 9)
-writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/M4/[", inputfiles, "]Resettlement Summary'!C30"), startRow = 46, startCol = 10)
-writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/M4/[", inputfiles, "]Resettlement Summary'!D30"), startRow = 46, startCol = 11)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/[", inputfiles, "]Resettlement Summary'!B30"), startRow = 47, startCol = 9)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/[", inputfiles, "]Resettlement Summary'!C30"), startRow = 47, startCol = 10)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype2, "/[", inputfiles, "]Resettlement Summary'!D30"), startRow = 47, startCol = 11)
 
 saveWorkbook(wb = ivbu, file = ivbuoutput, TRUE)
