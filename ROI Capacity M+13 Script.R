@@ -420,7 +420,7 @@ writeData(mywb, CRMS, "CRM", xy = c(18,15))
 writeData(mywb, CRMS, "Invoice Total", xy = c(19,14))
 writeData(mywb, CRMS, "Check", xy = c(20,14))
 writeFormula(mywb, CRMS, "=SUM(B5:AF5)",  startRow = 15, startCol = 19)
-writeFormula(mywb, CRMS, "U11+U12+S15",  startRow = 15, startCol = 20)
+writeFormula(mywb, CRMS, "=SUM(F42,N42)-S15",  startRow = 15, startCol = 20)
 
 writeFormula(mywb, CRMS, "=SUM(B10:B40)",  startRow = 42, startCol = 2)
 writeFormula(mywb, CRMS, "=SUM(C10:C40)",  startRow = 42, startCol = 3)

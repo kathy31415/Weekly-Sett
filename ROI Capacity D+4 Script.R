@@ -415,7 +415,7 @@ writeData(mywb, CRMS, "CRM", xy = c(18,15))
 writeData(mywb, CRMS, "Invoice Total", xy = c(19,14))
 writeData(mywb, CRMS, "Check", xy = c(20,14))
 writeFormula(mywb, CRMS, "=SUM(B5:AF5)",  startRow = 15, startCol = 19)
-writeFormula(mywb, CRMS, "U11+U12+S15",  startRow = 15, startCol = 20)
+writeFormula(mywb, CRMS, "=SUM(F42,N42)-S15",  startRow = 15, startCol = 20)
 
 writeFormula(mywb, CRMS, "=SUM(B10:B40)",  startRow = 42, startCol = 2)
 writeFormula(mywb, CRMS, "=SUM(C10:C40)",  startRow = 42, startCol = 3)
@@ -562,13 +562,6 @@ pt5 <- c(11.97, 0, 0.422)       #22/23
 pt6 <- c(16.17, -0.013, 0.599)  #23/24
 
 passthrus <- list(pt1, pt2, pt3, pt4, pt5, pt6)
-
-calendar.tab <- c()
-if (as.numeric(month.as.number) < 10) {
-  calendar.tab <- paste0("20", as.numeric(year)-1, ".", as.numeric(year))
-} else {
-  calendar.tab <- paste0("20", as.numeric(year), ".", as.numeric(year)+1)
-}
 
 for (i in 1:length(headings)) {
   writeData(mywb, SS, headings[i], startRow = 1, startCol = i+15)
@@ -900,14 +893,14 @@ saveWorkbook(mywb, outputfile, TRUE)
 ivbuoutput <- paste0(accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Energy + Imp/Invoice Backups/", documentidnumber, " BACKUP - ", initials, ".xlsx")
 
 # sales
-writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype3, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!R12"), startRow = 23, startCol = 9)
-writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype3, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!S12"), startRow = 23, startCol = 10)
-writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype3, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!T12"), startRow = 23, startCol = 11)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/D4/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!R12"), startRow = 23, startCol = 9)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/D4/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!S12"), startRow = 23, startCol = 10)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/D4/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!T12"), startRow = 23, startCol = 11)
 
 # purchases
-writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype3, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!R11"), startRow = 45, startCol = 9)
-writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype3, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!S11"), startRow = 45, startCol = 10)
-writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/", settype3, "/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!T11"), startRow = 45, startCol = 11)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/D4/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!R11"), startRow = 45, startCol = 9)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/D4/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!S11"), startRow = 45, startCol = 10)
+writeFormula(ivbu, BU, paste0("='", accdrive, ":/GeneralAccounts/Settlement/", PTunit, " SEMO Shadow Settlement/Capacity/D4/[20", year, " ", month.as.number,  ". ", PTunit, " SEMO ", month, " ", year, " ", settype, " CAPACITY Shadow Settlement - ", initials, ".xlsx]CRM Summary'!T11"), startRow = 45, startCol = 11)
 
 
 saveWorkbook(ivbu, ivbuoutput, TRUE)

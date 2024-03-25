@@ -9675,7 +9675,6 @@ print_colour("Invoice backup file created.", colour = "green")
 
 ```
 
-
 ```{r determine if Capacity sett needed}
 
 Caps <- subset(documentdata, subset = market2 == "CRM")$run_type %>% unique()
@@ -9690,7 +9689,6 @@ if (length(Caps != 0)) {
 }
 
 ```
-
 
 ```{r D+4 Capacity script}
 
@@ -9734,4 +9732,3 @@ if (M13Caps == TRUE) {
 print_colour("Script has finished executing.\n", colour = "green")
 
 ```
-
