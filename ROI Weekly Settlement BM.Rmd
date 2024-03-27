@@ -413,10 +413,18 @@ if (un == "kathy.callan") {
   accdrive <- "X"
   edrive <- "Y"
   e2drive <- "Z"
-} else if (un == "emma.mullan") {
+} else if (un == "emma.mullan" | un == "oisin.rocks") {
   accdrive <- "X"
   edrive <- "Z"
   e2drive <- "Y"
+} else if (un == "adam.diamond") {
+  accdrive <- "Y"
+  edrive <- "X"
+  e2drive <- "W"
+} else if (un == "brian.mcmullan") {
+  accdrive <- "W"
+  edrive <- "Y"
+  e2drive <- "Z"
 } else {
   stop("Unexpected user. Stopping...")
 }
